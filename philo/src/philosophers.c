@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 15:48:15 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/16 15:09:33 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/16 16:46:14 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,20 @@
 void	*ft_fuel_filling(void *arg)
 {
 	t_philo	*philo;
+	int		i;
 
 	philo = (t_philo *) arg;
-	pthread_mutex_lock(&philo->mutex);
-	philo->fuel += 10;
-	printf("Fuel: %d\n", philo->fuel);
-	pthread_mutex_unlock(&philo->mutex);
-	pthread_cond_signal(&philo->cond);
-	sleep(1);
+	i = 0;
+	while (i < 5)
+	{	
+		pthread_mutex_lock(&philo->mutex);
+		philo->fuel += 10;
+		printf("Fuel: %d\n", philo->fuel);
+		i++;
+		pthread_mutex_unlock(&philo->mutex);
+		pthread_cond_signal(&philo->cond);
+		sleep(1);
+	}
 	return (NULL);
 }
 
@@ -32,12 +38,12 @@ void	*ft_car(void *arg)
 
 	philo = (t_philo *) arg;
 	pthread_mutex_lock(&philo->mutex);
-	while (philo->fuel < 40)
+	while (philo->fuel < 100)
 	{
 		printf("No Fuel, Waiting...\n");
 		pthread_cond_wait(&philo->cond, &philo->mutex);
 	}
-	philo->fuel -= 40;
+	philo->fuel -= 25;
 	printf("Got Fuel: %d\n", philo->fuel);
 	pthread_mutex_unlock(&philo->mutex);
 	return (NULL);
@@ -58,9 +64,9 @@ int	main()
 
 	ft_init_philo(&philo);
 	
-	if (pthread_create(&threads[0], NULL, &ft_fuel_filling, NULL) != 0)
+	if (pthread_create(&threads[0], NULL, &ft_fuel_filling, (void *) &philo) != 0)
 		return (EXIT_FAILURE);
-	if (pthread_create(&threads[1], NULL, &ft_car, NULL) != 0)
+	if (pthread_create(&threads[1], NULL, &ft_car, (void *) &philo) != 0)
 		return (EXIT_FAILURE);
 		
 	if (pthread_join(threads[0], NULL) != 0)

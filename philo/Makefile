@@ -29,3 +29,10 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
+
+Biti tsjli f kolchi, chofi b3da takhsossat li kat y3jbouk, w chofi fin kay tr9aw
+w chofi wach kay hzo mn sience pc w wach kayn concours, wla ghir selection b no9ta
+w l mdina
+Mamatlobch mnk t9lbi 3la ga3 hadchi daba, ghir choufi takhsossat
+Ana ghadi n chof dok li kay lo7o tssjil f Youtube wn sifthom lik, ila biti n3mr dik l Form 
