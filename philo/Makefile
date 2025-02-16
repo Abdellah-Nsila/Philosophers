@@ -7,7 +7,7 @@ INCLUDES = -I./includes
 
 SRCS =	$(SRC_DIR)/philosophers.c \
 
-FUNCS =	$(FUNC_DIR)/utils_1.c $(FUNC_DIR)/utils_2.c $(FUNC_DIR)/utils_3.c \
+FUNCS =	$(FUNC_DIR)/functions_1.c $(FUNC_DIR)/functions_2.c $(FUNC_DIR)/functions_3.c \
 
 OBJS = $(SRCS:.c=.o)
 FUNCO = $(FUNCS:.c=.o)
@@ -17,7 +17,7 @@ all: $(LIBFT) $(NAME)
 $(NAME): $(OBJS) $(FUNCO)
 	$(CC) -g -pthread $(CFLAGS) $(OBJS) $(FUNCO) $(INCLUDES) -o $(NAME)
 
-%.o: %.c ./includes/philosophers.h
+%.o: %.c ./includes/philosophers.h ./includes/functions.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
