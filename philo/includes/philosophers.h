@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/16 14:59:41 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/18 11:50:33 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 # define PHILOSOPHERS_H
 
 # include "functions.h"
+# include "colors.h"
 # include <math.h>
 # include <time.h>
 # include <sys/wait.h>
 # include <pthread.h>
 
-# define THREADS 2
+# define THREADS 5
 
 typedef struct s_philo
 {

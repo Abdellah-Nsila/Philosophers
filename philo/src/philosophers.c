@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 15:48:15 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/18 11:24:23 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/18 11:57:53 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ void	*ft_fuel_filling(void *arg)
 	while (i < 10)
 	{	
 		pthread_mutex_lock(&philo->mutex);
-		philo->fuel += 10;
-		printf("Fuel: %d\n", philo->fuel);
+		philo->fuel += 25;
+		printf("%sFuel filling: %d\n%s",BLU, philo->fuel, RESET);
 		i++;
 		pthread_mutex_unlock(&philo->mutex);
-		pthread_cond_signal(&philo->cond);
+		pthread_cond_broadcast(&philo->cond);
 		sleep(1);
 	}
 	return (NULL);
@@ -38,13 +38,13 @@ void	*ft_car(void *arg)
 
 	philo = (t_philo *) arg;
 	pthread_mutex_lock(&philo->mutex);
-	while (philo->fuel < 100)
+	while (philo->fuel < 40)
 	{
-		printf("No Fuel, Waiting...\n");
+		printf("%sNo Fuel, Waiting...\n%s", RED, RESET);
 		pthread_cond_wait(&philo->cond, &philo->mutex);
 	}
-	printf("Got Fuel: %d%%\n", philo->fuel);
-	philo->fuel -= 100;
+	philo->fuel -= 40;
+	printf("%sGot Fuel, Left: %d, Bye!\n%s", GRN, philo->fuel, RESET);
 	pthread_mutex_unlock(&philo->mutex);
 	return (NULL);
 }
@@ -61,23 +61,102 @@ int	main()
 {
 	t_philo		philo;
 	pthread_t	threads[THREADS];
+	int			i = 0;
 
 	ft_init_philo(&philo);
-	
-	if (pthread_create(&threads[0], NULL, &ft_fuel_filling, (void *) &philo) != 0)
-		return (EXIT_FAILURE);
-	if (pthread_create(&threads[1], NULL, &ft_car, (void *) &philo) != 0)
-		return (EXIT_FAILURE);
-		
-	if (pthread_join(threads[0], NULL) != 0)
-		return (EXIT_FAILURE);
-	if (pthread_join(threads[1], NULL) != 0)
-		return (EXIT_FAILURE);
-	
+	while (i < 6)
+	{
+		if (i == 4 || i == 5)
+		{
+			if (pthread_create(&threads[0], NULL, &ft_fuel_filling, (void *) &philo) != 0)
+				return (EXIT_FAILURE);
+		}
+		else
+		{
+			if (pthread_create(&threads[1], NULL, &ft_car, (void *) &philo) != 0)
+				return (EXIT_FAILURE);
+		}
+		i++;
+	}
+	i = 0;
+	while (i < 5)
+	{
+		if (pthread_join(threads[0], NULL) != 0)
+			return (EXIT_FAILURE);
+		i++;
+	}
 	pthread_mutex_destroy(&philo.mutex);
 	pthread_cond_destroy(&philo.cond);
 	return (0);
 }
+
+//! 2 Threads onr for filling fuel and one for car to get wait for fuel
+// void	*ft_fuel_filling(void *arg)
+// {
+// 	t_philo	*philo;
+// 	int		i;
+
+// 	philo = (t_philo *) arg;
+// 	i = 0;
+// 	while (i < 10)
+// 	{	
+// 		pthread_mutex_lock(&philo->mutex);
+// 		philo->fuel += 10;
+// 		printf("Fuel: %d\n", philo->fuel);
+// 		i++;
+// 		pthread_mutex_unlock(&philo->mutex);
+// 		pthread_cond_signal(&philo->cond);
+// 		sleep(1);
+// 	}
+// 	return (NULL);
+// }
+
+// void	*ft_car(void *arg)
+// {
+// 	t_philo	*philo;
+
+// 	philo = (t_philo *) arg;
+// 	pthread_mutex_lock(&philo->mutex);
+// 	while (philo->fuel < 100)
+// 	{
+// 		printf("No Fuel, Waiting...\n");
+// 		pthread_cond_wait(&philo->cond, &philo->mutex);
+// 	}
+// 	printf("Got Fuel: %d%%\n", philo->fuel);
+// 	philo->fuel -= 100;
+// 	pthread_mutex_unlock(&philo->mutex);
+// 	return (NULL);
+// }
+
+// void	ft_init_philo(t_philo *philo)
+// {
+// 	srand(time(NULL));
+// 	ft_bzero(philo, sizeof(t_philo));
+// 	pthread_mutex_init(&philo->mutex, NULL);
+// 	pthread_cond_init(&philo->cond, NULL);
+// }
+
+// int	main()
+// {
+// 	t_philo		philo;
+// 	pthread_t	threads[THREADS];
+
+// 	ft_init_philo(&philo);
+	
+// 	if (pthread_create(&threads[0], NULL, &ft_fuel_filling, (void *) &philo) != 0)
+// 		return (EXIT_FAILURE);
+// 	if (pthread_create(&threads[1], NULL, &ft_car, (void *) &philo) != 0)
+// 		return (EXIT_FAILURE);
+		
+// 	if (pthread_join(threads[0], NULL) != 0)
+// 		return (EXIT_FAILURE);
+// 	if (pthread_join(threads[1], NULL) != 0)
+// 		return (EXIT_FAILURE);
+	
+// 	pthread_mutex_destroy(&philo.mutex);
+// 	pthread_cond_destroy(&philo.cond);
+// 	return (0);
+// }
 
 
 //! Array sum using threads
