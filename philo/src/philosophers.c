@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 15:48:15 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/18 17:03:44 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/18 19:10:34 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	ft_init_philo(t_philo *philo)
 int	main()
 {
 	# define THREADS 2
-	t_philo		philo;
-	pthread_t	threads[THREADS];
+	t_philo			philo;
+	pthread_t		threads[THREADS];
 	int			i = 0;
 
 	ft_init_philo(&philo);
