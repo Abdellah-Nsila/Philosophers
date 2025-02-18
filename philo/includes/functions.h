@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 15:21:38 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/15 15:36:51 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/18 16:25:12 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <unistd.h>
 # include <stdio.h>
+# include <string.h>
 # include <stdlib.h>
 
 typedef enum s_bool

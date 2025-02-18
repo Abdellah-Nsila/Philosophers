@@ -6,47 +6,116 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 15:48:15 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/18 12:17:30 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/18 17:03:44 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
+//! Detach thread
+void	*ft_routine(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *) arg;
+	pthread_mutex_lock(&philo->mutex);
+	printf("Start Execution\n");
+	usleep(1000000);
+	printf("Finish Execution\n");
+	pthread_mutex_unlock(&philo->mutex);
+	return (NULL);
+}
+
+void	ft_init_philo(t_philo *philo)
+{
+	srand(time(NULL));
+	ft_bzero(philo, sizeof(t_philo));
+	pthread_mutex_init(&philo->mutex, NULL);
+}
+
+int	main()
+{
+	# define THREADS 2
+	t_philo		philo;
+	pthread_t	threads[THREADS];
+	int			i = 0;
+
+	ft_init_philo(&philo);
+	while (i < THREADS)
+	{
+		if (pthread_create(&threads[i], NULL, &ft_routine, (void *) &philo) != 0)
+			perror("Create thread Error");
+		pthread_detach(threads[i]);
+		i++;
+	}
+	i = 0;
+	while (i < THREADS)
+	{
+		if (pthread_join(threads[i], NULL) != 0)
+			perror("Join thread Error");
+		i++;
+	}
+	pthread_mutex_destroy(&philo.mutex);
+	pthread_exit(EXIT_SUCCESS);
+	return (0);
+}
 
 
-
-// chefs = threads
-// stove = shared data (mutex)
-// all chefs can use the stove if has gas
+//! Each chef can use one stove if has fuel/gaz, so we want to manage this case
+//* chefs = threads
+//* 4 stove = shared data (mutex)
 
 // void	*ft_chef(void *arg)
 // {
 // 	t_philo	*philo;
+// 	int		i = 0;
 
 // 	philo = (t_philo *) arg;
-// 	pthread_mutex_lock(&philo->mutex);
-// 	while (philo->fuel >= 10)
+// 	while (i < 4)
 // 	{
-// 		philo->fuel -= 10;
-// 		printf("%sChef Cooking, Left\n%s", GRN, philo->fuel, RESET);
-// 		pthread_cond_wait(&philo->cond, &philo->mutex);
+// 		if (pthread_mutex_trylock(&philo->mutex_arr[i]) == 0)
+// 		{
+// 			if (philo->stove[i] >= 10)
+// 			{
+// 				usleep(500000);
+// 				philo->stove[i] -= 10;
+// 				printf("%sChef Cooking, Left: %d\n%s", GRN, philo->stove[i], RESET);
+// 			}
+// 			else
+// 			{
+// 				printf("%sNo more Fuel, Going home\n%s", RED, RESET);
+// 			}
+// 			pthread_mutex_unlock(&philo->mutex_arr[i]);
+// 			break;
+// 		}
+// 		else if (i == 3)
+// 		{
+// 			printf("%sNo Stove available yet, Waiting...\n%s", YEL, RESET);
+// 			usleep(300000);
+// 			i = -1;
+// 		}
+// 		i++;
 // 	}
-// 	printf("%sNo Fuel, Bye\n%s", GRN, RESET);
-// 	pthread_mutex_unlock(&philo->mutex);
+// 	printf("%sNo Fuel, Bye\n%s", RED, RESET);	
 // 	return (NULL);
 // }
 
 // void	ft_init_philo(t_philo *philo)
 // {
+// 	int	i = 0;
 // 	srand(time(NULL));
 // 	ft_bzero(philo, sizeof(t_philo));
-// 	philo->fuel = 100;
-// 	pthread_mutex_init(&philo->mutex, NULL);
-// 	pthread_cond_init(&philo->cond, NULL);
+// 	while (i < 4)
+// 	{
+// 		philo->stove[i] = 100;
+// 		pthread_mutex_init(&philo->mutex_arr[i], NULL);
+// 		i++;
+// 	}
 // }
 
 // int	main()
 // {
+// 	# define THREADS 10
 // 	t_philo		philo;
 // 	pthread_t	threads[THREADS];
 // 	int			i = 0;
@@ -65,11 +134,14 @@
 // 			return (EXIT_FAILURE);
 // 		i++;
 // 	}
-// 	pthread_mutex_destroy(&philo.mutex);
-// 	pthread_cond_destroy(&philo.cond);
+// 	i = 0;
+// 	while (i < 4)
+// 	{
+// 		pthread_mutex_destroy(&philo.mutex_arr[i]);
+// 		i++;
+// 	}
 // 	return (0);
 // }
-
 
 //! Signal vs Broadcast
 // void	*ft_fuel_filling(void *arg)
