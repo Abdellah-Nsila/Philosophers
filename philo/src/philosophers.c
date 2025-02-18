@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 15:48:15 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/16 16:46:14 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/18 11:24:23 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*ft_fuel_filling(void *arg)
 
 	philo = (t_philo *) arg;
 	i = 0;
-	while (i < 5)
+	while (i < 10)
 	{	
 		pthread_mutex_lock(&philo->mutex);
 		philo->fuel += 10;
@@ -43,8 +43,8 @@ void	*ft_car(void *arg)
 		printf("No Fuel, Waiting...\n");
 		pthread_cond_wait(&philo->cond, &philo->mutex);
 	}
-	philo->fuel -= 25;
-	printf("Got Fuel: %d\n", philo->fuel);
+	printf("Got Fuel: %d%%\n", philo->fuel);
+	philo->fuel -= 100;
 	pthread_mutex_unlock(&philo->mutex);
 	return (NULL);
 }
