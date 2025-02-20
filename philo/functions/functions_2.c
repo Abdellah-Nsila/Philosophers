@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_2.c                                          :+:      :+:    :+:   */
+/*   functions_2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 15:10:29 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/15 15:11:15 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/20 15:10:20 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,21 @@
 int	ft_isdigit(int n)
 {
 	return (n >= 48 && n <= 57);
+}
+
+int	ft_isnumber(char *str)
+{
+	if (*str == '+' || *str == '-')
+		str++;
+	if (!*str)
+		return (0);
+	while (*str)
+	{
+		if (!ft_isdigit(*str))
+			return (0);
+		str++;
+	}
+	return (1);
 }
 
 int	ft_handle_max_case(int sign)

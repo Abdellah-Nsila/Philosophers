@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 15:21:38 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/18 16:25:12 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/20 17:48:39 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	*ft_memset(void *b, int c, size_t len);
 char	*ft_strdup(const char *s1);
 
 int		ft_isdigit(int n);
+int		ft_isnumber(char *str);
 int		ft_handle_max_case(int sign);
 int		ft_atoi(const char *str);
 

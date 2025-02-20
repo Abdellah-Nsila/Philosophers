@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/20 14:29:31 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/20 17:52:43 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@
 # include <time.h>
 # include <sys/wait.h>
 # include <pthread.h>
+
+# ifndef INT_MAX
+#  define INT_MAX 2147483647
+# endif
+
+# ifndef INT_MIN
+#  define INT_MIN -2147483648
+# endif
 
 // typedef struct s_philo
 // {
