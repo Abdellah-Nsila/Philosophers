@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 15:48:15 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/19 18:28:19 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/20 15:01:48 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -449,14 +449,14 @@
 // void	*ft_routine(void *arg)
 // {
 // 	t_philo *philo = (t_philo *)arg;
-// 	int	i = 0;
+// 	long	i = 0;
 
-// 	while (i < 1000000)
+// 	while (i < 100000000)
 // 	{	
-// 		pthread_mutex_lock(&philo->mutex);
+// 		// pthread_mutex_lock(&philo->mutex);
 // 		philo->score++;
 // 		i++;
-// 		pthread_mutex_unlock(&philo->mutex);
+// 		// pthread_mutex_unlock(&philo->mutex);
 // 	}
 // 	return (NULL);
 // }
@@ -469,6 +469,7 @@
 
 // int	main()
 // {
+//     # define THREADS 2
 // 	t_philo		philo;
 // 	pthread_t	threads[THREADS];
 // 	int			i = 0;

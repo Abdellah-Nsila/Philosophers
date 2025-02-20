@@ -5,7 +5,7 @@ SRC_DIR = ./src
 FUNC_DIR = ./functions
 INCLUDES = -I./includes
 
-SRCS =	$(SRC_DIR)/philosophers.c \
+SRCS = $(SRC_DIR)/philosophers.c \
 
 FUNCS =	$(FUNC_DIR)/functions_1.c $(FUNC_DIR)/functions_2.c $(FUNC_DIR)/functions_3.c \
 
