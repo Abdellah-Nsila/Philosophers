@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 19:11:35 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/20 18:10:15 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/21 15:27:32 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,13 @@ t_bool	ft_validate_arg(char **arr, int size)
 	i = 0;
 	while (i < size)
 	{
-		//TODO Optimize this parding XD Just fast code i want to play
-		// printf("arr[%d]: %s\n", i, arr[i]);
-		if (ft_is_valid_number(arr[i]))
-		{		
-			if (i == 0 && ft_atoi(arr[i]) > 200)
-				return (false);
-			else if (i == 4 && ft_atoi(arr[i]) < 0)
-				return (false);
-			else if (ft_atoi(arr[i]) <= 0)
-				return (false);
-		}
-		else
+		if (!ft_is_valid_number(arr[i]))
+			return (false);		
+		else if (i == 0 && ft_atoi(arr[i]) > 200)
+			return (false);
+		else if (i == 4 && ft_atoi(arr[i]) < 0)
+			return (false);
+		else if (i != 0 && i != 4 && ft_atoi(arr[i]) <= 0)
 			return (false);
 		i++;
 	}
