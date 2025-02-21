@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/20 17:52:43 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/21 16:52:14 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "colors.h"
 # include <math.h>
 # include <time.h>
-# include <sys/wait.h>
+#include <sys/time.h>
 # include <pthread.h>
 
 # ifndef INT_MAX
@@ -42,14 +42,18 @@
 
 typedef struct s_philo
 {
-	pthread_mutex_t	mutex;
-	pthread_cond_t	cond;
-	int				fuel;
-	int				*arr;
-	int				score;
-	pthread_mutex_t	mutex_arr[4];
-	pthread_cond_t	cond_arr[4];
-	int				stove[4];
+	pthread_t	thread;
+	int			id;
+	
 }				t_philo;
+
+typedef struct s_data
+{
+	t_philo		*philos;
+	size_t		death_time;
+	size_t		eat_time;
+	size_t		sleep_time;
+	size_t		start_time;
+}				t_data;
 
 #endif 

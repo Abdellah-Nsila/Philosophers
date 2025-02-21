@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 19:11:35 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/21 15:27:32 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/21 17:41:30 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,17 @@ t_bool	ft_validate_arg(char **arr, int size)
 	return (true);
 }
 
+//TODO Go to deepsheck and github guide to understand the flow and structures of data:
+// https://github.com/TommyJD93/Philosophers?tab=readme-ov-file#General_idea
+// https://chat.deepseek.com/a/chat/s/ec8b053a-633d-4566-8f8c-fab85a9977fa
 int	main(int ac, char **av)
 {
+	struct timeval	current_time;
 	if (ft_validate_arg((av + 1), ac - 1))
 		printf("%sValide args\n%s", GRN, RESET);
 	else
 		printf("%sError\n%s", RED, RESET);
+	gettimeofday(&current_time, NULL);
+	printf("second: %ld\n", current_time.tv_sec);
+	printf("microsecond: %ld\n", current_time.tv_usec);
 }
