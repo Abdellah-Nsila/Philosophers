@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.h                                     :+:      :+:    :+:   */
+/*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/23 10:20:22 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/23 11:03:06 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,24 +46,28 @@
 
 typedef struct s_philo
 {
-	pthread_t	thread;
-	int			id;
-	
+	pthread_t		thread;
+	int				id;
+	int				meals_eaten;
+    size_t			last_meal_time;
+	pthread_mutex_t	*l_fork;
+	pthread_mutex_t	*r_fork;
+	// t_data			*shared_data;
 }				t_philo;
 
 typedef struct s_data
 {
 	t_philo			*philos;
-	int             num_philos;     // Total philosophers
-    int             max_meals;      // Optional: meals per philosopher
-    size_t          time_to_die;    // Max time without eating (ms)
-    size_t          time_to_eat;    // Eating duration (ms)
-    size_t          time_to_sleep;  // Sleeping duration (ms)
-    size_t          start_time;     // Simulation start timestamp
-    pthread_mutex_t *forks;         // Array of mutexes (forks)
-    pthread_mutex_t print_mutex;    // Protect logging
-    pthread_mutex_t death_mutex;    // Protect death flag
-    int             someone_died;   // Global death flag
+	int				num_of_philos;  // Total philosophers
+	int				max_meals;      // Optional: meals per philosopher
+	size_t			time_to_die;    // Max time without eating (ms)
+	size_t			time_to_eat;    // Eating duration (ms)
+	size_t			time_to_sleep;  // Sleeping duration (ms)
+	size_t			start_time;     // Simulation start timestamp
+	pthread_mutex_t	*forks_mutex;   // Array of mutexes (forks)
+	pthread_mutex_t	print_mutex;    // Protect logging
+	pthread_mutex_t	death_mutex;    // Protect death flag
+	int				someone_died;   // Global death flag
 }				t_data;
 
 #endif
