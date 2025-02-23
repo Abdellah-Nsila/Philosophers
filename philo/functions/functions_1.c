@@ -6,11 +6,11 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 15:03:56 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/18 16:24:55 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/23 10:25:28 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philosophers.h"
+#include "../includes/philo.h"
 
 void	ft_bzero(void *s, size_t n)
 {

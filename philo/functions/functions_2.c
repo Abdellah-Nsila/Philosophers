@@ -6,11 +6,11 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 15:10:29 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/20 15:10:20 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/23 10:25:33 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philosophers.h"
+#include "../includes/philo.h"
 
 int	ft_isdigit(int n)
 {

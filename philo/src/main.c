@@ -6,11 +6,11 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 15:48:15 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/20 15:01:48 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/23 10:24:24 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philosophers.h"
+#include "../includes/philo.h"
 
 //! Detach thread
 // void	*ft_routine(void *arg)

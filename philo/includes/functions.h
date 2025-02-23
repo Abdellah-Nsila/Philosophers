@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 15:21:38 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/20 17:48:39 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/23 10:21:25 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int		ft_isdigit(int n);
 int		ft_isnumber(char *str);
 int		ft_handle_max_case(int sign);
 int		ft_atoi(const char *str);
+long	ft_atol(const char *str);
 
 size_t	ft_strlen(const char *str);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
