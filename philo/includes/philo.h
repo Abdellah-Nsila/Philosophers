@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/23 11:56:27 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/23 16:40:46 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "functions.h"
 # include "colors.h"
-# include <math.h>
+# include <unistd.h>
 # include <time.h>
 #include <sys/time.h>
 # include <pthread.h>
@@ -66,8 +66,21 @@ typedef struct s_data
 	size_t			start_time;     // Simulation start timestamp
 	pthread_mutex_t	*forks_mutex;   // Array of mutexes (forks)
 	pthread_mutex_t	print_mutex;    // Protect logging
+	pthread_mutex_t	meal_mutex;     // Protect last meal time
 	pthread_mutex_t	death_mutex;    // Protect death flag
 	int				someone_died;   // Global death flag
 }				t_data;
+
+// Parsing
+t_bool	ft_is_valid_number(char *str);
+t_bool	ft_validate_arg(char **arr, int size);
+
+
+// Utils
+size_t	get_current_time(void);
+void	ft_print_msg(t_data *data, t_philo *philo, char *msg);
+void	ft_print_data(t_data *data);
+
+
 
 #endif
