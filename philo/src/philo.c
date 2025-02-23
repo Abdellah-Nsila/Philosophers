@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 19:11:35 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/23 11:39:53 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/23 12:02:30 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ t_bool	ft_validate_arg(char **arr, int size)
 void	*ft_philo_routine_thread(void *arg)
 {
 	t_philo *philo = (t_philo *)arg;
+
+	printf("n: %d\n", philo->data->num_of_philos);
 	printf("Philosopher %d is thinking\n", philo->id);
 	return (NULL);
 }
@@ -66,9 +68,17 @@ void	ft_create_threads(t_data *data)
 	int	i;
 
 	i = 0;
+	// Todo You have the init data for each philo, know simulate the eat, think, sleep, 
 	while (i < data->num_of_philos)
 	{
 		data->philos[i].id = i;
+		data->philos[i].data = data;
+
+		// Assign left and right forks
+		data->philos[i].r_fork = &data->forks_mutex[i];
+		data->philos[i].l_fork = &data->forks_mutex[(i + 1) % data->num_of_philos];
+
+		// Create thread
 		pthread_create(&data->philos[i].thread, NULL, &ft_philo_routine_thread, &data->philos[i]);
 		i++;
 	}

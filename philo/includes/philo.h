@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/23 11:03:06 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/23 11:56:27 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_philo
     size_t			last_meal_time;
 	pthread_mutex_t	*l_fork;
 	pthread_mutex_t	*r_fork;
-	// t_data			*shared_data;
+	struct s_data	*data;
 }				t_philo;
 
 typedef struct s_data
