@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 14:44:12 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/23 16:35:58 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/24 08:58:04 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_print_msg(t_data *data, t_philo *philo, char *msg)
 	size_t	timestamp;
 	pthread_mutex_lock(&data->print_mutex);
 	timestamp = get_current_time() - data->start_time;
-	printf("%ld %d %s\n", timestamp, philo->id, msg);
+	printf("%ld %d %s\n", timestamp, philo->id + 1, msg);
 	pthread_mutex_unlock(&data->print_mutex);
 }
 
