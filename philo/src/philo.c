@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 19:11:35 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/24 10:35:20 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/24 16:00:48 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,8 @@ void	*ft_monitor_thread(void *arg)
 			{
 				pthread_mutex_lock(&data->death_mutex);
 				data->someone_died = 1;
+				ft_print_msg(data, &data->philos[i], "died", DIE);
 				pthread_mutex_unlock(&data->death_mutex);
-
-				ft_print_msg(data, &data->philos[i], "died");
 				return (NULL);
 			}
 			i++;
@@ -54,11 +53,24 @@ void	ft_eat(t_data *data, t_philo *philo)
 {
 	if (pthread_mutex_lock(philo->r_fork) == 0)
 	{
-		ft_print_msg(data, philo, "has taken a fork");
+		// Check death flag before taking the right fork
+		if (ft_is_death(data))
+		{
+			pthread_mutex_unlock(philo->r_fork);
+			return ;
+		}
+		ft_print_msg(data, philo, "has taken a fork", TAKE_FORK);
 
 		if (pthread_mutex_lock(philo->l_fork) == 0)
 		{
-			ft_print_msg(data, philo, "has taken a fork");
+			// Check death flag before taking the left fork
+			if (ft_is_death(data))
+			{
+				pthread_mutex_unlock(philo->r_fork);
+				pthread_mutex_unlock(philo->l_fork);
+				return ;
+			}
+			ft_print_msg(data, philo, "has taken a fork", TAKE_FORK);
 
 			// Update last meal time
 			pthread_mutex_lock(&data->meal_mutex);
@@ -66,7 +78,7 @@ void	ft_eat(t_data *data, t_philo *philo)
 			pthread_mutex_unlock(&data->meal_mutex);
 
 			// Eating
-			ft_print_msg(data, philo, "is eating");
+			ft_print_msg(data, philo, "is eating", EAT);
 			philo->meals_eaten++;
 			usleep(data->time_to_eat * 1000);
 
@@ -75,111 +87,107 @@ void	ft_eat(t_data *data, t_philo *philo)
 			pthread_mutex_unlock(philo->l_fork);
 		}
 		else
+		{
+			// Failed to get left fork: release right fork
 			pthread_mutex_unlock(philo->r_fork);
+		}
 	}
 }
 
+// void ft_eat(t_data *data, t_philo *philo)
+// {
+//     // Lock right fork
+//     pthread_mutex_lock(philo->r_fork);
+//     if (ft_is_death(data)) {
+//         pthread_mutex_unlock(philo->r_fork);
+//         return;
+//     }
+//     ft_print_msg(data, philo, "has taken a fork", TAKE_FORK);
+
+//     // Lock left fork
+//     pthread_mutex_lock(philo->l_fork);
+//     if (ft_is_death(data)) {
+//         pthread_mutex_unlock(philo->l_fork);
+//         pthread_mutex_unlock(philo->r_fork);
+//         return;
+//     }
+//     ft_print_msg(data, philo, "has taken a fork", TAKE_FORK);
+
+//     // Log eating and update last meal time
+//     ft_print_msg(data, philo, "is eating", EAT);
+//     philo->meals_eaten++;
+//     pthread_mutex_lock(&data->meal_mutex);
+//     philo->last_meal_time = get_current_time();
+//     pthread_mutex_unlock(&data->meal_mutex);
+
+//     if (ft_is_death(data)) {
+//         // If death was detected after updating the meal time, unlock forks and return.
+//         pthread_mutex_unlock(philo->l_fork);
+//         pthread_mutex_unlock(philo->r_fork);
+//         return;
+//     }
+//     // Simulate eating
+//     usleep(data->time_to_eat * 1000);
+
+//     // Release forks after eating
+//     pthread_mutex_unlock(philo->l_fork);
+//     pthread_mutex_unlock(philo->r_fork);
+// }
+
+
 void	*ft_philo_routine_thread(void *arg)
 {
-	t_philo *philo = (t_philo *)arg;
-	t_data *data = philo->data;
+	t_philo	*philo = (t_philo *)arg;
+	t_data	*data = philo->data;
 
 	while (1)
 	{
-		pthread_mutex_lock(&data->death_mutex);
-		if (data->someone_died == 1)
-		{
-			pthread_mutex_unlock(&data->death_mutex);
-			break;
-		}
-		pthread_mutex_unlock(&data->death_mutex);
-
+		//* Check death flag before attempting to eat
+		if (ft_is_death(data))
+			break ;
 		ft_eat(data, philo);
-		ft_print_msg(data, philo, "is sleeping");
+
+		//* Check death flag after eating
+		if (ft_is_death(data))
+			break ;
+		ft_print_msg(data, philo, "is sleeping", SLEEP);
 		usleep(data->time_to_sleep * 1000);
-		ft_print_msg(data, philo, "is thinking");
+
+		//* Check death flag after sleeping
+		if (ft_is_death(data))
+			break ;
+		ft_print_msg(data, philo, "is thinking", THINK);
 	}
 	return (NULL);
 }
 
 void	ft_create_threads(t_data *data)
 {
-	int	i;
+	int			i;
 
 	i = 0;
-	// Todo You have the init data for each philo, now simulate the eat, think, sleep ...
 	data->start_time = get_current_time();
-	while (i < data->num_of_philos + 1)
+	while (i < data->num_of_philos)
 	{
-		if (i == data->num_of_philos)
-			pthread_create(&data->philos[i].thread, NULL, &ft_monitor_thread, data);
+		data->philos[i].id = i;
+		data->philos[i].data = data;
+		data->philos[i].last_meal_time = get_current_time();
+		if (i % 2 == 0)
+		{
+			data->philos[i].r_fork = &data->forks_mutex[i];
+			data->philos[i].l_fork = &data->forks_mutex[(i + 1) % data->num_of_philos];
+		}
 		else
 		{
-			data->philos[i].id = i;
-			data->philos[i].data = data;
-			data->philos[i].last_meal_time = get_current_time();
-			if (i % 2 == 0)
-			{
-				data->philos[i].r_fork = &data->forks_mutex[i];
-				data->philos[i].l_fork = &data->forks_mutex[(i + 1) % data->num_of_philos];
-			}
-			else
-			{
-				data->philos[i].l_fork = &data->forks_mutex[i];
-				data->philos[i].r_fork = &data->forks_mutex[(i + 1) % data->num_of_philos];
-			}
-			pthread_create(&data->philos[i].thread, NULL, &ft_philo_routine_thread, &data->philos[i]);
+			data->philos[i].l_fork = &data->forks_mutex[i];
+			data->philos[i].r_fork = &data->forks_mutex[(i + 1) % data->num_of_philos];
 		}
+		pthread_create(&data->philos[i].thread, NULL, &ft_philo_routine_thread, &data->philos[i]);
 		i++;
 	}
+	pthread_create(&data->monitor, NULL, &ft_monitor_thread, data);
 }
 
-void	ft_init_data(t_data *data, int ac, char **av)
-{
-	int		i;
-
-	ft_bzero(data, sizeof(t_data));
-	data->num_of_philos = ft_atol(av[1]);
-	data->time_to_die = ft_atol(av[2]);
-	data->time_to_eat = ft_atol(av[3]);
-	data->time_to_sleep = ft_atol(av[4]);
-	if (ac == 6)
-		data->max_meals = ft_atol(av[5]);
-	data->philos = ft_calloc(data->num_of_philos, sizeof(t_philo));
-	data->forks_mutex = ft_calloc(data->num_of_philos, sizeof(pthread_mutex_t));
-	i = 0;
-	while (i < data->num_of_philos)
-	{
-		pthread_mutex_init(&data->forks_mutex[i], NULL);
-		i++;
-	}
-	pthread_mutex_init(&data->death_mutex, NULL);
-	pthread_mutex_init(&data->print_mutex, NULL);
-	pthread_mutex_init(&data->meal_mutex, NULL);
-}
-
-void	ft_destroy(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->num_of_philos)
-	{
-		pthread_join(data->philos[i].thread, NULL);
-		i++;
-	}
-	i = 0;
-	while (i < data->num_of_philos)
-	{
-		pthread_mutex_destroy(&data->forks_mutex[i]);
-		i++;
-	}
-	pthread_mutex_destroy(&data->death_mutex);
-	pthread_mutex_destroy(&data->print_mutex);
-	pthread_mutex_destroy(&data->meal_mutex);
-	free(data->philos);
-	free(data->forks_mutex);
-}
 
 //TODO Go to DeepSeeck and github guide to understand the flow and structures of data:
 // https://github.com/TommyJD93/Philosophers?tab=readme-ov-file#General_idea

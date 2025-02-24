@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/23 16:40:46 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/24 12:46:47 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,15 @@
 // 	int				stove[4];
 // }				t_philo;
 
+typedef enum s_MSG
+{
+	TAKE_FORK,
+	THINK,
+	EAT,
+	SLEEP,
+	DIE,
+}			t_MSG;
+
 typedef struct s_philo
 {
 	pthread_t		thread;
@@ -58,6 +67,7 @@ typedef struct s_philo
 typedef struct s_data
 {
 	t_philo			*philos;
+	pthread_t		monitor;
 	int				num_of_philos;  // Total philosophers
 	int				max_meals;      // Optional: meals per philosopher
 	size_t			time_to_die;    // Max time without eating (ms)
@@ -78,9 +88,13 @@ t_bool	ft_validate_arg(char **arr, int size);
 
 // Utils
 size_t	get_current_time(void);
-void	ft_print_msg(t_data *data, t_philo *philo, char *msg);
+void	ft_print_msg(t_data *data, t_philo *philo, char *msg, int type);
 void	ft_print_data(t_data *data);
+t_bool	ft_is_death(t_data	*data);
 
+// Structs Utils
+void	ft_init_data(t_data *data, int ac, char **av);
+void	ft_destroy(t_data *data);
 
 
 #endif
