@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 14:44:31 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/23 14:46:15 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/25 17:17:29 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,15 @@ t_bool	ft_validate_arg(char **arr, int size)
 		i++;
 	}
 	return (true);
+}
+
+t_bool	ft_check_parse(int ac, char **av)
+{
+	if (ft_validate_arg((av + 1), ac - 1))
+	{	
+		printf("%sValide args\n%s", GRN, RESET);
+		return (true);
+	}
+	printf("%sError\n%s", RED, RESET);
+	return (false);
 }

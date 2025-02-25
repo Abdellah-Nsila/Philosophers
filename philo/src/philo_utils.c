@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 14:44:12 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/24 16:00:59 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/25 18:17:40 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,25 @@
 
 size_t	get_current_time(void)
 {
-	struct timeval	current_time;
+	struct timeval		tv;
 
-	gettimeofday(&current_time, NULL);
-	return (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000);
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+int	ft_usleep(t_data *data, size_t milliseconds)
+{
+	size_t	start;
+
+	start = get_current_time();
+	while ((get_current_time() - start) < milliseconds)
+	{
+		if (ft_is_death(data))
+			break;
+		// printf("current: %ld,   start: %ld,  peack: %ld, diff: %ld\n", get_current_time(), start, milliseconds / 1000, (get_current_time() - start));	
+		usleep(100);
+	}
+	return (0);
 }
 
 void	ft_colored_msg(size_t	timestamp, int id, char *msg, int type)
