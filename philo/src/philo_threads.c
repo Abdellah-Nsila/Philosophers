@@ -6,11 +6,12 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:40:11 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/25 18:37:21 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/25 18:37:35 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //TODO See this repo https://github.com/mcombeau/philosophers/blob/main/philo/sources/philosopher.c
+
 #include "../includes/philo.h"
 
 void	sim_start_delay(size_t start_time)
