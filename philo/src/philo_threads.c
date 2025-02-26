@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:40:11 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/26 17:58:59 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/26 18:34:14 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	*ft_philo_routine(void *arg)
 	philo->last_meal_time = get_current_time();
 	pthread_mutex_unlock(&data->meal_mutex);
 	sim_start_delay(data->start_time);
-	if (philo->id % 2 == 1)
-		ft_usleep(data, 100);
+	if (philo->id % 2 == 0)
+		ft_usleep(data, 1);
 	while (ft_is_death(data) == false)
 	{
 		//* Check death flag before attempting to eat
@@ -51,7 +51,7 @@ void	*ft_philo_routine(void *arg)
 			break ;
 		// --------------------------- Simulate Thinking ----------------------------
 		ft_print_msg(data, philo, "is thinking", THINK);
-		ft_usleep(data, 100);
+		ft_usleep(data, 2);
 	}
 	return (NULL);
 }

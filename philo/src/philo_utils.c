@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 14:44:12 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/26 14:03:17 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/26 18:20:14 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ time_t	get_current_time(void)
 int	ft_usleep(t_data *data, time_t milliseconds)
 {
 	time_t	start;
-	(void)data;
 
 	start = get_current_time();
 	while ((get_current_time() - start) < milliseconds)
