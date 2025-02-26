@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:40:11 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/26 11:24:30 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/26 17:58:59 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,27 +25,33 @@ void	*ft_philo_routine(void *arg)
 	t_philo	*philo = (t_philo *)arg;
 	t_data	*data = philo->data;
 
-	while (1)
+	pthread_mutex_lock(&data->meal_mutex);
+	philo->last_meal_time = get_current_time();
+	pthread_mutex_unlock(&data->meal_mutex);
+	sim_start_delay(data->start_time);
+	if (philo->id % 2 == 1)
+		ft_usleep(data, 100);
+	while (ft_is_death(data) == false)
 	{
-		pthread_mutex_lock(&data->meal_mutex);
-		philo->last_meal_time = get_current_time();
-		pthread_mutex_unlock(&data->meal_mutex);
-		sim_start_delay(data->start_time);
 		//* Check death flag before attempting to eat
 		if (ft_is_death(data))
 			break ;
+		// --------------------------- Simulate eating ----------------------------
 		ft_eat(data, philo);
 
 		//* Check death flag after eating
 		if (ft_is_death(data))
 			break ;
+		// --------------------------- Simulate slepping ----------------------------
 		ft_print_msg(data, philo, "is sleeping", SLEEP);
 		ft_usleep(data, data->time_to_sleep);
 
 		//* Check death flag after sleeping
 		if (ft_is_death(data))
 			break ;
+		// --------------------------- Simulate Thinking ----------------------------
 		ft_print_msg(data, philo, "is thinking", THINK);
+		ft_usleep(data, 100);
 	}
 	return (NULL);
 }

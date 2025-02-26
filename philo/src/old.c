@@ -129,3 +129,121 @@
 // 	}
 // 	pthread_create(&data->monitor, NULL, &ft_monitor, data);
 // }
+
+
+
+// void	ft_eat(t_data *data, t_philo *philo)
+// {
+// 	if (philo->id % 2 == 1)
+// 		ft_usleep(data, data->time_to_eat);
+		
+// 	if (pthread_mutex_lock(philo->r_fork) == 0)
+// 	{
+// 		if (ft_is_death(data))
+// 		{
+// 			pthread_mutex_unlock(philo->r_fork);
+// 			return ;
+// 			// return (void)pthread_mutex_unlock(philo->r_fork);
+// 		}
+// 		ft_print_msg(data, philo, "has taken a fork", TAKE_FORK);
+// 		if (pthread_mutex_lock(philo->l_fork) == 0)
+// 		{
+// 			if (ft_is_death(data))
+// 			{
+// 				pthread_mutex_unlock(philo->r_fork);
+// 				pthread_mutex_unlock(philo->l_fork);
+// 				return ;
+// 				// return (void)(pthread_mutex_unlock(philo->r_fork)
+// 				// 				, pthread_mutex_unlock(philo->l_fork));
+// 			}
+// 			ft_print_msg(data, philo, "has taken a fork", TAKE_FORK);
+// 			ft_simulate_eating(data, philo);
+// 			ft_usleep(data, 100);
+// 			pthread_mutex_unlock(philo->r_fork);
+// 			pthread_mutex_unlock(philo->l_fork);
+// 		}
+// 		else
+// 			pthread_mutex_unlock(philo->r_fork);
+// 	}
+// }
+
+// ! Eat functions
+// void	ft_eat(t_data *data, t_philo *philo)
+// {
+// 	if (philo->id % 2 == 1)
+// 		ft_usleep(data, data->time_to_eat);
+		
+// 	if (pthread_mutex_lock(philo->first_fork) == 0)
+// 	{
+// 		if (ft_is_death(data))
+// 		{
+// 			pthread_mutex_unlock(philo->first_fork);
+// 			return ;
+// 			// return (void)pthread_mutex_unlock(philo->first_fork);
+// 		}
+// 		ft_print_msg(data, philo, "has taken a fork", TAKE_FORK);
+// 		if (pthread_mutex_lock(philo-second_fork2) == 0)
+// 		{
+// 			if (ft_is_death(data))
+// 			{
+// 				pthread_mutex_unlock(philo->first_fork);
+// 				pthread_mutex_unlock(philo->second_fork);
+// 				return ;
+// 				// return (void)(pthread_mutex_unlock(philo->first_fork)
+// 				// 				, pthread_mutex_unlock(philo->fsecond_fork);
+// 			}
+// 			ft_print_msg(data, philo, "has taken a fork", TAKE_FORK);
+// 			ft_simulate_eating(data, philo);
+// 			pthread_mutex_unlock(philo->first_fork);
+// 			pthread_mutex_unlock(philo->second_fork);
+// 		}
+// 		else
+// 			pthread_mutex_unlock(philo->first_fork);
+// 	}
+// }
+
+//! Init functions
+// void	ft_init_philos(t_data *data)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (i < data->num_of_philos)
+// 	{
+// 		data->philos[i].id = i + 1;
+// 		data->philos[i].data = data;
+// 		data->philos[i].l_fork = &data->forks_mutex[i];
+// 		if (i == 0)
+// 			data->philos[i].r_fork
+// 				= &data->forks_mutex[data->num_of_philos - 1];
+// 		else
+// 			data->philos[i].r_fork = &data->forks_mutex[i - 1];
+// 	}
+// }
+
+// void ft_init_philos(t_data *data)
+// {
+// 	int i;
+// 	int left_index;
+// 	int right_index;
+
+// 	i = 0;
+// 	while (i < data->num_of_philos)
+// 	{
+// 		data->philos[i].id = i + 1;
+// 		data->philos[i].data = data;
+// 		left_index = i;
+// 		right_index = (i + 1) % data->num_of_philos;
+// 		if (left_index < right_index)
+// 		{
+// 			data->philos[i].first_fork = &data->forks_mutex[left_index];
+// 			data->philos[i].second_fork = &data->forks_mutex[right_index];
+// 		}
+// 		else
+// 		{
+// 			data->philos[i].first_fork = &data->forks_mutex[right_index];
+// 			data->philos[i].second_fork = &data->forks_mutex[left_index];
+// 		}
+// 		i++;
+// 	}
+// }

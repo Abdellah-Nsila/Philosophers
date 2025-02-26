@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 14:44:12 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/26 11:24:43 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/26 14:03:17 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ time_t	get_current_time(void)
 int	ft_usleep(t_data *data, time_t milliseconds)
 {
 	time_t	start;
+	(void)data;
 
 	start = get_current_time();
 	while ((get_current_time() - start) < milliseconds)
@@ -52,11 +53,13 @@ void	ft_colored_msg(time_t	timestamp, int id, char *msg, int type)
 void	ft_print_msg(t_data *data, t_philo *philo, char *msg, int type)
 {
 	time_t	timestamp;
-	pthread_mutex_lock(&data->print_mutex);
-	timestamp = get_current_time() - data->start_time;
-	// printf("%ld %d %s\n", timestamp, philo->id + 1, msg);
-	ft_colored_msg( timestamp, philo->id + 1, msg, type);
-	pthread_mutex_unlock(&data->print_mutex);
+	if (pthread_mutex_lock(&data->print_mutex) == 0)
+	{		
+		timestamp = get_current_time() - data->start_time;
+		// printf("%ld %d %s\n", timestamp, philo->id + 1, msg);
+		ft_colored_msg( timestamp, philo->id, msg, type);
+		pthread_mutex_unlock(&data->print_mutex);
+	}
 }
 
 void	ft_print_data(t_data *data)
@@ -70,12 +73,14 @@ void	ft_print_data(t_data *data)
 
 t_bool	ft_is_death(t_data	*data)
 {
-	pthread_mutex_lock(&data->death_mutex);
-	if (data->someone_died)
+	if (pthread_mutex_lock(&data->death_mutex) == 0)
 	{
+		if (data->someone_died)
+		{
+			pthread_mutex_unlock(&data->death_mutex);
+			return (true);
+		}
 		pthread_mutex_unlock(&data->death_mutex);
-		return (true);
 	}
-	pthread_mutex_unlock(&data->death_mutex);
 	return (false);
 }

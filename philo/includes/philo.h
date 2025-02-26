@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/26 11:23:17 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/26 17:27:17 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 #  define LONG_MAX 9223372036854775807
 # endif
 
-# define PHILO_MAX 200
+# define PHILO_MAX 1000
 
 // typedef struct s_philo
 // {
@@ -61,6 +61,8 @@ typedef struct s_philo
 	int				id;
 	int				meals_eaten;
 	time_t			last_meal_time;
+	pthread_mutex_t	*first_fork;
+	pthread_mutex_t	*second_fork;
 	pthread_mutex_t	*l_fork;
 	pthread_mutex_t	*r_fork;
 	struct s_data	*data;
@@ -95,6 +97,7 @@ void	ft_create_threads(t_data *data);
 void	*ft_monitor(void *arg);
 
 // Actions
+void	sim_start_delay(time_t start_time);
 void	ft_simulate_eating(t_data *data, t_philo *philo);
 void	ft_eat(t_data *data, t_philo *philo);
 
