@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:53:27 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/25 18:18:42 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/26 11:24:58 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ void	ft_init_data(t_data *data, int ac, char **av)
 
 	ft_bzero(data, sizeof(t_data));
 	data->num_of_philos = (int)ft_atol(av[1]);
-	data->time_to_die = (size_t)ft_atol(av[2]);
-	data->time_to_eat = (size_t)ft_atol(av[3]);
-	data->time_to_sleep = (size_t)ft_atol(av[4]);
+	data->time_to_die = (time_t)ft_atol(av[2]);
+	data->time_to_eat = (time_t)ft_atol(av[3]);
+	data->time_to_sleep = (time_t)ft_atol(av[4]);
 	if (ac == 6)
 		data->max_meals = ft_atol(av[5]);
 	data->philos = philos;

@@ -6,13 +6,13 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 14:44:12 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/25 18:17:40 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/26 11:24:43 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-size_t	get_current_time(void)
+time_t	get_current_time(void)
 {
 	struct timeval		tv;
 
@@ -20,9 +20,9 @@ size_t	get_current_time(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-int	ft_usleep(t_data *data, size_t milliseconds)
+int	ft_usleep(t_data *data, time_t milliseconds)
 {
-	size_t	start;
+	time_t	start;
 
 	start = get_current_time();
 	while ((get_current_time() - start) < milliseconds)
@@ -35,7 +35,7 @@ int	ft_usleep(t_data *data, size_t milliseconds)
 	return (0);
 }
 
-void	ft_colored_msg(size_t	timestamp, int id, char *msg, int type)
+void	ft_colored_msg(time_t	timestamp, int id, char *msg, int type)
 {
 	if (type == TAKE_FORK)
 		printf("%s%ld %d %s\n%s", WHT, timestamp, id, msg, RESET);
@@ -51,7 +51,7 @@ void	ft_colored_msg(size_t	timestamp, int id, char *msg, int type)
 
 void	ft_print_msg(t_data *data, t_philo *philo, char *msg, int type)
 {
-	size_t	timestamp;
+	time_t	timestamp;
 	pthread_mutex_lock(&data->print_mutex);
 	timestamp = get_current_time() - data->start_time;
 	// printf("%ld %d %s\n", timestamp, philo->id + 1, msg);

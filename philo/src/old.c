@@ -4,8 +4,8 @@
 // {
 // 	t_data	*data = (t_data *)arg;
 // 	int		i;
-// 	size_t	current_time;
-// 	size_t	time_since_last_meal;
+// 	time_t	current_time;
+// 	time_t	time_since_last_meal;
 
 // 	while (1)
 // 	{

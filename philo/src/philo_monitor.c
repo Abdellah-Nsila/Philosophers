@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:02:28 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/25 17:02:57 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/26 11:24:53 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	*ft_monitor(void *arg)
 {
 	t_data	*data = (t_data *)arg;
 	int		i;
-	size_t	current_time;
-	size_t	time_since_last_meal;
+	time_t	current_time;
+	time_t	time_since_last_meal;
 
 	while (1)
 	{

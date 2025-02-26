@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 14:44:31 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/25 17:17:29 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/26 11:10:56 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ t_bool	ft_is_valid_number(char *str)
 
 t_bool	ft_validate_arg(char **arr, int size)
 {
-	int	i;
+	int		i;
+	long	num;
 
 	if (size < 4)
 		return (false);
@@ -33,12 +34,15 @@ t_bool	ft_validate_arg(char **arr, int size)
 	{
 		if (!ft_is_valid_number(arr[i]))
 			return (false);
-		else if (i == 0 && ft_atol(arr[i]) > 200)
+		num = ft_atol(arr[i]);
+		if (num < 0)
 			return (false);
-		else if (i == 4 && ft_atol(arr[i]) < 0)
+		if (i == 0 && (num == 0 || num > 200))
 			return (false);
-		else if (i != 0 && i != 4 && ft_atol(arr[i]) <= 0)
-			return (false);
+		// else if (i == 4)
+		// 	return (false);
+		// else if (i != 0 && i != 4 && num <= 0)
+		// 	return (false);
 		i++;
 	}
 	return (true);
