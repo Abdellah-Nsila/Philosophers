@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 14:44:12 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/26 18:20:14 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/27 09:09:20 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,12 @@ void	ft_print_data(t_data *data)
 
 t_bool	ft_is_death(t_data	*data)
 {
-	if (pthread_mutex_lock(&data->death_mutex) == 0)
+	pthread_mutex_lock(&data->death_mutex);
+	if (data->someone_died)
 	{
-		if (data->someone_died)
-		{
-			pthread_mutex_unlock(&data->death_mutex);
-			return (true);
-		}
 		pthread_mutex_unlock(&data->death_mutex);
+		return (true);
 	}
+	pthread_mutex_unlock(&data->death_mutex);
 	return (false);
 }

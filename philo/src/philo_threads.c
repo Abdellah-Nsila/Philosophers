@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:40:11 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/26 18:34:14 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/27 10:17:35 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,19 @@ void	*ft_philo_routine(void *arg)
 	t_philo	*philo = (t_philo *)arg;
 	t_data	*data = philo->data;
 
-	pthread_mutex_lock(&data->meal_mutex);
-	philo->last_meal_time = get_current_time();
-	pthread_mutex_unlock(&data->meal_mutex);
-	sim_start_delay(data->start_time);
-	if (philo->id % 2 == 0)
-		ft_usleep(data, 1);
+	// if (philo->id % 2 == 1)
+	// 	ft_usleep(data, 1);
+	// sim_start_delay(data->start_time);
+	// pthread_mutex_lock(&data->meal_mutex);
+	// philo->last_meal_time = get_current_time();
+	// pthread_mutex_unlock(&data->meal_mutex);
 	while (ft_is_death(data) == false)
 	{
-		//* Check death flag before attempting to eat
-		if (ft_is_death(data))
-			break ;
 		// --------------------------- Simulate eating ----------------------------
 		ft_eat(data, philo);
 
 		//* Check death flag after eating
-		if (ft_is_death(data))
+		if (ft_is_death(data) || data->num_of_philos < 2)
 			break ;
 		// --------------------------- Simulate slepping ----------------------------
 		ft_print_msg(data, philo, "is sleeping", SLEEP);
@@ -51,7 +48,7 @@ void	*ft_philo_routine(void *arg)
 			break ;
 		// --------------------------- Simulate Thinking ----------------------------
 		ft_print_msg(data, philo, "is thinking", THINK);
-		ft_usleep(data, 2);
+		// ft_usleep(data, 1);
 	}
 	return (NULL);
 }
@@ -61,9 +58,11 @@ void	ft_create_threads(t_data *data)
 	int i;
 
 	i = 0;
-	data->start_time = get_current_time() + (data->num_of_philos * 2 * 10);
+	// data->start_time = get_current_time() + (data->num_of_philos * 2 * 10);
+	data->start_time = get_current_time();
 	while (i < data->num_of_philos)
 	{
+		data->philos[i].last_meal_time = data->start_time;
 		if (pthread_create(&data->philos[i].thread, NULL, &ft_philo_routine
 			, &data->philos[i]) != 0)
 				ft_destroy(data);

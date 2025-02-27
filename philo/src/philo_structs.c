@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 11:05:19 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/25 16:58:02 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/27 08:14:38 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ void	ft_destroy(t_data *data)
 	pthread_mutex_destroy(&data->death_mutex);
 	pthread_mutex_destroy(&data->print_mutex);
 	pthread_mutex_destroy(&data->meal_mutex);
-	// free(data->philos);
-	// free(data->forks_mutex);
+	free(data->philos);
+	free(data->forks_mutex);
 }

@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:02:28 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/26 17:20:32 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/27 10:19:04 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*ft_monitor(void *arg)
 	time_t	current_time;
 	int		i;
 
-	sim_start_delay(data->start_time);
+	// sim_start_delay(data->start_time + 1);
 	while (!ft_is_death(data))
 	{
 		i = 0;
@@ -28,6 +28,7 @@ void	*ft_monitor(void *arg)
 			current_time = get_current_time();
 			if (current_time - data->philos[i].last_meal_time >= data->time_to_die)
 			{
+				// printf("time: %ld\n", current_time - data->philos[i].last_meal_time);
 				pthread_mutex_lock(&data->death_mutex);
 				data->someone_died = 1;
 				pthread_mutex_unlock(&data->death_mutex);

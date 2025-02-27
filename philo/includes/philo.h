@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/26 17:27:17 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/27 09:39:15 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 #  define LONG_MAX 9223372036854775807
 # endif
 
-# define PHILO_MAX 1000
+# define PHILO_MAX 200
 
 // typedef struct s_philo
 // {
