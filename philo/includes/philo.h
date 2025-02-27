@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/27 09:39:15 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/27 11:13:31 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct s_philo
 	pthread_t		thread;
 	int				id;
 	int				meals_eaten;
+	time_t			born_time;
 	time_t			last_meal_time;
 	pthread_mutex_t	*first_fork;
 	pthread_mutex_t	*second_fork;
