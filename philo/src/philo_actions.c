@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:00:03 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/27 11:49:43 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/28 11:21:57 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,13 @@ void ft_eat(t_data *data, t_philo *philo)
 		}
 		ft_print_msg(data, philo, "has taken a fork", TAKE_FORK);
 		// --------------------------- Simulate eating ----------------------------
-		ft_simulate_eating(data, philo);
+		ft_print_msg(data, philo, "is eating", EAT);
+		pthread_mutex_lock(&data->meal_mutex);
+		philo->last_meal_time = get_current_time();
+		philo->meals_eaten++;
+		pthread_mutex_unlock(&data->meal_mutex);
+		ft_usleep(data, data->time_to_eat);
+		// ft_simulate_eating(data, philo);
 		pthread_mutex_unlock(philo->second_fork);
 	}
 	pthread_mutex_unlock(philo->first_fork);

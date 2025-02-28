@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 14:44:12 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/27 11:14:54 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/02/28 10:48:17 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,13 @@ void	ft_colored_msg(time_t	timestamp, int id, char *msg, int type)
 void	ft_print_msg(t_data *data, t_philo *philo, char *msg, int type)
 {
 	time_t	timestamp;
+	time_t	current_time;
+	
+	current_time = get_current_time();
 	if (pthread_mutex_lock(&data->print_mutex) == 0)
 	{		
-		timestamp = get_current_time() - philo->born_time;
+		// timestamp = current_time - philo->born_time;
+		timestamp = current_time - data->start_time;
 		// printf("%ld %d %s\n", timestamp, philo->id + 1, msg);
 		ft_colored_msg( timestamp, philo->id, msg, type);
 		pthread_mutex_unlock(&data->print_mutex);
