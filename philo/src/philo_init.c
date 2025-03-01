@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:53:27 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/27 08:47:39 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/01 17:49:44 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@ void ft_init_philos(t_data *data)
 		i++;
 	}
 }
+
+// f1 = 0   f2 = 1
+// f1 = 1   f2 = 0
+// 0 1  
 
 void	ft_init_forks(t_data *data)
 {

@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:00:03 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/28 11:21:57 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/01 18:21:08 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 void	ft_simulate_eating(t_data *data, t_philo *philo)
 {
 	ft_print_msg(data, philo, "is eating", EAT);
+	ft_usleep(data, data->time_to_eat);
 	pthread_mutex_lock(&data->meal_mutex);
 	philo->last_meal_time = get_current_time();
-	pthread_mutex_unlock(&data->meal_mutex);
-	ft_usleep(data, data->time_to_eat);
-	if (ft_is_death(data))
-		return ;
 	philo->meals_eaten++;
+	pthread_mutex_unlock(&data->meal_mutex);
+	// if (ft_is_death(data))
+	// 	return ;
 }
 
 void ft_eat(t_data *data, t_philo *philo)
@@ -46,10 +46,10 @@ void ft_eat(t_data *data, t_philo *philo)
 		}
 		ft_print_msg(data, philo, "has taken a fork", TAKE_FORK);
 		// --------------------------- Simulate eating ----------------------------
-		ft_print_msg(data, philo, "is eating", EAT);
 		pthread_mutex_lock(&data->meal_mutex);
+		ft_print_msg(data, philo, "is eating", EAT);
 		philo->last_meal_time = get_current_time();
-		philo->meals_eaten++;
+		philo->meals_eaten += 1;
 		pthread_mutex_unlock(&data->meal_mutex);
 		ft_usleep(data, data->time_to_eat);
 		// ft_simulate_eating(data, philo);
