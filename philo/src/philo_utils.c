@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 14:44:12 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/01 17:58:56 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/02 09:25:26 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ void	ft_usleep(t_data *data, time_t milliseconds)
 		if (ft_is_death(data))
 			break;
 		// printf("current: %ld,   start: %ld,  peack: %ld, diff: %ld\n", get_current_time(), start, milliseconds / 1000, (get_current_time() - start));	
-		usleep(100);
+		usleep(10);
+		if (ft_is_death(data))
+			break;
 	}
 }
 
@@ -53,8 +55,11 @@ void	ft_print_msg(t_data *data, t_philo *philo, char *msg, int type)
 	time_t	timestamp;
 	time_t	current_time;
 	
+	if (data->someone_died)
+		return ;
 	pthread_mutex_lock(&data->print_mutex);
 	current_time = get_current_time();
+	// timestamp = current_time - philo->born_time;
 	timestamp = current_time - data->start_time;
 	ft_colored_msg(timestamp, philo->id, msg, type);
 	pthread_mutex_unlock(&data->print_mutex);
