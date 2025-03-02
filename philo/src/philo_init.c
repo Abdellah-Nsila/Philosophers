@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:53:27 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/01 17:49:44 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/02 14:41:24 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void ft_init_philos(t_data *data)
 	i = 0;
 	while (i < data->num_of_philos)
 	{
+		ft_bzero(&data->philos[i], sizeof(data->philos[i]));
 		data->philos[i].id = i + 1;
 		data->philos[i].data = data;
 		if (i % 2)

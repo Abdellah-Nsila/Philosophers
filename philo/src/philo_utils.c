@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 14:44:12 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/02 09:25:26 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/02 15:57:36 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ void	ft_usleep(t_data *data, time_t milliseconds)
 		if (ft_is_death(data))
 			break;
 		// printf("current: %ld,   start: %ld,  peack: %ld, diff: %ld\n", get_current_time(), start, milliseconds / 1000, (get_current_time() - start));	
-		usleep(10);
 		if (ft_is_death(data))
 			break;
+		usleep(10);
 	}
 }
 
@@ -55,8 +55,6 @@ void	ft_print_msg(t_data *data, t_philo *philo, char *msg, int type)
 	time_t	timestamp;
 	time_t	current_time;
 	
-	if (data->someone_died)
-		return ;
 	pthread_mutex_lock(&data->print_mutex);
 	current_time = get_current_time();
 	// timestamp = current_time - philo->born_time;
@@ -83,5 +81,32 @@ t_bool	ft_is_death(t_data	*data)
 		return (true);
 	}
 	pthread_mutex_unlock(&data->death_mutex);
+	return (false);
+}
+
+t_bool	ft_is_all_eat(t_data *data)
+{
+	int	i;
+	
+	i = 0;
+	while (i < data->num_of_philos)
+	{
+		pthread_mutex_lock(&data->meal_mutex);
+		if (data->philos[i].meals_eaten < data->max_meals)
+		{
+			// printf("Philo %d: Complete eating: %d\n", data->philos[i].id, data->philos[i].meals_eaten);
+			pthread_mutex_unlock(&data->meal_mutex);
+			return (false);
+		}
+		i++;
+		pthread_mutex_unlock(&data->meal_mutex);
+	}
+	return (true);
+}
+
+t_bool	ft_stop_simulation(t_data	*data)
+{
+	if (ft_is_death(data) || ft_is_all_eat(data))
+		return (true);
 	return (false);
 }

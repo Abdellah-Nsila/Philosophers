@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/01 14:44:44 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/02 15:56:10 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,9 @@ typedef struct s_data
 	pthread_mutex_t	print_mutex;    // Protect logging
 	pthread_mutex_t	meal_mutex;     // Protect last meal time
 	pthread_mutex_t	death_mutex;    // Protect death flag
+	pthread_mutex_t	stop_mutex;    	// Protect death flag
 	int				someone_died;   // Global death flag
+	int				stop;   		// Global stop flag
 }				t_data;
 
 // Parsing
@@ -108,6 +110,9 @@ void	ft_usleep(t_data *data, time_t milliseconds);
 void	ft_print_msg(t_data *data, t_philo *philo, char *msg, int type);
 void	ft_print_data(t_data *data);
 t_bool	ft_is_death(t_data	*data);
+t_bool	ft_is_all_eat(t_data *data);
+t_bool	ft_stop_simulation(t_data *data);
+
 
 // Structs Utils
 void	ft_init_data(t_data *data, int ac, char **av);

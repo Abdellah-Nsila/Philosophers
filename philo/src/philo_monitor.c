@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:02:28 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/02 10:24:33 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/02 15:55:45 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,16 @@ void	*ft_monitor(void *arg)
 				return (NULL);
 			}
 			pthread_mutex_unlock(&data->meal_mutex);
+			if (ft_is_all_eat(data))
+			{
+				pthread_mutex_lock(&data->stop_mutex);
+				data->stop = 1;	
+				pthread_mutex_unlock(&data->stop_mutex);
+				return (NULL);		
+			}
 			i++;
 		}
-		// usleep(100); // Reduce CPU usage
+		usleep(1000); // Reduce CPU usage
 	}
 	return (NULL);
 }
