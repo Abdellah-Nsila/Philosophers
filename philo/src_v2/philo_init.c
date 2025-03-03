@@ -6,15 +6,15 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:53:27 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/03 15:44:42 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/03 13:24:31 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-void ft_init_philos(t_data *data)
+void	ft_init_philos(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < data->num_of_philos)
@@ -26,13 +26,15 @@ void ft_init_philos(t_data *data)
 		data->philos[i].last_meal_time = get_current_time();
 		if (i % 2)
 		{
-			data->philos[i].first_fork = &data->forks_mutex[(i + 1) % data->num_of_philos];
+			data->philos[i].first_fork
+				= &data->forks_mutex[(i + 1) % data->num_of_philos];
 			data->philos[i].second_fork = &data->forks_mutex[i];
 		}
 		else
 		{
 			data->philos[i].first_fork = &data->forks_mutex[i];
-			data->philos[i].second_fork = &data->forks_mutex[(i + 1) % data->num_of_philos];
+			data->philos[i].second_fork
+				= &data->forks_mutex[(i + 1) % data->num_of_philos];
 		}
 		i++;
 	}
@@ -66,6 +68,6 @@ void	ft_init_data(t_data *data, int ac, char **av)
 	pthread_mutex_init(&data->print_mutex, NULL);
 	pthread_mutex_init(&data->meal_mutex, NULL);
 	pthread_mutex_init(&data->death_mutex, NULL);
-	ft_init_forks(data);
 	ft_init_philos(data);
+	ft_init_forks(data);
 }

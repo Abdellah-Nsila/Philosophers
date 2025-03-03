@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 14:44:12 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/02 15:57:36 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/03 17:50:47 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,17 @@ time_t	get_current_time(void)
 void	ft_usleep(t_data *data, time_t milliseconds)
 {
 	time_t	start;
+	(void)data;
 
 	start = get_current_time();
 	while ((get_current_time() - start) < milliseconds)
 	{
-		if (ft_is_death(data))
+		if (ft_stop_simulation(data))
 			break;
 		// printf("current: %ld,   start: %ld,  peack: %ld, diff: %ld\n", get_current_time(), start, milliseconds / 1000, (get_current_time() - start));	
-		if (ft_is_death(data))
+		usleep(100);
+		if (ft_stop_simulation(data))
 			break;
-		usleep(10);
 	}
 }
 
@@ -55,9 +56,16 @@ void	ft_print_msg(t_data *data, t_philo *philo, char *msg, int type)
 	time_t	timestamp;
 	time_t	current_time;
 	
+	//TODO you must prevent msg to print by checking the death flag
+	// pthread_mutex_lock(&data->death_mutex);
+	// if (ft_is_death(data))
+	// {
+	// 	pthread_mutex_unlock(&data->death_mutex);
+	// 	return ;
+	// }
+	// pthread_mutex_unlock(&data->death_mutex);
 	pthread_mutex_lock(&data->print_mutex);
 	current_time = get_current_time();
-	// timestamp = current_time - philo->born_time;
 	timestamp = current_time - data->start_time;
 	ft_colored_msg(timestamp, philo->id, msg, type);
 	pthread_mutex_unlock(&data->print_mutex);
@@ -106,7 +114,9 @@ t_bool	ft_is_all_eat(t_data *data)
 
 t_bool	ft_stop_simulation(t_data	*data)
 {
-	if (ft_is_death(data) || ft_is_all_eat(data))
+	if (ft_is_death(data))
+		return (true);
+	if (data->max_meals != -1 && ft_is_all_eat(data))
 		return (true);
 	return (false);
 }

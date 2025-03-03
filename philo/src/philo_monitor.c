@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:02:28 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/02 15:55:45 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/03 17:16:55 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*ft_monitor(void *arg)
 	time_t	current_time;
 	int		i;
 
-	// sim_start_delay(data->start_time);
+	sim_start_delay(data->start_time);
 	while (!ft_is_death(data))
 	{
 		i = 0;
@@ -37,7 +37,7 @@ void	*ft_monitor(void *arg)
 				return (NULL);
 			}
 			pthread_mutex_unlock(&data->meal_mutex);
-			if (ft_is_all_eat(data))
+			if (data->max_meals != -1 && ft_is_all_eat(data))
 			{
 				pthread_mutex_lock(&data->stop_mutex);
 				data->stop = 1;	
@@ -46,7 +46,7 @@ void	*ft_monitor(void *arg)
 			}
 			i++;
 		}
-		usleep(1000); // Reduce CPU usage
+		usleep(500); // Reduce CPU usage
 	}
 	return (NULL);
 }
