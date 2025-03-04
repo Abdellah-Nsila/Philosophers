@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 14:44:12 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/03 17:50:47 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/04 15:49:43 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,56 +20,96 @@ time_t	get_current_time(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
+void	ft_colored_msg(time_t timestamp, int id, char *msg, int type)
+{
+	char	*format;
+
+	format = "%s%ld %d %s\n%s";
+	if (type == TAKE_FORK)
+		printf(format, WHT, timestamp, id, msg, RESET);
+	else if (type == THINK)
+		printf(format, BLU, timestamp, id, msg, RESET);
+	else if (type == EAT)
+		printf(format, GRN, timestamp, id, msg, RESET);
+	else if (type == SLEEP)
+		printf(format, MAG, timestamp, id, msg, RESET);
+	else if (type == DIE)
+		printf(format, RED, timestamp, id, msg, RESET);
+}
+
+t_bool	ft_is_death(t_data	*data)
+{
+	pthread_mutex_lock(&data->stop_mutex);
+	if (data->stop)
+	{
+		pthread_mutex_unlock(&data->stop_mutex);
+		return (true);
+	}
+	pthread_mutex_unlock(&data->stop_mutex);
+	return (false);
+}
+
+t_bool	ft_is_all_eat(t_data *data)
+{
+	int		i;
+	t_bool	all_eaten;
+
+	all_eaten = true;
+	pthread_mutex_lock(&data->meal_mutex);
+	for (i = 0; i < data->num_of_philos; i++)
+	{
+		if (data->philos[i].meals_eaten < data->max_meals)
+		{
+			all_eaten = false;
+			break ;
+		}
+	}
+	pthread_mutex_unlock(&data->meal_mutex);
+	return (all_eaten);
+}
+
+t_bool	ft_stop_simulation(t_data *data)
+{
+	t_bool	stop;
+
+	if (data->max_meals != -1 && ft_is_all_eat(data))
+		stop = true;
+	pthread_mutex_lock(&data->stop_mutex);
+	stop = data->stop;
+	pthread_mutex_unlock(&data->stop_mutex);
+	return (stop);
+}
+
+
 void	ft_usleep(t_data *data, time_t milliseconds)
 {
 	time_t	start;
-	(void)data;
 
 	start = get_current_time();
 	while ((get_current_time() - start) < milliseconds)
 	{
 		if (ft_stop_simulation(data))
 			break;
-		// printf("current: %ld,   start: %ld,  peack: %ld, diff: %ld\n", get_current_time(), start, milliseconds / 1000, (get_current_time() - start));	
 		usleep(100);
-		if (ft_stop_simulation(data))
-			break;
 	}
-}
-
-void	ft_colored_msg(time_t	timestamp, int id, char *msg, int type)
-{
-	if (type == TAKE_FORK)
-		printf("%s%ld %d %s\n%s", WHT, timestamp, id, msg, RESET);
-	else if (type == THINK)
-		printf("%s%ld %d %s\n%s", BLU, timestamp, id, msg, RESET);
-	else if (type == EAT)
-		printf("%s%ld %d %s\n%s", GRN, timestamp, id, msg, RESET);
-	else if (type == SLEEP)
-		printf("%s%ld %d %s\n%s", MAG, timestamp, id, msg, RESET);
-	else if (type == DIE)
-		printf("%s%ld %d %s\n%s", RED, timestamp, id, msg, RESET);
 }
 
 void	ft_print_msg(t_data *data, t_philo *philo, char *msg, int type)
 {
 	time_t	timestamp;
 	time_t	current_time;
-	
-	//TODO you must prevent msg to print by checking the death flag
-	// pthread_mutex_lock(&data->death_mutex);
-	// if (ft_is_death(data))
-	// {
-	// 	pthread_mutex_unlock(&data->death_mutex);
-	// 	return ;
-	// }
-	// pthread_mutex_unlock(&data->death_mutex);
+
+	if (ft_stop_simulation(data))
+		return ;
 	pthread_mutex_lock(&data->print_mutex);
+	if (ft_stop_simulation(data))
+		return ;
 	current_time = get_current_time();
 	timestamp = current_time - data->start_time;
 	ft_colored_msg(timestamp, philo->id, msg, type);
 	pthread_mutex_unlock(&data->print_mutex);
 }
+
 
 void	ft_print_data(t_data *data)
 {
@@ -80,43 +120,3 @@ void	ft_print_data(t_data *data)
 	printf("max_meals: %d\n", data->max_meals);
 }
 
-t_bool	ft_is_death(t_data	*data)
-{
-	pthread_mutex_lock(&data->death_mutex);
-	if (data->someone_died)
-	{
-		pthread_mutex_unlock(&data->death_mutex);
-		return (true);
-	}
-	pthread_mutex_unlock(&data->death_mutex);
-	return (false);
-}
-
-t_bool	ft_is_all_eat(t_data *data)
-{
-	int	i;
-	
-	i = 0;
-	while (i < data->num_of_philos)
-	{
-		pthread_mutex_lock(&data->meal_mutex);
-		if (data->philos[i].meals_eaten < data->max_meals)
-		{
-			// printf("Philo %d: Complete eating: %d\n", data->philos[i].id, data->philos[i].meals_eaten);
-			pthread_mutex_unlock(&data->meal_mutex);
-			return (false);
-		}
-		i++;
-		pthread_mutex_unlock(&data->meal_mutex);
-	}
-	return (true);
-}
-
-t_bool	ft_stop_simulation(t_data	*data)
-{
-	if (ft_is_death(data))
-		return (true);
-	if (data->max_meals != -1 && ft_is_all_eat(data))
-		return (true);
-	return (false);
-}

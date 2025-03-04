@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/02 15:56:10 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/04 09:49:47 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void	ft_eat(t_data *data, t_philo *philo);
 // Utils
 time_t	get_current_time(void);
 void	ft_usleep(t_data *data, time_t milliseconds);
+void	ft_colored_msg(time_t	timestamp, int id, char *msg, int type);
 void	ft_print_msg(t_data *data, t_philo *philo, char *msg, int type);
 void	ft_print_data(t_data *data);
 t_bool	ft_is_death(t_data	*data);

@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:00:03 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/01 18:21:08 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/04 09:30:29 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ void	ft_simulate_eating(t_data *data, t_philo *philo)
 	philo->last_meal_time = get_current_time();
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&data->meal_mutex);
-	// if (ft_is_death(data))
-	// 	return ;
 }
 
 void ft_eat(t_data *data, t_philo *philo)
