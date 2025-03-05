@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:40:11 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/04 15:43:35 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/05 14:56:55 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,23 @@
 
 #include "../includes/philo.h"
 
+// meal -> stop -> print
+
 void	sim_start_delay(time_t start_time)
 {
 	while (get_current_time() < start_time)
 		continue ;
+}
+
+void	ft_signle_philo(t_philo *philo)
+{
+	t_data	*data;
+
+	data = philo->data;
+	pthread_mutex_lock(philo->first_fork);
+	ft_print_msg(data, philo, "has taken a fork", TAKE_FORK);
+	ft_usleep(data, data->time_to_die);
+	pthread_mutex_unlock(philo->first_fork);
 }
 
 void	ft_think(t_philo *philo, t_bool start)
@@ -49,12 +62,7 @@ t_bool	ft_philo_routine(t_data *data, t_philo *philo)
 	//* ---------------------------- Taking Fork 1 ----------------------------
 	pthread_mutex_lock(philo->first_fork);
 	ft_print_msg(data, philo, "has taken a fork", TAKE_FORK);
-	if (data->num_of_philos < 2)
-	{
-		pthread_mutex_unlock(philo->first_fork);
-		return (false);
-	}
-	//* ---------------------------- Taking Fork 3 ----------------------------
+	//* ---------------------------- Taking Fork 2 ----------------------------
 	pthread_mutex_lock(philo->second_fork);
 	ft_print_msg(data, philo, "has taken a fork", TAKE_FORK);
 	//* ---------------------------- Eating ----------------------------
@@ -80,8 +88,10 @@ void	*ft_start_simulation(void *arg)
 	t_data	*data = philo->data;
 	
 	sim_start_delay(data->start_time);
-	if (philo->id % 2)
+	if (philo->id % 2 == 0)
 		ft_think(philo, true);
+	if (data->num_of_philos == 1)
+		return (ft_signle_philo(philo), NULL);
 	while (1)
 	{
 		if (ft_philo_routine(data, philo) == false)

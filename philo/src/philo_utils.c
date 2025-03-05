@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 14:44:12 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/04 15:49:43 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/05 14:53:28 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_colored_msg(time_t timestamp, int id, char *msg, int type)
 		printf(format, GRN, timestamp, id, msg, RESET);
 	else if (type == SLEEP)
 		printf(format, MAG, timestamp, id, msg, RESET);
-	else if (type == DIE)
+	else if (type == DIED)
 		printf(format, RED, timestamp, id, msg, RESET);
 }
 

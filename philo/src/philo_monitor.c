@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 17:02:28 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/04 15:52:51 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/05 14:57:27 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	*ft_monitor(void *arg)
 				//* Print death msg
 				pthread_mutex_lock(&data->print_mutex);
 				current_time = get_current_time();
-				ft_colored_msg(current_time - data->start_time, data->philos[i].id, "died", DIE);
+				ft_colored_msg(current_time - data->start_time, data->philos[i].id, "died", DIED);
 				//* Unlock Mutex and return
 				pthread_mutex_unlock(&data->print_mutex);
 				pthread_mutex_unlock(&data->meal_mutex);

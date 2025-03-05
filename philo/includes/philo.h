@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/04 09:49:47 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/05 14:53:03 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef enum s_MSG
 	THINK,
 	EAT,
 	SLEEP,
-	DIE,
+	DIED,
 }			t_MSG;
 
 typedef struct s_philo
