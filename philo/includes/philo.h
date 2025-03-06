@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/05 14:53:03 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/05 15:39:17 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,14 @@
 // 	int				stove[4];
 // }				t_philo;
 
-typedef enum s_MSG
+typedef enum e_state
 {
-	TAKE_FORK,
-	THINK,
-	EAT,
-	SLEEP,
+	TAKING_FORK,
+	THINKING,
+	EATING,
+	SLEEPING,
 	DIED,
-}			t_MSG;
+}	t_state;
 
 typedef struct s_philo
 {
@@ -67,6 +67,7 @@ typedef struct s_philo
 	pthread_mutex_t	*l_fork;
 	pthread_mutex_t	*r_fork;
 	struct s_data	*data;
+	t_state			state;
 }				t_philo;
 
 typedef struct s_data
@@ -82,7 +83,7 @@ typedef struct s_data
 	pthread_mutex_t	*forks_mutex;   // Array of mutexes (forks)
 	pthread_mutex_t	print_mutex;    // Protect logging
 	pthread_mutex_t	meal_mutex;     // Protect last meal time
-	pthread_mutex_t	death_mutex;    // Protect death flag
+	pthread_mutex_t	state_mutex;    // Protect state flag
 	pthread_mutex_t	stop_mutex;    	// Protect death flag
 	int				someone_died;   // Global death flag
 	int				stop;   		// Global stop flag
