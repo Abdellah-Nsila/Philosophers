@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/07 14:37:51 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/05 15:39:17 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,26 +96,29 @@ t_bool	ft_check_parse(int ac, char **av);
 
 // Threads
 void	ft_create_threads(t_data *data);
-void	ft_join_threads(t_data *data);
 
 // Monitor
 void	*ft_monitor(void *arg);
 
 // Actions
-void	*ft_start_simulation(void *arg);
+void	sim_start_delay(time_t start_time);
+void	ft_simulate_eating(t_data *data, t_philo *philo);
+void	ft_eat(t_data *data, t_philo *philo);
 
 // Utils
 time_t	get_current_time(void);
 void	ft_usleep(t_data *data, time_t milliseconds);
+void	ft_colored_msg(time_t	timestamp, int id, char *msg, int type);
+void	ft_print_msg(t_data *data, t_philo *philo, char *msg, int type);
+void	ft_print_data(t_data *data);
+t_bool	ft_is_death(t_data	*data);
+t_bool	ft_is_all_eat(t_data *data);
+t_bool	ft_stop_simulation(t_data *data);
+
 
 // Structs Utils
 void	ft_init_data(t_data *data, int ac, char **av);
 void	ft_destroy(t_data *data);
-
-
-// Status
-void	ft_colored_msg(time_t timestamp, int id, char *msg, int type);
-void	ft_print_msg(t_data *data, t_philo *philo, char *msg, int type);
 
 
 #endif
