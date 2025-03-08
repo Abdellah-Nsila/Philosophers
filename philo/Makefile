@@ -11,7 +11,7 @@ INCLUDES = -I./includes
 
 SRCS =	$(SRC_DIR)/philo.c $(SRC_DIR)/philo_parsing.c $(SRC_DIR)/philo_init.c $(SRC_DIR)/philo_threads.c \
 		$(SRC_DIR)/philo_monitor.c $(SRC_DIR)/philo_utils.c $(SRC_DIR)/philo_destroy.c \
-		$(SRC_DIR)/philo_simulation.c $(SRC_DIR)/philo_status.c \
+		$(SRC_DIR)/philo_simulation.c $(SRC_DIR)/philo_status.c $(SRC_DIR)/philo_time.c \
 
 FUNCS =	$(FUNC_DIR)/functions_1.c $(FUNC_DIR)/functions_2.c $(FUNC_DIR)/functions_3.c \
 		$(FUNC_DIR)/functions_4.c

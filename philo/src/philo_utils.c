@@ -6,30 +6,20 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 14:44:12 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/07 14:23:48 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/08 08:49:41 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-time_t	get_current_time(void)
+t_bool	ft_stop_simulation(t_data *data)
 {
-	struct timeval		tv;
+	t_bool	stop;
 
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
-}
-
-void	ft_usleep(t_data *data, time_t milliseconds)
-{
-	time_t	start;
-	(void)data;
-
-	start = get_current_time();
-	while ((get_current_time() - start) < milliseconds)
-	{
-		usleep(100);
-	}
+	pthread_mutex_lock(&data->stop_mutex);
+	stop = data->stop;
+	pthread_mutex_unlock(&data->stop_mutex);
+	return (stop);
 }
 
 void	ft_print_data(t_data *data)

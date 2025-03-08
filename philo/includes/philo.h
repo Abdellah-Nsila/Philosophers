@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/07 14:37:51 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/08 15:21:33 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_data
 	pthread_mutex_t	state_mutex;    // Protect state flag
 	pthread_mutex_t	stop_mutex;    	// Protect death flag
 	int				someone_died;   // Global death flag
-	int				stop;   		// Global stop flag
+	t_bool			stop;   		// Global stop flag
 }				t_data;
 
 // Parsing
@@ -99,14 +99,22 @@ void	ft_create_threads(t_data *data);
 void	ft_join_threads(t_data *data);
 
 // Monitor
+t_bool	ft_did_everyone_eat(t_data *data);
+t_bool	ft_did_anyone_die(t_data *data);
+// void	*ft_monitor(t_data *data);
 void	*ft_monitor(void *arg);
 
 // Actions
 void	*ft_start_simulation(void *arg);
 
-// Utils
+// Time Utils
 time_t	get_current_time(void);
 void	ft_usleep(t_data *data, time_t milliseconds);
+void	ft_start_delay(time_t start_time);
+
+// Utils
+t_bool	ft_stop_simulation(t_data *data);
+void	ft_print_data(t_data *data);
 
 // Structs Utils
 void	ft_init_data(t_data *data, int ac, char **av);
@@ -114,8 +122,8 @@ void	ft_destroy(t_data *data);
 
 
 // Status
-void	ft_colored_msg(time_t timestamp, int id, char *msg, int type);
-void	ft_print_msg(t_data *data, t_philo *philo, char *msg, int type);
+void	ft_colored_msg(time_t timestamp, int id, int type);
+void	ft_print_msg(t_data *data, t_philo *philo, int type);
 
 
 #endif

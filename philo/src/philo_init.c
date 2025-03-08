@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:53:27 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/07 13:50:24 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/08 14:44:03 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	ft_init_data(t_data *data, int ac, char **av)
 		data->max_meals = (int)ft_atol(av[5]);
 	else
 		data->max_meals = -1;
+	data->stop = false;
 	data->philos = ft_calloc(data->num_of_philos, sizeof(t_philo));
 	data->forks_mutex = ft_calloc(data->num_of_philos, sizeof(pthread_mutex_t));
 	pthread_mutex_init(&data->meal_mutex, NULL);
