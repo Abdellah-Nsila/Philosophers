@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:33:34 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/09 16:08:30 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/09 16:40:04 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	ft_colored_msg(time_t timestamp, int id, int type)
 // 	pthread_mutex_unlock(&data->print_mutex);
 // }
 
+//TODO You must fix timing to be perfect
 //TODO i try to Revised ft_print_msg: Immediately returns if stop flag is set.
 void ft_print_msg(t_data *data, t_philo *philo, int type)
 {
