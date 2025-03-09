@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 13:57:06 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/08 15:21:27 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/09 15:58:46 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ void	ft_create_threads(t_data *data)
 
 	i = 0;
 	data->start_time = get_current_time() + (data->num_of_philos * 20);
-	if (pthread_create(&data->monitor, NULL, &ft_monitor, data) != 0)
-		return (ft_join_threads(data));
 	while (i < data->num_of_philos)
 	{
 		data->philos[i].last_meal_time = data->start_time;
@@ -41,6 +39,8 @@ void	ft_create_threads(t_data *data)
 				return (ft_join_threads(data));
 		i++;
 	}
+	if (pthread_create(&data->monitor, NULL, &ft_monitor, data) != 0)
+		return (ft_join_threads(data));
 	ft_join_threads(data);
-	// ft_monitor(data);
+	// ft_monitor((void *)data);
 }
