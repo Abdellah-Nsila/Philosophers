@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:27:44 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/08 15:07:18 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/08 16:51:26 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,26 +34,17 @@ void	ft_think(t_philo *philo, t_bool start)
 	ft_usleep(data, time_to_think);
 }
 
-void	ft_signle_philo(t_data *data, t_philo *philo)
-{
-	pthread_mutex_lock(philo->first_fork);
-	ft_print_msg(data, philo, TAKING_FORK);
-	pthread_mutex_unlock(philo->first_fork);
-}
-
 t_bool	ft_take_forks(t_data *data, t_philo *philo)
 {
-	if (pthread_mutex_lock(philo->first_fork) != 0 || ft_stop_simulation(data))
+	if (pthread_mutex_lock(philo->first_fork) != 0)
 		return (false);
 	ft_print_msg(data, philo, TAKING_FORK);
 	
-	if (data->num_of_philos < 2 || ft_stop_simulation(data) || 
-		pthread_mutex_lock(philo->second_fork) != 0)
+	if (data->num_of_philos < 2 || pthread_mutex_lock(philo->second_fork) != 0)
 	{
 		pthread_mutex_unlock(philo->first_fork);
 		return (false);
 	}
-	if (ft_stop_simulation(data)) return (false);
 	ft_print_msg(data, philo, TAKING_FORK);
 	return (true);
 }
@@ -64,7 +55,6 @@ t_bool	ft_eat(t_data *data, t_philo *philo)
 	philo->last_meal_time = get_current_time();
 	philo->meals_eaten += 1;
 	pthread_mutex_unlock(&data->meal_mutex);
-	// if (ft_stop_simulation(data)) return (false);
 	ft_print_msg(data, philo, EATING);
 	ft_usleep(data, data->time_to_eat);
 	pthread_mutex_unlock(philo->first_fork);
@@ -74,17 +64,15 @@ t_bool	ft_eat(t_data *data, t_philo *philo)
 
 t_bool	ft_philo_routine(t_data *data, t_philo *philo)
 {
-	if (!ft_take_forks(data, philo) || ft_stop_simulation(data))
+	if (!ft_take_forks(data, philo))
 		return (false);
 	
-	if (!ft_eat(data, philo) || ft_stop_simulation(data))
+	if (!ft_eat(data, philo))
 		return (false);
 	
-	if (ft_stop_simulation(data)) return (false);
 	ft_print_msg(data, philo, SLEEPING);
 	ft_usleep(data, data->time_to_sleep);
 	
-	if (ft_stop_simulation(data)) return (false);
 	ft_think(philo, false);
 	
 	return (true);
