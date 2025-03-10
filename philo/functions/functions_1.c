@@ -6,28 +6,35 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 15:03:56 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/23 10:55:19 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/10 08:22:03 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
+int	ft_isdigit(int n)
+{
+	return (n >= 48 && n <= 57);
+}
+
+int	ft_isnumber(char *str)
+{
+	if (*str == '+' || *str == '-')
+		str++;
+	if (!*str)
+		return (0);
+	while (*str)
+	{
+		if (!ft_isdigit(*str))
+			return (0);
+		str++;
+	}
+	return (1);
+}
+
 void	ft_bzero(void *s, size_t n)
 {
 	memset(s, 0, n);
-}
-
-char	*ft_strdup(const char *s1)
-{
-	char	*dst;
-	size_t	src_len;
-
-	src_len = ft_strlen(s1) + 1;
-	dst = (char *) malloc(src_len);
-	if (!dst)
-		return (NULL);
-	ft_strlcpy(dst, s1, src_len);
-	return (dst);
 }
 
 void	*ft_calloc(size_t count, size_t size)
