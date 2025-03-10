@@ -5,6 +5,13 @@
         "string_view": "c",
         "span": "c",
         "philo.h": "c",
-        "ratio": "c"
+        "ratio": "c",
+        "charconv": "c",
+        "compare": "c",
+        "functional": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "variant": "c"
     }
 }

@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:16:45 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/10 09:28:01 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/10 10:17:15 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_bool	ft_did_anyone_die(t_data *data)
 {
 	int		i;
 	time_t	current_time;
+	time_t	timestamp;
 
 	i = -1;
 	current_time = get_current_time();
@@ -54,7 +55,13 @@ t_bool	ft_did_anyone_die(t_data *data)
 			data->stop = true;
 			pthread_mutex_unlock(&data->stop_mutex);
 			pthread_mutex_unlock(&data->meal_mutex);
-			ft_print_msg(data, &data->philos[i], DIED);
+			//TODO the death msg in some case is showing after a long time
+			// ft_print_msg(data, &data->philos[i], DIED);
+			//* I keep this now
+			pthread_mutex_lock(&data->print_mutex);
+			timestamp = get_current_time() - data->start_time;
+			ft_colored_msg(timestamp, data->philos[i].id, DIED);
+			pthread_mutex_unlock(&data->print_mutex);
 			return (true);
 		}
 	}
@@ -70,11 +77,17 @@ void	*ft_monitor(void *arg)
 	ft_start_delay(data->start_time + 1);
 	while (true)
 	{
+		pthread_mutex_lock(&data->stop_mutex);
+		if (data->stop)
+		{
+			pthread_mutex_unlock(&data->stop_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&data->stop_mutex);
 		if (ft_did_anyone_die(data))
 			break ;
 		if (data->max_meals != -1 && ft_did_everyone_eat(data))
 			break ;
-		ft_usleep(data, 1);
 	}
 	return (NULL);
 }

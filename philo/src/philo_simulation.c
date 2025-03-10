@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:27:44 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/10 09:10:38 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/10 10:34:03 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void	ft_think(t_philo *philo)
 	pthread_mutex_unlock(&data->meal_mutex);
 	if (time_to_think < 0)
 		time_to_think = 0;
-	else if (time_to_think > 400)
-		time_to_think = 100;
+	else if (time_to_think > 200)
+		time_to_think = 200;
 	ft_print_msg(data, philo, THINKING);
 	ft_usleep(data, time_to_think);
 }
