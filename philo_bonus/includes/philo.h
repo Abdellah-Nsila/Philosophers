@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/11 15:00:07 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/10 15:17:33 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <time.h>
 # include <sys/time.h>
 # include <pthread.h>
+# include <semaphore.h>
 
 # ifndef INT_MAX
 #  define INT_MAX 2147483647
@@ -35,7 +36,7 @@
 # define INPUT_ERROR "%sphilo: Invalid input: %s: \
 Value must be a positive integer.\n%s"
 # define ARG_ERROR "%sphilo: Invalid input: %s: \
-Value must be between 1 and 2147483647.\n%s"
+Value must be between 0 and 2147483647.\n%s"
 # define PHILO_ERROR "%sphilo: Invalid input: %s: \
 there must be between 1 and %d philosophers.\n%s"
 # define PHILO_MAX 200
