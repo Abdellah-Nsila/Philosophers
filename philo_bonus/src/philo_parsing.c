@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 14:44:31 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/10 09:04:22 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/11 15:52:12 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_bool	ft_validate_arg(char **arr, int size)
 		if (!ft_is_valid_number(arr[i]))
 			return (printf(INPUT_ERROR, RED, arr[i], RESET), false);
 		num = ft_atol(arr[i]);
-		if (num < 0 || num > INT_MAX)
+		if (num <= 0 || num > INT_MAX)
 			return (printf(ARG_ERROR, RED, arr[i], RESET), false);
 		if (i == 0 && (num == 0 || num > 200))
 			return (printf(PHILO_ERROR, RED, arr[i], PHILO_MAX, RESET), false);

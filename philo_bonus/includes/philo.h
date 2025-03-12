@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/10 15:17:33 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/11 15:57:24 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,17 @@ typedef struct s_philo
 typedef struct s_data
 {
 	t_philo			*philos;
-	pthread_t		monitor;
 	int				num_of_philos;	// Total philosophers
 	int				max_meals;		// Optional: meals per philosopher
 	time_t			time_to_die;	// Max time without eating (ms)
 	time_t			time_to_eat;	// Eating duration (ms)
 	time_t			time_to_sleep;	// Sleeping duration (ms)
 	time_t			start_time;		// Start time for all threads (ms)
-	pthread_mutex_t	*forks_mutex;	// Array of mutexes (forks)
-	pthread_mutex_t	print_mutex;	// Protect logging
-	pthread_mutex_t	meal_mutex;		// Protect last meal time
-	pthread_mutex_t	state_mutex;	// Protect state flag
-	pthread_mutex_t	stop_mutex;		// Protect death flag
+	sem_t			*forks_sem;
+	sem_t			print_sem;		// Protect logging
+	sem_t			meal_sem;		// Protect last meal time
+	sem_t			state_sem;		// Protect state flag
+	sem_t			stop_sem;		// Protect death flag
 	t_bool			stop;			// Global stop flag
 }				t_data;
 
