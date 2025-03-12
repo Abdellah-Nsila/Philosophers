@@ -6,11 +6,14 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:49:31 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/11 15:50:36 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/12 14:40:50 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+# define FORKS "forks_sem"
+
 
 void	ft_init_data(t_data *data, int ac, char **av)
 {
@@ -24,5 +27,10 @@ void	ft_init_data(t_data *data, int ac, char **av)
 	else
 		data->max_meals = -1;
 	data->stop = false;
+	data->forks_sem = sem_open(FORKS, O_CREAT | O_EXCL, 0644, data->num_of_philos);
+	if (data->forks_sem == SEM_FAILED) {
+		perror("sem_open");
+		exit(EXIT_FAILURE);
+	}
 }
 

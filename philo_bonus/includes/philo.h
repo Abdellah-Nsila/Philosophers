@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/11 15:57:24 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/12 15:09:14 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <unistd.h>
 # include <time.h>
 # include <sys/time.h>
+# include <sys/wait.h>
+# include <fcntl.h>
 # include <pthread.h>
 # include <semaphore.h>
 
@@ -79,6 +81,13 @@ typedef struct s_data
 	sem_t			stop_sem;		// Protect death flag
 	t_bool			stop;			// Global stop flag
 }				t_data;
+
+typedef struct s_proc
+{
+	int				id;
+	pthread_t		thread;
+	sem_t			*sem;
+}				t_proc;
 
 // Parsing
 t_bool	ft_is_valid_number(char *str);

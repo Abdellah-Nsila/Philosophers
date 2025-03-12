@@ -6,32 +6,33 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:00:25 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/11 16:48:49 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/12 15:33:20 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../includes/philo.h"
 # define THREADS 5
-# define PLAYERS 20
-# define SLOTS 5
+# define PLAYERS 100
+# define SLOTS 4
+# define SLOT_SEM "slots_sem"
 
-sem_t	sem;
+// sem_t	sem;
 
-void	*routine(void *arg)
-{
-	int	*n;
+// void	*routine(void *arg)
+// {
+// 	int	*n;
 	
-	n = (int *)arg;
-	printf("%sPlayers: %d Waiting in the login queue\n%s",BYEL, *n, RESET);
-	sem_wait(&sem);
-	printf("%sPlayers: %d Logged in\n%s",BGRN, *n, RESET);
-	printf("%sPlayers: %d Palying now .....\n%s",BBLU, *n, RESET);
-	usleep(500000);
-	sem_post(&sem);
-	printf("%sPlayers: %d Logged out\n%s",BRED, *n, RESET);
-	free(arg);
-	return (NULL);
-}
+// 	n = (int *)arg;
+// 	printf("%sPlayers: %d Waiting in the login queue\n%s",BYEL, *n, RESET);
+// 	sem_wait(&sem);
+// 	printf("%sPlayers: %d Logged in\n%s",BGRN, *n, RESET);
+// 	printf("%sPlayers: %d Palying now .....\n%s",BBLU, *n, RESET);
+// 	usleep(500000);
+// 	sem_post(&sem);
+// 	printf("%sPlayers: %d Logged out\n%s",BRED, *n, RESET);
+// 	free(arg);
+// 	return (NULL);
+// }
 
 // int	main()
 // {
@@ -50,7 +51,7 @@ void	*routine(void *arg)
 // 	}
 // 	i = 0;
 // 	while (i < PLAYERS)
-// 	{
+// 	{2
 // 		pthread_join(threads[i], NULL);
 // 		i++;
 // 	}
@@ -64,41 +65,68 @@ void	*routine(void *arg)
 #include <fcntl.h>
 #include <unistd.h>
 
-int main(void) {
-    // Open (or create) a named semaphore with an initial value of 3.
-    sem_t *sem = sem_open("/my_named_sem", O_CREAT | O_EXCL, 0644, 3);
-    if (sem == SEM_FAILED) {
-        perror("sem_open");
-        exit(EXIT_FAILURE);
-    }
-    printf("Semaphore created with initial value 3\n");
 
-    // Decrement (wait) on the semaphore.
-    if (sem_wait(sem) < 0) {
-        perror("sem_wait");
-        exit(EXIT_FAILURE);
-    }
-    printf("Semaphore acquired (value decremented)\n");
+void	*routine(void *arg)
+{
+	t_proc	*proc;
 
-    // Simulate some work.
-    sleep(2);
+	proc = (t_proc *)arg;
+	
+	printf("%sPlayers: %d Waiting in the login queue\n%s",BYEL, proc->id, RESET);
+	sem_wait(proc->sem);
+	printf("%sPlayers: %d Logged in\n%s",BGRN, proc->id, RESET);
+	printf("%sPlayers: %d Palying now .....\n%s",BBLU, proc->id, RESET);
+	usleep(500000);
+	sem_post(proc->sem);
+	printf("%sPlayers: %d Logged out\n%s",BRED, proc->id, RESET);
+	return (NULL);
+}
 
-    // Increment (post) to release the semaphore.
-    if (sem_post(sem) < 0) {
-        perror("sem_post");
-        exit(EXIT_FAILURE);
-    }
-    printf("Semaphore released (value incremented)\n");
+int main(void)
+{
+	t_proc	proc;
+	int	pid;
+	int	i = 0;
+	pid_t	w;
+	int		status;
 
-    // Clean up: close and unlink the named semaphore.
-    if (sem_close(sem) < 0) {
-        perror("sem_close");
-        exit(EXIT_FAILURE);
-    }
-    if (sem_unlink("/my_named_sem") < 0) {
-        perror("sem_unlink");
-        exit(EXIT_FAILURE);
-    }
-    return 0;
+	sem_unlink(SLOT_SEM);
+
+	// Open (or create) a named semaphore with an initial value of 3.
+	proc.sem = sem_open(SLOT_SEM, O_CREAT | O_EXCL, 0644, SLOTS);
+	if (proc.sem == SEM_FAILED) {
+		perror("sem_open");
+		exit(EXIT_FAILURE);
+	}
+	printf("Semaphore created with initial value 3\n");
+
+
+	while (i < PLAYERS)
+	{
+		pid = fork();
+		if (pid == -1)
+			return (pid);
+		if (pid == 0)
+		{
+			proc.id = i + 1;
+			pthread_create(&proc.thread, NULL, &routine, &proc);
+			pthread_join(proc.thread, NULL);
+			exit(EXIT_SUCCESS);
+		}
+		i++;
+	}
+	w = wait(&status);
+	while (w > 0)
+	{
+		w = wait(&status);
+	}
+	printf("Done\n");
+	if (pid)
+	{
+		sem_close(proc.sem);
+		sem_unlink(SLOT_SEM);
+	}
+
+	return (EXIT_SUCCESS);
 }
 
