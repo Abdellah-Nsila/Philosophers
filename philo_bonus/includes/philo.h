@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/12 17:02:38 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/13 16:09:39 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,32 +54,27 @@ typedef enum e_state
 
 typedef struct s_philo
 {
-	pthread_t		thread;
+	pthread_t		routine_thread;
+	pthread_t		monitor_thread;
 	int				id;
 	int				meals_eaten;
 	time_t			last_meal_time;
-	pthread_mutex_t	*first_fork;
-	pthread_mutex_t	*second_fork;
-	pthread_mutex_t	*l_fork;
-	pthread_mutex_t	*r_fork;
+	t_bool			stop_flag;
+	sem_t			meal_sem;
+	sem_t			stop_sem;
 	struct s_data	*data;
 }				t_philo;
 
 typedef struct s_data
 {
-	t_philo			*philos;
-	int				num_of_philos;	// Total philosophers
-	int				max_meals;		// Optional: meals per philosopher
-	time_t			time_to_die;	// Max time without eating (ms)
-	time_t			time_to_eat;	// Eating duration (ms)
-	time_t			time_to_sleep;	// Sleeping duration (ms)
-	time_t			start_time;		// Start time for all threads (ms)
-	sem_t			*forks_sem;
-	sem_t			print_sem;		// Protect logging
-	sem_t			meal_sem;		// Protect last meal time
-	sem_t			state_sem;		// Protect state flag
-	sem_t			stop_sem;		// Protect death flag
-	t_bool			stop;			// Global stop flag
+	int				num_of_philos;		// Total philosophers
+	int				max_meals;			// Optional: meals per philosopher
+	time_t			time_to_die;		// Max time without eating (ms)
+	time_t			time_to_eat;		// Eating duration (ms)
+	time_t			time_to_sleep;		// Sleeping duration (ms)
+	time_t			global_start_time;	// Start time for all processes (ms)
+	sem_t			*forks_sem;			// Protect forks
+	sem_t			*print_sem;			// Protect Log
 }				t_data;
 
 typedef struct s_proc
@@ -89,43 +84,43 @@ typedef struct s_proc
 	sem_t			*sem;
 }				t_proc;
 
-// // Parsing
-// t_bool	ft_is_valid_number(char *str);
-// t_bool	ft_validate_arg(char **arr, int size);
-// t_bool	ft_check_parse(int ac, char **av);
+// Parsing
+t_bool	ft_is_valid_number(char *str);
+t_bool	ft_validate_arg(char **arr, int size);
+t_bool	ft_check_parse(int ac, char **av);
 
-// // Threads
-// void	ft_create_threads(t_data *data);
-// void	ft_join_threads(t_data *data);
+// Threads
+void	ft_create_threads(t_data *data);
+void	ft_join_threads(t_data *data);
 
-// // Monitor
-// t_bool	ft_did_everyone_eat(t_data *data);
-// t_bool	ft_did_anyone_die(t_data *data);
-// void	*ft_monitor(void *arg);
+// Monitor
+t_bool	ft_did_everyone_eat(t_data *data);
+t_bool	ft_did_anyone_die(t_data *data);
+void	*ft_monitor(void *arg);
 
-// // Actions
-// t_bool	ft_take_forks(t_data *data, t_philo *philo);
-// t_bool	ft_eat(t_data *data, t_philo *philo);
-// void	ft_think(t_philo *philo);
-// t_bool	ft_philo_routine(t_data *data, t_philo *philo);
-// void	*ft_start_simulation(void *arg);
+// Actions
+t_bool	ft_take_forks(t_data *data, t_philo *philo);
+t_bool	ft_eat(t_data *data, t_philo *philo);
+void	ft_think(t_philo *philo);
+t_bool	ft_philo_routine(t_data *data, t_philo *philo);
+void	*ft_start_simulation(void *arg);
 
-// // Time Utils
-// time_t	get_current_time(void);
-// void	ft_usleep(t_data *data, time_t milliseconds);
-// void	ft_start_delay(time_t start_time);
+// Time Utils
+time_t	get_current_time(void);
+void	ft_usleep(t_data *data, time_t milliseconds);
+void	ft_start_delay(time_t start_time);
 
-// // Utils
-// t_bool	ft_stop_simulation(t_data *data);
-// void	ft_print_data(t_data *data);
+// Utils
+t_bool	ft_stop_simulation(t_data *data);
+void	ft_print_data(t_data *data);
 
-// // Structs Utils
-// void	ft_init_data(t_data *data, int ac, char **av);
-// void	ft_destroy(t_data *data);
+// Structs Utils
+void	ft_init_data(t_data *data, int ac, char **av);
+void	ft_destroy(t_data *data);
 
-// // Status
-// void	ft_colored_msg(time_t timestamp, int id, int type);
-// void	ft_format_msg(time_t timestamp, int id, int type);
-// void	ft_print_msg(t_data *data, t_philo *philo, int type);
+// Status
+void	ft_colored_msg(time_t timestamp, int id, int type);
+void	ft_format_msg(time_t timestamp, int id, int type);
+void	ft_print_msg(t_data *data, t_philo *philo, int type);
 
 #endif

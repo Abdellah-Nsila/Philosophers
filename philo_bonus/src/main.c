@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:00:25 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/13 15:45:14 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/13 15:45:50 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@
 #include <math.h>
 
 
-void	ft_init_data(t_proc *proc)
+void	ft_init_sem(t_proc *proc)
 {
 	sem_unlink(SLOT_SEM);
 	proc->sem = sem_open(SLOT_SEM, O_CREAT | O_EXCL, 0644, SLOTS);
@@ -169,7 +169,7 @@ int main(void)
 	t_bool	failure_found;
 
 
-	ft_init_data(&proc);
+	ft_init_sem(&proc);
 	ft_launch_processes(&proc, pids);
 	failure_found = ft_launch_monitor(pids);
 	
