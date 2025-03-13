@@ -6,14 +6,22 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:49:31 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/12 14:40:50 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/13 16:57:34 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-
-# define FORKS "forks_sem"
-
+void	ft_init_sem(t_data *data)
+{
+	sem_unlink(FORKS);
+	sem_unlink(PRINT);
+	data->forks_sem = sem_open(FORKS, O_CREAT | O_EXCL, 0644, data->num_of_philos);
+	if (data->forks_sem == SEM_FAILED)
+		exit(EXIT_FAILURE);
+	data->print_sem = sem_open(PRINT, O_CREAT | O_EXCL, 0644, 1);
+	if (data->print_sem == SEM_FAILED)
+		exit(EXIT_FAILURE);
+}
 
 void	ft_init_data(t_data *data, int ac, char **av)
 {
@@ -26,11 +34,6 @@ void	ft_init_data(t_data *data, int ac, char **av)
 		data->max_meals = (int)ft_atol(av[5]);
 	else
 		data->max_meals = -1;
-	data->stop = false;
-	data->forks_sem = sem_open(FORKS, O_CREAT | O_EXCL, 0644, data->num_of_philos);
-	if (data->forks_sem == SEM_FAILED) {
-		perror("sem_open");
-		exit(EXIT_FAILURE);
-	}
+	ft_init_sem(data);
 }
 

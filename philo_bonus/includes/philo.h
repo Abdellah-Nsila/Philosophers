@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/13 16:09:39 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/13 16:56:03 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ Value must be between 0 and 2147483647.\n%s"
 # define PHILO_ERROR "%sphilo: Invalid input: %s: \
 there must be between 1 and %d philosophers.\n%s"
 # define PHILO_MAX 200
+# define FORKS "forks_sem"
+# define PRINT "print_sem"
+
 
 typedef enum e_state
 {
@@ -56,17 +59,17 @@ typedef struct s_philo
 {
 	pthread_t		routine_thread;
 	pthread_t		monitor_thread;
-	int				id;
-	int				meals_eaten;
 	time_t			last_meal_time;
+	int				meals_eaten;
 	t_bool			stop_flag;
 	sem_t			meal_sem;
 	sem_t			stop_sem;
-	struct s_data	*data;
+	// struct s_data	*data;
 }				t_philo;
 
 typedef struct s_data
 {
+	int				id;
 	int				num_of_philos;		// Total philosophers
 	int				max_meals;			// Optional: meals per philosopher
 	time_t			time_to_die;		// Max time without eating (ms)
@@ -75,6 +78,7 @@ typedef struct s_data
 	time_t			global_start_time;	// Start time for all processes (ms)
 	sem_t			*forks_sem;			// Protect forks
 	sem_t			*print_sem;			// Protect Log
+	t_philo			*philo;
 }				t_data;
 
 typedef struct s_proc
@@ -89,6 +93,9 @@ t_bool	ft_is_valid_number(char *str);
 t_bool	ft_validate_arg(char **arr, int size);
 t_bool	ft_check_parse(int ac, char **av);
 
+// Processes
+void	ft_launch_processes(t_data *data, pid_t pids[PHILO_MAX]);
+
 // Threads
 void	ft_create_threads(t_data *data);
 void	ft_join_threads(t_data *data);
@@ -102,7 +109,7 @@ void	*ft_monitor(void *arg);
 t_bool	ft_take_forks(t_data *data, t_philo *philo);
 t_bool	ft_eat(t_data *data, t_philo *philo);
 void	ft_think(t_philo *philo);
-t_bool	ft_philo_routine(t_data *data, t_philo *philo);
+t_bool	ft_philo_routine(t_data *data);
 void	*ft_start_simulation(void *arg);
 
 // Time Utils
