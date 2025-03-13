@@ -6,14 +6,14 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:00:25 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/12 15:33:20 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/13 15:37:47 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../includes/philo.h"
 # define THREADS 5
-# define PLAYERS 100
-# define SLOTS 4
+# define PLAYERS 4
+# define SLOTS 2
 # define SLOT_SEM "slots_sem"
 
 // sem_t	sem;
@@ -63,70 +63,121 @@
 #include <stdlib.h>
 #include <semaphore.h>
 #include <fcntl.h>
+#include <signal.h>
 #include <unistd.h>
+#include <math.h>
 
+
+void	ft_init_data(t_proc *proc)
+{
+	sem_unlink(SLOT_SEM);
+	proc->sem = sem_open(SLOT_SEM, O_CREAT | O_EXCL, 0644, SLOTS);
+	if (proc->sem == SEM_FAILED) {
+		perror("sem_open");
+		exit(EXIT_FAILURE);
+	}
+	printf("Semaphore created with initial value %d\n", SLOTS);
+}
 
 void	*routine(void *arg)
 {
 	t_proc	*proc;
+	t_bool	crash;
 
 	proc = (t_proc *)arg;
-	
-	printf("%sPlayers: %d Waiting in the login queue\n%s",BYEL, proc->id, RESET);
-	sem_wait(proc->sem);
-	printf("%sPlayers: %d Logged in\n%s",BGRN, proc->id, RESET);
-	printf("%sPlayers: %d Palying now .....\n%s",BBLU, proc->id, RESET);
-	usleep(500000);
-	sem_post(proc->sem);
-	printf("%sPlayers: %d Logged out\n%s",BRED, proc->id, RESET);
+	srand(time(NULL) + getpid());
+	while (true)
+	{
+		printf("%sPlayers: %d Waiting in the login queue\n%s",BYEL, proc->id, RESET);
+		sem_wait(proc->sem);
+		printf("%sPlayers: %d Logged in\n%s",BGRN, proc->id, RESET);
+		printf("%sPlayers: %d Palying now .....\n%s",BBLU, proc->id, RESET);
+		usleep(100000);
+		sem_post(proc->sem);
+		printf("%sPlayers: %d Logged out\n%s",BRED, proc->id, RESET);
+		crash = (rand() % (1 - 0 + 1)) + 0; // number between 1 - 0 (true - flase)
+		printf("%sPlayers: %d crash: %d\n%s", BCYN, proc->id, crash, RESET);
+		if (crash == 1)
+			exit(EXIT_FAILURE);
+		usleep(1000000);
+	}
 	return (NULL);
 }
 
-int main(void)
-{
-	t_proc	proc;
-	int	pid;
-	int	i = 0;
-	pid_t	w;
-	int		status;
+void ft_launch_processes(t_proc *proc, pid_t pids[PLAYERS]){
+	int	i;
 
-	sem_unlink(SLOT_SEM);
-
-	// Open (or create) a named semaphore with an initial value of 3.
-	proc.sem = sem_open(SLOT_SEM, O_CREAT | O_EXCL, 0644, SLOTS);
-	if (proc.sem == SEM_FAILED) {
-		perror("sem_open");
-		exit(EXIT_FAILURE);
-	}
-	printf("Semaphore created with initial value 3\n");
-
-
+	i = 0;
 	while (i < PLAYERS)
 	{
-		pid = fork();
-		if (pid == -1)
-			return (pid);
-		if (pid == 0)
+		pids[i] = fork();
+		if (pids[i] == -1)
+			exit(EXIT_FAILURE);
+		if (pids[i] == 0)
 		{
-			proc.id = i + 1;
-			pthread_create(&proc.thread, NULL, &routine, &proc);
-			pthread_join(proc.thread, NULL);
+			proc->id = i + 1;
+			pthread_create(&proc->thread, NULL, &routine, proc);
+			pthread_join(proc->thread, NULL);
 			exit(EXIT_SUCCESS);
 		}
 		i++;
 	}
-	w = wait(&status);
-	while (w > 0)
-	{
-		w = wait(&status);
-	}
-	printf("Done\n");
-	if (pid)
-	{
-		sem_close(proc.sem);
-		sem_unlink(SLOT_SEM);
-	}
-
-	return (EXIT_SUCCESS);
 }
 
+t_bool	ft_monitor(pid_t pids[PLAYERS])
+{
+	int status;
+	int exit_code;
+	int i;
+	t_bool	failure_found = false;
+	int 	remaining = PLAYERS;
+	
+	// Monitor child processes in a non-blocking loop.
+	while (remaining > 0) {
+		pid_t wpid = waitpid(-1, &status, WNOHANG);
+		if (wpid > 0) {
+			remaining--;
+			if (WIFEXITED(status)) {
+				exit_code = WEXITSTATUS(status);
+				printf("%sChild PID %d exited with code %d\n%s",BWHT, wpid, exit_code, RESET);
+				if (exit_code == EXIT_FAILURE) {
+					failure_found = true;
+					printf("%sChild PID %d failed %d\n%s",BMAG, wpid, exit_code, RESET);
+					// Immediately kill all child processes.
+					for (i = 0; i < PLAYERS; i++) {
+						kill(pids[i], SIGKILL);
+					}
+					break;
+				}
+			}
+		}
+		usleep(10000); // Sleep briefly to avoid busy-waiting.
+	}
+	return (failure_found);
+}
+
+// TODO go understand the logic of killen all procs after crash
+// TODO separate think and get info init simulate this sense
+int main(void)
+{
+	pid_t	pids[PLAYERS];
+	t_proc	proc;
+	t_bool	failure_found;
+
+
+	ft_init_data(&proc);
+	ft_launch_processes(&proc, pids);
+	failure_found = ft_monitor(pids);
+	
+	// Wait for any remaining children to be reaped.
+	while (wait(NULL) > 0)
+		;
+	if (failure_found)
+		printf("%sA child failed. All children have been killed.\n%s",BHRED, RESET);
+	else
+		printf("%sAll children exited successfully.\n%s",BHGRN, RESET);
+	
+	sem_close(proc.sem);
+	sem_unlink(SLOT_SEM);
+	return EXIT_SUCCESS;
+}
