@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:00:25 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/13 15:37:47 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/13 15:45:14 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,16 +89,20 @@ void	*routine(void *arg)
 	while (true)
 	{
 		printf("%sPlayers: %d Waiting in the login queue\n%s",BYEL, proc->id, RESET);
+		// Logged in
 		sem_wait(proc->sem);
 		printf("%sPlayers: %d Logged in\n%s",BGRN, proc->id, RESET);
+		// Playing
 		printf("%sPlayers: %d Palying now .....\n%s",BBLU, proc->id, RESET);
-		usleep(100000);
-		sem_post(proc->sem);
-		printf("%sPlayers: %d Logged out\n%s",BRED, proc->id, RESET);
-		crash = (rand() % (1 - 0 + 1)) + 0; // number between 1 - 0 (true - flase)
+		usleep(500000);
+		// Simulate a crash during playing
+		crash = (rand() % (true - false + true)) + false; // number between 1 - 0 (true - flase)
 		printf("%sPlayers: %d crash: %d\n%s", BCYN, proc->id, crash, RESET);
 		if (crash == 1)
 			exit(EXIT_FAILURE);
+		// Logged out
+		sem_post(proc->sem);
+		printf("%sPlayers: %d Logged out\n%s",BRED, proc->id, RESET);
 		usleep(1000000);
 	}
 	return (NULL);
@@ -124,7 +128,7 @@ void ft_launch_processes(t_proc *proc, pid_t pids[PLAYERS]){
 	}
 }
 
-t_bool	ft_monitor(pid_t pids[PLAYERS])
+t_bool	ft_launch_monitor(pid_t pids[PLAYERS])
 {
 	int status;
 	int exit_code;
@@ -167,7 +171,7 @@ int main(void)
 
 	ft_init_data(&proc);
 	ft_launch_processes(&proc, pids);
-	failure_found = ft_monitor(pids);
+	failure_found = ft_launch_monitor(pids);
 	
 	// Wait for any remaining children to be reaped.
 	while (wait(NULL) > 0)
