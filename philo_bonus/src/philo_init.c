@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:49:31 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/14 09:50:00 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/14 10:48:57 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,3 @@ void	ft_init_data(t_data *data, int ac, char **av)
 		data->max_meals = -1;
 	ft_init_sem(data);
 }
-
