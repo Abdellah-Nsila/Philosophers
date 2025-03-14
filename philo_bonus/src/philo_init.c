@@ -6,21 +6,30 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:49:31 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/13 16:57:34 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/14 09:50:00 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
 void	ft_init_sem(t_data *data)
 {
 	sem_unlink(FORKS);
 	sem_unlink(PRINT);
 	data->forks_sem = sem_open(FORKS, O_CREAT | O_EXCL, 0644, data->num_of_philos);
 	if (data->forks_sem == SEM_FAILED)
+	{
+		perror("sem_open (forks_sem)");
 		exit(EXIT_FAILURE);
+	}
 	data->print_sem = sem_open(PRINT, O_CREAT | O_EXCL, 0644, 1);
 	if (data->print_sem == SEM_FAILED)
+	{
+		perror("sem_open (print_sem)");
+		sem_close(data->forks_sem);
+		sem_unlink(FORKS);
 		exit(EXIT_FAILURE);
+	}
 }
 
 void	ft_init_data(t_data *data, int ac, char **av)

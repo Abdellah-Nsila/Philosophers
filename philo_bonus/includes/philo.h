@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/13 16:56:03 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/14 09:40:06 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 # include <time.h>
 # include <sys/time.h>
 # include <sys/wait.h>
-# include <fcntl.h>
+#include <fcntl.h>
+#include <signal.h>
 # include <pthread.h>
 # include <semaphore.h>
 
@@ -64,7 +65,7 @@ typedef struct s_philo
 	t_bool			stop_flag;
 	sem_t			meal_sem;
 	sem_t			stop_sem;
-	// struct s_data	*data;
+	struct s_data	*data;
 }				t_philo;
 
 typedef struct s_data
@@ -78,7 +79,6 @@ typedef struct s_data
 	time_t			global_start_time;	// Start time for all processes (ms)
 	sem_t			*forks_sem;			// Protect forks
 	sem_t			*print_sem;			// Protect Log
-	t_philo			*philo;
 }				t_data;
 
 typedef struct s_proc
