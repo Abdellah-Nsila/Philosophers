@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 19:11:35 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/14 07:50:07 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/14 10:16:55 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,5 @@ int	main(int ac, char **av)
 		printf("PID[%d]: %d\n",i, pids[i]);
 		i++;
 	}
-	ft_destroy(&data);
+	ft_exit(&data, EXIT_SUCCESS);
 }

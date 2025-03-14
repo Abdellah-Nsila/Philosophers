@@ -1,33 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_destroy.c                                    :+:      :+:    :+:   */
+/*   philo_threads.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/13 16:38:31 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/14 09:58:25 by abnsila          ###   ########.fr       */
+/*   Created: 2025/03/14 09:54:14 by abnsila           #+#    #+#             */
+/*   Updated: 2025/03/14 10:42:58 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-void	ft_destroy_semaphores(t_data *data)
+void	ft_init_philo(t_philo *philo)
 {
-	if (data->forks_sem != SEM_FAILED)
-	{
-		sem_close(data->forks_sem);
-		sem_unlink(FORKS);
-	}
-	if (data->print_sem != SEM_FAILED)
-	{
-		sem_close(data->print_sem);
-		sem_unlink(PRINT);
-	}
+	philo->meals_eaten = 0;
+	philo->stop_flag = false;
+	sem_init(&philo->meal_sem, 0, 1);
+	sem_init(&philo->stop_sem, 0, 1);
 }
 
-void	ft_exit(t_data *data, int exit_code)
+void	ft_launch_threads(t_data *data, t_philo *philo)
 {
-	ft_destroy_semaphores(data);
-	exit(exit_code);
+	ft_init_philo(philo);
+	if (pthread_create(&(philo->routine_thread), NULL, &ft_start_simulation, &philo) != 0)
+		ft_exit(data, EXIT_FAILURE);
+	if (pthread_join(philo->routine_thread, NULL) != 0)
+		ft_exit(data, EXIT_FAILURE);	
 }

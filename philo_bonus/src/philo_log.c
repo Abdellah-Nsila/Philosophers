@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:33:34 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/10 09:44:28 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/14 10:36:05 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,27 +51,27 @@ void	ft_print_msg(t_data *data, t_philo *philo, int type)
 	time_t	current_time;
 	time_t	timestamp;
 
-	pthread_mutex_lock(&data->stop_mutex);
-	if (data->stop && type != DIED)
+	sem_wait(&philo->stop_sem);
+	if (philo->stop_flag && type != DIED)
 	{
-		pthread_mutex_unlock(&data->stop_mutex);
+		sem_post(&philo->stop_sem);
 		return ;
 	}
-	pthread_mutex_unlock(&data->stop_mutex);
-	pthread_mutex_lock(&data->print_mutex);
-	pthread_mutex_lock(&data->stop_mutex);
-	if (data->stop && type != DIED)
+	sem_post(&philo->stop_sem);
+	sem_wait(&data->print_sem);
+	sem_wait(&philo->stop_sem);
+	if (philo->stop_flag && type != DIED)
 	{
-		pthread_mutex_unlock(&data->stop_mutex);
-		pthread_mutex_unlock(&data->print_mutex);
+		sem_post(&philo->stop_sem);
+		sem_post(&data->print_sem);
 		return ;
 	}
-	pthread_mutex_unlock(&data->stop_mutex);
+	sem_post(&philo->stop_sem);
 	current_time = get_current_time();
-	timestamp = current_time - data->start_time;
+	timestamp = current_time - data->global_start_time;
 	//* My own format
-	ft_colored_msg(timestamp, philo->id, type);
+	ft_colored_msg(timestamp, data->id, type);
 	//* The mandatory format
 	// ft_format_msg(timestamp, philo->id, type);
-	pthread_mutex_unlock(&data->print_mutex);
+	sem_post(&data->print_sem);
 }

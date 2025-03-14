@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/14 09:40:06 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/14 10:45:55 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,12 @@ t_bool	ft_validate_arg(char **arr, int size);
 t_bool	ft_check_parse(int ac, char **av);
 
 // Processes
+void	ft_child_process(t_data *data);
 void	ft_launch_processes(t_data *data, pid_t pids[PHILO_MAX]);
 
 // Threads
-void	ft_create_threads(t_data *data);
-void	ft_join_threads(t_data *data);
+void	ft_init_philo(t_philo *philo);
+void	ft_launch_threads(t_data *data, t_philo *philo);
 
 // Monitor
 t_bool	ft_did_everyone_eat(t_data *data);
@@ -109,12 +110,12 @@ void	*ft_monitor(void *arg);
 t_bool	ft_take_forks(t_data *data, t_philo *philo);
 t_bool	ft_eat(t_data *data, t_philo *philo);
 void	ft_think(t_philo *philo);
-t_bool	ft_philo_routine(t_data *data);
+t_bool	ft_philo_routine(t_data *data, t_philo *philo);
 void	*ft_start_simulation(void *arg);
 
 // Time Utils
 time_t	get_current_time(void);
-void	ft_usleep(t_data *data, time_t milliseconds);
+void	ft_usleep(t_philo *philo, time_t milliseconds);
 void	ft_start_delay(time_t start_time);
 
 // Utils
@@ -129,5 +130,8 @@ void	ft_destroy(t_data *data);
 void	ft_colored_msg(time_t timestamp, int id, int type);
 void	ft_format_msg(time_t timestamp, int id, int type);
 void	ft_print_msg(t_data *data, t_philo *philo, int type);
+
+// Error
+void	ft_exit(t_data *data, int exit_code);
 
 #endif

@@ -6,43 +6,19 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 16:42:08 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/14 09:46:53 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/14 10:39:32 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-
-t_bool	ft_philo_routine(t_data *data)
-{
-	// t_philo	*philo;
-
-	// philo = data->philo;
-	printf("Thread From proc: %d\n", data->id);
-	return (true);
-}
-
-void	*ft_start_simulation(void *arg)
-{
-	t_philo	*philo;
-	t_data	*data;
-
-	philo = (t_philo *)arg;
-	data = philo->data;
-	printf("Thread From proc: %d\n", data->id);
-	return (NULL);
-}
-
 
 void	ft_child_process(t_data *data)
 {
 	t_philo	philo;
 
 	philo.data = data;
-	printf("The Child PID: %d\n", getpid());
-	if (pthread_create(&(philo.routine_thread), NULL, &ft_start_simulation, &philo) != 0)
-		perror("create");
-	if (pthread_join(philo.routine_thread, NULL) != 0)
-		perror("join");
+	philo.last_meal_time = data->global_start_time;
+	ft_launch_threads(data, &philo);
 }
 
 void	ft_launch_processes(t_data *data, pid_t pids[PHILO_MAX])
@@ -50,6 +26,7 @@ void	ft_launch_processes(t_data *data, pid_t pids[PHILO_MAX])
 	int	i;
 
 	i = 0;
+	data->global_start_time = get_current_time() + (data->num_of_philos * 20);
 	while (i < data->num_of_philos)
 	{
 		pids[i] = fork();
@@ -59,10 +36,8 @@ void	ft_launch_processes(t_data *data, pid_t pids[PHILO_MAX])
 		{
 			data->id = i + 1;
 			ft_child_process(data);
-			ft_destroy(data);
-			exit(EXIT_SUCCESS);
+			ft_exit(data, EXIT_SUCCESS);
 		}
 		i++;
 	}
 }
-

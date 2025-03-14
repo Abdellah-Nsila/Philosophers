@@ -7,8 +7,8 @@ FUNC_DIR = ./functions
 INCLUDES = -I./includes
 
 SRCS =	$(SRC_DIR)/philo.c $(SRC_DIR)/philo_parsing.c $(SRC_DIR)/philo_init.c \
-		$(SRC_DIR)/philo_processes.c $(SRC_DIR)/philo_destroy.c \
-		 \
+		$(SRC_DIR)/philo_processes.c $(SRC_DIR)/philo_destroy.c $(SRC_DIR)/philo_simulation.c\
+		$(SRC_DIR)/philo_threads.c $(SRC_DIR)/philo_time.c \
 
 # SRCS =	$(SRC_DIR)/main.c
 
