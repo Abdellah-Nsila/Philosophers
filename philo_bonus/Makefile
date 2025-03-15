@@ -1,14 +1,15 @@
 NAME = philo_bonus
 CC = cc
 # CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -pthread
 SRC_DIR = ./src
 FUNC_DIR = ./functions
 INCLUDES = -I./includes
 
 SRCS =	$(SRC_DIR)/philo.c $(SRC_DIR)/philo_parsing.c $(SRC_DIR)/philo_init.c \
-		$(SRC_DIR)/philo_processes.c $(SRC_DIR)/philo_destroy.c $(SRC_DIR)/philo_simulation.c\
-		$(SRC_DIR)/philo_threads.c $(SRC_DIR)/philo_time.c \
+		$(SRC_DIR)/philo_processes.c $(SRC_DIR)/philo_destroy.c $(SRC_DIR)/philo_simulation.c \
+		$(SRC_DIR)/philo_threads.c $(SRC_DIR)/philo_time.c $(SRC_DIR)/philo_log.c \
+		$(SRC_DIR)/philo_monitors.c \
 
 # SRCS =	$(SRC_DIR)/main.c
 
@@ -20,7 +21,7 @@ FUNCO = $(FUNCS:.c=.o)
 all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJS) $(FUNCO)
-	$(CC) -g -pthread $(CFLAGS) $(OBJS) $(FUNCO) $(INCLUDES) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(FUNCO) $(INCLUDES) -o $(NAME)
 
 %.o: %.c ./includes/philo.h ./includes/functions.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@

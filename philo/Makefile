@@ -1,7 +1,7 @@
 NAME = philo
 CC = cc
 # CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -pthread
 SRC_DIR = ./src
 FUNC_DIR = ./functions
 INCLUDES = -I./includes
@@ -18,7 +18,7 @@ FUNCO = $(FUNCS:.c=.o)
 all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJS) $(FUNCO)
-	$(CC) -g -pthread $(CFLAGS) $(OBJS) $(FUNCO) $(INCLUDES) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(FUNCO) $(INCLUDES) -o $(NAME)
 
 %.o: %.c ./includes/philo.h ./includes/functions.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
