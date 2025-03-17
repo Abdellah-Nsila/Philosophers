@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 19:11:35 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/14 10:16:55 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/17 12:24:31 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,52 +15,22 @@
 // TODO this the base structures of project go ahead and make the child processes work with thread
 // TODO you can use the mandatory part simulation for testing
 
-t_bool	ft_launch_monitor(t_data *data, pid_t pids[PHILO_MAX])
+//! You must fix:
+// ./philo_bonus 200 120 60 60 -> STUCK
+// ./philo_bonus 20 120 60 60  -> Fast die
+
+
+int main(int ac, char **av)
 {
-	int 	status;
-	int 	exit_code;
-	int		remaining;
-	t_bool	failure_found;
-	(void)pids;
+    t_data data;
+    pid_t pids[PHILO_MAX];
 
-	remaining = data->num_of_philos;
-	failure_found = false;
-	// Monitor child processes in a non-blocking loop.
-	while (remaining > 0) {
-		pid_t wpid = waitpid(-1, &status, WNOHANG);
-		if (wpid > 0) {
-			remaining--;
-			if (WIFEXITED(status)) {
-				exit_code = WEXITSTATUS(status);
-				printf("%sChild PID %d exited with code %d\n%s",BWHT, wpid, exit_code, RESET);
-				if (exit_code == EXIT_FAILURE)
-				{
-					printf("%sChild PID %d failed %d\n%s",BMAG, wpid, exit_code, RESET);
-				}
-			}
-		}
-		usleep(10000); // Sleep briefly to avoid busy-waiting.
-	}
-	return (failure_found);
-}
-
-int	main(int ac, char **av)
-{
-	int		i = 0;
-	t_data	data;
-	pid_t	pids[PHILO_MAX];
-
-	if (ft_check_parse(ac, av) == false)
-		return (EXIT_FAILURE);
-	ft_init_data(&data, ac, av);
-	ft_launch_processes(&data, pids);
-	ft_launch_monitor(&data, pids);
-	while (wait(NULL) > 0)
-		;
-	while (i < data.num_of_philos)
-	{
-		printf("PID[%d]: %d\n",i, pids[i]);
-		i++;
-	}
-	ft_exit(&data, EXIT_SUCCESS);
+    if (ft_check_parse(ac, av) == false)
+        return (EXIT_FAILURE);
+    ft_init_data(&data, ac, av);
+    ft_launch_processes(&data, pids);
+    if (ft_launch_monitor(&data, pids))
+        ft_exit(&data, EXIT_FAILURE);
+    else
+        ft_exit(&data, EXIT_SUCCESS);
 }
