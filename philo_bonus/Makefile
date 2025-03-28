@@ -13,7 +13,7 @@ SRCS =	$(SRC_DIR)/philo.c $(SRC_DIR)/philo_parsing.c $(SRC_DIR)/philo_init.c \
 
 # SRCS =	$(SRC_DIR)/main.c
 
-FUNCS =	$(FUNC_DIR)/functions_1.c $(FUNC_DIR)/functions_2.c
+FUNCS =	$(FUNC_DIR)/functions_1.c $(FUNC_DIR)/functions_2.c $(FUNC_DIR)/functions_3.c
 
 OBJS = $(SRCS:.c=.o)
 FUNCO = $(FUNCS:.c=.o)
