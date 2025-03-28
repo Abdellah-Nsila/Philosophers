@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/28 17:03:42 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/28 17:28:26 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct s_data
 	time_t			time_to_sleep;		// Sleeping duration (ms)
 	time_t			global_start_time;	// Start time for all processes (ms)
 	t_sem			forks_sem;			// Protect forks
+	t_sem			signal_sem;			// Protect Signal
 	t_sem			done_sem;			// Protect done
 	t_sem			died_sem;			// Protect died
 	t_sem			print_sem;			// Protect Log
