@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   philo copy.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/28 17:03:42 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/03/28 16:59:51 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,8 @@ typedef enum e_state
 	DIED,
 }	t_state;
 
-
-typedef struct s_sem
-{
-	char	*name;
-	sem_t	*sem;
-}				t_sem;
-
 typedef struct s_philo
 {
-	int				id;
 	pthread_t		routine_thread;
 	pthread_t		monitor_thread;
 	time_t			last_meal_time;
@@ -79,16 +71,15 @@ typedef struct s_philo
 
 typedef struct s_data
 {
+	int				id;
 	int				num_of_philos;		// Total philosophers
 	int				max_meals;			// Optional: meals per philosopher
 	time_t			time_to_die;		// Max time without eating (ms)
 	time_t			time_to_eat;		// Eating duration (ms)
 	time_t			time_to_sleep;		// Sleeping duration (ms)
 	time_t			global_start_time;	// Start time for all processes (ms)
-	t_sem			forks_sem;			// Protect forks
-	t_sem			done_sem;			// Protect done
-	t_sem			died_sem;			// Protect died
-	t_sem			print_sem;			// Protect Log
+	sem_t			*forks_sem;			// Protect forks
+	sem_t			*print_sem;			// Protect Log
 }				t_data;
 
 typedef struct s_proc
