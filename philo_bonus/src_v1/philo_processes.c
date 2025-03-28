@@ -1,28 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   philo_processes.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/28 17:05:14 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/28 17:07:21 by abnsila          ###   ########.fr       */
+/*   Created: 2025/03/13 16:42:08 by abnsila           #+#    #+#             */
+/*   Updated: 2025/03/27 14:10:35 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	main(int ac, char **av)
+void	ft_child_process(t_data *data)
 {
-	t_data data;
-	pid_t pids[PHILO_MAX];
+	t_philo	philo;
 
-	if (ft_check_parse(ac, av) == false)
-		return (EXIT_FAILURE);
-	ft_init_data(&data, ac, av);
-	ft_launch_processes(&data, pids);
-	if (ft_launch_monitor(&data, pids))
-		ft_exit(&data, EXIT_FAILURE);
-	else
-		ft_exit(&data, EXIT_SUCCESS);
+	ft_launch_threads(data, &philo);
+}
+
+void	ft_launch_processes(t_data *data, pid_t pids[PHILO_MAX])
+{
+	int	i;
+
+	i = 0;
+	data->global_start_time = get_current_time() + (data->num_of_philos * 20);
+	while (i < data->num_of_philos)
+	{
+		pids[i] = fork();
+		if (pids[i] == -1)
+			exit(EXIT_FAILURE);
+		if (pids[i] == 0)
+		{
+			data->id = i + 1;
+			ft_child_process(data);
+		}
+		i++;
+	}
 }
