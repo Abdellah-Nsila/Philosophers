@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/28 17:28:26 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/02 17:27:22 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,19 +60,19 @@ typedef enum e_state
 typedef struct s_sem
 {
 	char	*name;
-	sem_t	*sem;
+	sem_t	*ptr;
 }				t_sem;
 
 typedef struct s_philo
 {
 	int				id;
-	pthread_t		routine_thread;
-	pthread_t		monitor_thread;
+	pthread_t		self_monitor;
+	pthread_t		global_monitor;
 	time_t			last_meal_time;
 	int				meals_eaten;
-	t_bool			stop_flag;
-	sem_t			meal_sem;
-	sem_t			stop_sem;
+	t_bool			is_done;
+	t_sem			meal_sem;
+	t_sem			done_sem;
 	int				exit_code;
 	struct s_data	*data;
 }				t_philo;
@@ -92,17 +92,24 @@ typedef struct s_data
 	t_sem			print_sem;			// Protect Log
 }				t_data;
 
-typedef struct s_proc
-{
-	int				id;
-	pthread_t		thread;
-	sem_t			*sem;
-}				t_proc;
+
 
 // Parsing
 t_bool	ft_is_valid_number(char *str);
 t_bool	ft_validate_arg(char **arr, int size);
 t_bool	ft_check_parse(int ac, char **av);
+
+// Semaphores Utils
+char	*ft_rand_semname(t_sem *sem);
+void	ft_create_sem(t_sem *sem, int socket);
+void	ft_init_sem(t_data *data);
+void	ft_free_sem(t_sem *sem);
+void	ft_destroy_sem(t_data *data);
+
+// Structs Utils
+void	ft_init_data(t_data *data, int ac, char **av);
+void	ft_destroy(t_data *data);
+
 
 // Processes
 void	ft_child_process(t_data *data);
@@ -134,9 +141,7 @@ void	ft_start_delay(time_t start_time);
 t_bool	ft_stop_simulation(t_data *data);
 void	ft_print_data(t_data *data);
 
-// Structs Utils
-void	ft_init_data(t_data *data, int ac, char **av);
-void	ft_destroy(t_data *data);
+
 
 // Status
 void	ft_colored_msg(time_t timestamp, int id, int type);

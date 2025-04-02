@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 17:26:17 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/28 17:36:42 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/02 15:45:10 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ char	*ft_rand_semname(t_sem *sem)
 void	ft_create_sem(t_sem *sem, int socket)
 {
 	sem->name = ft_rand_semname(sem);
-	sem->sem = sem_open(FORKS, O_CREAT | O_EXCL, 0644, socket);
-	if (sem->sem == SEM_FAILED)
+	sem->ptr = sem_open(sem->name, O_CREAT | O_EXCL, 0644, socket);
+	if (sem->ptr == SEM_FAILED)
 	{
 		perror("sem_open failed");
 		exit(EXIT_FAILURE);
@@ -49,9 +49,9 @@ void	ft_free_sem(t_sem *sem)
 {
 	if (!sem)
 		return ;
-	if (sem->sem)
+	if (sem->ptr)
 	{
-		sem_close(sem->sem);
+		sem_close(sem->ptr);
 		if (sem->name)
 			sem_unlink(sem->name);
 	}
@@ -60,3 +60,11 @@ void	ft_free_sem(t_sem *sem)
 	return ;
 }
 
+void	ft_destroy_sem(t_data *data)
+{
+	ft_free(&data->forks_sem);
+	ft_free(&data->print_sem);
+	ft_free(&data->signal_sem);
+	ft_free(&data->done_sem);
+	ft_free(&data->died_sem);
+}
