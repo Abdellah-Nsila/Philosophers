@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:46:13 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/02 18:36:44 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/03 13:45:04 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	ft_launch_died_signal(t_data *data, t_philo *philo)
 {
-	// Begin the signal process for only one process
+	time_t	timestamp;
+
+	// Begin the signal process
 	sem_wait(&data->signal_sem.ptr);
 	// Enable the global died semaphore
 	sem_wait(&philo->done_sem.ptr);
@@ -27,41 +29,62 @@ void	ft_launch_died_signal(t_data *data, t_philo *philo)
 	}
 	sem_post(&philo->done_sem.ptr);
 	philo->is_done = true;
-	
+
+	sem_wait(&data->print_sem);
+	timestamp = get_current_time() - data->global_start_time;
+	ft_colored_msg(timestamp, philo->id, DIED);
+	sem_post(&data->print_sem);
 	
 	sem_post(&data->signal_sem);
+	return (NULL);
 }
 
 void	ft_self_monitor(void *arg)
 {
 	t_philo	*philo;
 	t_data	*data;
-	time_t	current_time;
-	time_t	timestamp;
-
+	
 	philo = (t_philo *)arg;
 	data = philo->data;
-	sem_wait(&philo->meal_sem.ptr);
-	current_time = get_current_time();
-	if ((current_time - philo->last_meal_time) > data->time_to_die)
+	while (true)
 	{
-		// sem_wait(&philo->done_sem);
-		// philo->stop_flag = true;
-		// sem_post(&philo->done_sem);
-		// sem_post(&philo->meal_sem);
-		// sem_wait(&data->print_sem);
-		// timestamp = get_current_time() - data->global_start_time;
-		// ft_colored_msg(timestamp, philo->id, DIED);
-		// sem_post(data->print_sem);
-		return (true);
+		// Check done flag
+		sem_wait(&philo->done_sem.ptr);
+		if (philo->is_done)
+		{
+			sem_post(&philo->done_sem.ptr);
+			break ;
+		}
+		sem_post(&philo->done_sem.ptr);
+		
+		// Check Die condition
+		sem_wait(&philo->meal_sem.ptr);
+		if ((get_current_time() - philo->last_meal_time) > data->time_to_die)
+		{
+			sem_post(&philo->meal_sem.ptr);
+			ft_launch_died_signal(data, philo);
+			break ;
+		}
+		sem_post(&philo->meal_sem.ptr);
 	}
-	sem_post(&philo->meal_sem.ptr);
-	return (false);
+	return (NULL);
 }
 
 void	ft_global_monitor(void *arg)
 {
-	
+	t_philo	*philo;
+	t_data	*data;
+
+	philo = (t_philo *)arg;
+	data = philo->data;
+	sem_wait(&data->died_sem.ptr);
+	sem_post(&data->died_sem.ptr);
+
+	sem_wait(&philo->done_sem.ptr);
+	philo->is_done = true;
+	sem_post(&philo->done_sem.ptr);
+
+	return (NULL);
 }
 
 int	ft_philo_init(int id, t_data *data, t_philo *philo)
@@ -78,7 +101,3 @@ int	ft_philo_init(int id, t_data *data, t_philo *philo)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
-
-// f1 :     ->                                 (diri loun khdr + f1)             (diri loun 7mr + rotation lissr)   f2
-// f2 :     (diri loun 7mr + rotation lissr)   ->                                f3  
-// f3 :     ->                                  (diri loun zr9 + rotation limn)  ->                                 f3
