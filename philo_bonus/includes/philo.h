@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/02 17:27:22 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/03 17:43:01 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ Value must be between 0 and 2147483647.\n%s"
 # define PHILO_ERROR "%sphilo: Invalid input: %s: \
 there must be between 1 and %d philosophers.\n%s"
 # define PHILO_MAX 200
-# define FORKS "forks_sem"
-# define PRINT "print_sem"
 
 
 typedef enum e_state
@@ -65,10 +63,11 @@ typedef struct s_sem
 
 typedef struct s_philo
 {
-	int				id;
+	pthread_t		routine;
 	pthread_t		self_monitor;
 	pthread_t		global_monitor;
 	time_t			last_meal_time;
+	int				id;
 	int				meals_eaten;
 	t_bool			is_done;
 	t_sem			meal_sem;
@@ -90,6 +89,7 @@ typedef struct s_data
 	t_sem			done_sem;			// Protect done
 	t_sem			died_sem;			// Protect died
 	t_sem			print_sem;			// Protect Log
+	pthread_t		done_monitor;		// All philos they have reach the max meal eaten
 }				t_data;
 
 
@@ -100,7 +100,9 @@ t_bool	ft_validate_arg(char **arr, int size);
 t_bool	ft_check_parse(int ac, char **av);
 
 // Semaphores Utils
-char	*ft_rand_semname(t_sem *sem);
+char	*ft_rand_psemname(int id, const char *base);
+void	ft_create_psem(t_sem *sem, int socket, int id, const char *base);
+char	*ft_rand_semname(void *sem);
 void	ft_create_sem(t_sem *sem, int socket);
 void	ft_init_sem(t_data *data);
 void	ft_free_sem(t_sem *sem);
@@ -108,29 +110,27 @@ void	ft_destroy_sem(t_data *data);
 
 // Structs Utils
 void	ft_init_data(t_data *data, int ac, char **av);
-void	ft_destroy(t_data *data);
-
+void	ft_destroy(t_data *data, int exit_code);
 
 // Processes
-void	ft_child_process(t_data *data);
+void	ft_child_process(t_data *data, int id);
 void	ft_launch_processes(t_data *data, pid_t pids[PHILO_MAX]);
+int		ft_philo_init(int id, t_data *data, t_philo *philo);
 
-// Threads
+// Threads Utils
 void	ft_init_philo(t_data *data, t_philo *philo);
-void	ft_launch_threads(t_data *data, t_philo *philo);
 
 // Monitor
-t_bool	ft_did_finish_eat(t_data *data, t_philo *philo);
-t_bool	ft_is_died(t_data *data, t_philo *philo);
-void	*ft_philo_monitor(void *arg);
-t_bool	ft_launch_monitor(t_data *data, pid_t pids[PHILO_MAX]);
+void	ft_launch_died_signal(t_data *data, t_philo *philo);
+void	*ft_self_monitor(void *arg);
+void	*ft_global_monitor(void *arg);
 
 // Actions
 t_bool	ft_take_forks(t_data *data, t_philo *philo);
 t_bool	ft_eat(t_data *data, t_philo *philo);
 void	ft_think(t_philo *philo);
 t_bool	ft_philo_routine(t_data *data, t_philo *philo);
-void	*ft_start_simulation(void *arg);
+void	*ft_start_simulation(t_data *data, t_philo *philo);
 
 // Time Utils
 time_t	get_current_time(void);
@@ -138,10 +138,10 @@ void	ft_usleep(t_philo *philo, time_t milliseconds);
 void	ft_start_delay(time_t start_time);
 
 // Utils
+int	ft_wait_thread(pthread_t thr);
+
 t_bool	ft_stop_simulation(t_data *data);
 void	ft_print_data(t_data *data);
-
-
 
 // Status
 void	ft_colored_msg(time_t timestamp, int id, int type);

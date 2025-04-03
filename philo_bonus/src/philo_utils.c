@@ -1,24 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/28 17:05:14 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/03 14:24:52 by abnsila          ###   ########.fr       */
+/*   Created: 2025/04/03 17:41:27 by abnsila           #+#    #+#             */
+/*   Updated: 2025/04/03 17:41:47 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	main(int ac, char **av)
+int	ft_wait_thread(pthread_t thr)
 {
-	t_data data;
-	pid_t pids[PHILO_MAX];
-
-	if (ft_check_parse(ac, av) == false)
+	if (pthread_join(thr, NULL) != 0)
 		return (EXIT_FAILURE);
-	ft_init_data(&data, ac, av);
-	ft_launch_processes(&data, pids);
+	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 15:21:38 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/28 17:18:26 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/03 17:35:24 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,6 @@ size_t	ft_strlen(const char *str);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 t_bool	ft_strlcmp(const char *s1, const char *s2);
+char	*ft_strjoin(char const *s1, char const *s2);
 
 #endif 
