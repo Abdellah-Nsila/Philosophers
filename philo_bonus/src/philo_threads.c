@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:46:13 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/03 17:43:57 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/04 17:05:39 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	ft_philo_init(int id, t_data *data, t_philo *philo)
 	ft_bzero(philo, sizeof(t_philo));
 	philo->id = id;
 	philo->data = data;
-	ft_create_psem(&philo->done_sem, 1, id, "/philo_done_");
-	ft_create_psem(&philo->meal_sem, 1, id, "/philo_meal_");
+	ft_create_psem(&philo->done_sem, 1, id, PHILO_DONE_SEM);
+	ft_create_psem(&philo->meal_sem, 1, id, PHILO_MEAL_SEM);
 
 	philo->last_meal_time = data->global_start_time;
 	if (pthread_create(&(philo->self_monitor), NULL, &ft_self_monitor, philo) != 0)
@@ -27,7 +27,6 @@ int	ft_philo_init(int id, t_data *data, t_philo *philo)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
-
 
 void	ft_philo_exit(t_data *data, t_philo *philo)
 {
@@ -38,12 +37,11 @@ void	ft_philo_exit(t_data *data, t_philo *philo)
 		sem_post(data->died_sem.ptr);
 	}
 	ft_destroy_sem(data);
-	ft_free_sem(&philo->done_sem);
-	ft_free_sem(&philo->meal_sem);
+	ft_free_sem(&philo->done_sem, true);
+	ft_free_sem(&philo->meal_sem, true);
 
 	exit(EXIT_SUCCESS);
 }
-
 
 void	ft_child_process(t_data *data, int id)
 {

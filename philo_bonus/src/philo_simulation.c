@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 09:54:14 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/03 17:43:47 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/04 16:47:24 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ t_bool	ft_eat(t_data *data, t_philo *philo)
 	ft_usleep(philo, data->time_to_eat);
 	sem_post(data->forks_sem.ptr);
 	sem_post(data->forks_sem.ptr);
-	// Check done status ...
 	// Check max meals condition
 	if (data->max_meals != -1 && (philo->meals_eaten >= data->max_meals))
 	{
@@ -46,6 +45,14 @@ t_bool	ft_eat(t_data *data, t_philo *philo)
 		sem_post(data->done_sem.ptr);
 		return (false);
 	}
+	// Check done status ...
+	sem_wait(philo->done_sem.ptr);
+	if (philo->is_done)
+	{
+		sem_post(philo->done_sem.ptr);
+		return (false) ;
+	}
+	sem_post(philo->done_sem.ptr);
 	return (true);
 }
 
@@ -82,19 +89,13 @@ t_bool	ft_philo_routine(t_data *data, t_philo *philo)
 
 void	*ft_start_simulation(t_data *data, t_philo *philo)
 {
-	printf("Philo: %d ft_start_simulation\n", philo->id);
+	// printf("Philo: %d ft_start_simulation\n", philo->id);
 	ft_start_delay(data->global_start_time);
 	if (philo->id % 2 == 0)
 		ft_usleep(philo, 1);
 	while (true)
 	{
-		sem_wait(philo->done_sem.ptr);
-		if (philo->is_done)
-		{
-			sem_post(philo->done_sem.ptr);
-			break ;
-		}
-		sem_post(philo->done_sem.ptr);
+		// Execute the routine
 		if (!ft_philo_routine(data, philo))
 			break ;
 	}

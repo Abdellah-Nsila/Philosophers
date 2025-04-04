@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 15:46:11 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/03 16:06:49 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/04 17:19:05 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	*ft_done_monitor(void *arg)
 {
-	printf("ft_done_monitor here\n");
 	t_data	*data;
 	int		i;
 
@@ -29,7 +28,7 @@ void	*ft_done_monitor(void *arg)
 	return (NULL);
 }
 
-void	ft_launch_processes(t_data *data, pid_t pids[PHILO_MAX])
+t_bool	ft_launch_processes(t_data *data, pid_t pids[PHILO_MAX])
 {
 	int	i;
 
@@ -39,18 +38,19 @@ void	ft_launch_processes(t_data *data, pid_t pids[PHILO_MAX])
 	{
 		pids[i] = fork();
 		if (pids[i] == -1)
-			exit(EXIT_FAILURE);
+			return (false);
 		if (pids[i] == 0)
 			ft_child_process(data, i + 1);
 		i++;
 	}
 	if (pthread_create(&(data->done_monitor), NULL, &ft_done_monitor, data))
-		exit(EXIT_FAILURE);
+		return (false);
 	if (pthread_join(data->done_monitor, NULL))
-		exit(EXIT_FAILURE);
+		return (false);
 	while (i < data->num_of_philos)
-	{	
+	{
 		waitpid(pids[i], NULL, 0);
 		i++;
 	}
+	return (true);
 }

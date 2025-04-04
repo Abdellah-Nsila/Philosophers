@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/03 17:43:01 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/04 17:09:30 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,15 @@ Value must be between 0 and 2147483647.\n%s"
 # define PHILO_ERROR "%sphilo: Invalid input: %s: \
 there must be between 1 and %d philosophers.\n%s"
 # define PHILO_MAX 200
+
+# define FORKS_SEM "forks_sem"
+# define PRINT_SEM "print_sem"
+# define SIGNAL_SEM "signal_sem"
+# define EMMITER_SEM "emmiter_sem"
+# define DONE_SEM "done_sem"
+# define DIED_SEM "died_sem"
+# define PHILO_DONE_SEM "done_sem_"
+# define PHILO_MEAL_SEM "meal_sem_"
 
 
 typedef enum e_state
@@ -86,6 +95,7 @@ typedef struct s_data
 	time_t			global_start_time;	// Start time for all processes (ms)
 	t_sem			forks_sem;			// Protect forks
 	t_sem			signal_sem;			// Protect Signal
+	t_sem			emmiter_sem;		// Protect Emmiter
 	t_sem			done_sem;			// Protect done
 	t_sem			died_sem;			// Protect died
 	t_sem			print_sem;			// Protect Log
@@ -100,12 +110,11 @@ t_bool	ft_validate_arg(char **arr, int size);
 t_bool	ft_check_parse(int ac, char **av);
 
 // Semaphores Utils
-char	*ft_rand_psemname(int id, const char *base);
-void	ft_create_psem(t_sem *sem, int socket, int id, const char *base);
-char	*ft_rand_semname(void *sem);
-void	ft_create_sem(t_sem *sem, int socket);
+char	*ft_rand_semname(int id, char *base);
+void	ft_create_psem(t_sem *sem, int socket, int id, char *base);
+void	ft_create_sem(t_sem *sem, char *name, int socket);
 void	ft_init_sem(t_data *data);
-void	ft_free_sem(t_sem *sem);
+void	ft_free_sem(t_sem *sem, t_bool is_allocated);
 void	ft_destroy_sem(t_data *data);
 
 // Structs Utils
@@ -114,7 +123,7 @@ void	ft_destroy(t_data *data, int exit_code);
 
 // Processes
 void	ft_child_process(t_data *data, int id);
-void	ft_launch_processes(t_data *data, pid_t pids[PHILO_MAX]);
+t_bool	ft_launch_processes(t_data *data, pid_t pids[PHILO_MAX]);
 int		ft_philo_init(int id, t_data *data, t_philo *philo);
 
 // Threads Utils

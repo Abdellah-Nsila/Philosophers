@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 07:31:56 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/03 14:42:54 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/04 14:51:27 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ time_t	get_current_time(void)
 
 void	ft_usleep(t_philo *philo, time_t milliseconds)
 {
+	(void)philo;
 	time_t	start;
 
 	start = get_current_time();
@@ -34,7 +35,7 @@ void	ft_usleep(t_philo *philo, time_t milliseconds)
 			break ;
 		}
 		sem_post(philo->done_sem.ptr);
-		usleep(500);
+		usleep(100);
 	}
 }
 
