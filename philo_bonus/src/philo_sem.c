@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 17:26:17 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/03 17:44:37 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/04 15:19:47 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 // TODO 	Handle exit and clear data 
 // TODO 	Be sure to work with all sem that you have now
 
-char	*ft_rand_psemname(int id, const char *base)
+char	*ft_rand_semname(int id, char *base)
 {
 	char	*id_str;
 	char	*name;
@@ -31,10 +31,11 @@ char	*ft_rand_psemname(int id, const char *base)
 	return (name);
 }
 
-void	ft_create_psem(t_sem *sem, int socket, int id, const char *base)
+void	ft_create_psem(t_sem *sem, int socket, int id, char *base)
 {
-	sem->name = ft_rand_psemname(id, base);
+	sem->name = ft_rand_semname(id, base);
 	sem_unlink(sem->name);
+	// printf("----------- name: %s, soket: %d ------------\n", sem->name, socket);
 	sem->ptr = sem_open(sem->name, O_CREAT | O_EXCL, 0644, socket);
 	if (sem->ptr == SEM_FAILED)
 	{
@@ -43,16 +44,11 @@ void	ft_create_psem(t_sem *sem, int socket, int id, const char *base)
 	}
 }
 
-char	*ft_rand_semname(void *sem)
+void	ft_create_sem(t_sem *sem, char *name, int socket)
 {
-	return (ft_itoa(getpid() + (long)get_current_time() + (long)sem));
-}
-
-void	ft_create_sem(t_sem *sem, int socket)
-{
-	sem->name = ft_rand_semname(sem);
+	sem->name = name;
 	sem_unlink(sem->name);
-	printf("name: %s, soket: %d\n", sem->name, socket);
+	// printf("name: %s, soket: %d\n", sem->name, socket);
 	sem->ptr = sem_open(sem->name, O_CREAT | O_EXCL, 0644, socket);
 	if (sem->ptr == SEM_FAILED)
 	{
@@ -63,11 +59,12 @@ void	ft_create_sem(t_sem *sem, int socket)
 
 void	ft_init_sem(t_data *data)
 {
-	ft_create_sem(&data->forks_sem, data->num_of_philos);
-	ft_create_sem(&data->print_sem, 1);
-	ft_create_sem(&data->signal_sem, 0);
-	ft_create_sem(&data->done_sem, 0);
-	ft_create_sem(&data->died_sem, 0);
+	ft_create_sem(&data->forks_sem, FORKS_SEM, data->num_of_philos);
+	ft_create_sem(&data->print_sem, PRINT_SEM, 1);
+	ft_create_sem(&data->signal_sem, SIGNAL_SEM, 0);
+	ft_create_sem(&data->emmiter_sem, EMMITER_SEM, 0);
+	ft_create_sem(&data->done_sem, DONE_SEM, 0);
+	ft_create_sem(&data->died_sem, DIED_SEM, 0);
 }
 
 void	ft_free_sem(t_sem *sem)
