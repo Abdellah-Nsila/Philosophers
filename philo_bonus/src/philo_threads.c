@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:46:13 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/05 16:05:09 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/05 18:06:51 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,10 @@ int	ft_philo_init(int id, t_data *data, t_philo *philo)
 
 void	ft_philo_exit(t_data *data, t_philo *philo)
 {
-	sem_post(data->died_sem.ptr);
 	if (philo)
 	{
 		ft_wait_thread(philo->self_monitor);
 		ft_wait_thread(philo->global_monitor);
-		sem_post(data->died_sem.ptr);
 	}
 	ft_destroy_sem(data);
 	ft_free_sem(&philo->done_sem, true);
@@ -52,6 +50,3 @@ void	ft_child_process(t_data *data, int id)
 	ft_start_simulation(data, &philo);
 	ft_philo_exit(data, &philo);
 }
-
-
-

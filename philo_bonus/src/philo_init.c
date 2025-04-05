@@ -6,13 +6,13 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 17:05:53 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/03 14:51:57 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/05 16:54:54 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-void    ft_init_data(t_data *data, int ac, char **av)
+void	ft_init_data(t_data *data, int ac, char **av)
 {
 	ft_bzero(data, sizeof(t_data));
 	data->num_of_philos = (int)ft_atol(av[1]);

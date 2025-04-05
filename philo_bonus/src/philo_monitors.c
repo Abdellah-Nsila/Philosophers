@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 13:47:09 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/04 15:53:36 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/05 17:19:46 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,6 @@ void	*ft_self_monitor(void *arg)
 	{
 		usleep(500);
 		
-		// Check done flag
-		sem_wait(philo->done_sem.ptr);
-		if (philo->is_done)
-		{
-			sem_post(philo->done_sem.ptr);
-			break ;
-		}
-		sem_post(philo->done_sem.ptr);
-		
 		// Check Die condition
 		sem_wait(philo->meal_sem.ptr);
 		if ((get_current_time() - philo->last_meal_time) > data->time_to_die)
@@ -82,6 +73,15 @@ void	*ft_self_monitor(void *arg)
 			break ;
 		}
 		sem_post(philo->meal_sem.ptr);
+
+				// Check done flag
+		sem_wait(philo->done_sem.ptr);
+		if (philo->is_done)
+		{
+			sem_post(philo->done_sem.ptr);
+			break ;
+		}
+		sem_post(philo->done_sem.ptr);
 	}
 	return (NULL);
 }
