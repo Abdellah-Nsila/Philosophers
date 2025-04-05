@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:46:13 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/04 18:14:14 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/05 16:05:09 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,6 @@ void	ft_child_process(t_data *data, int id)
 	ft_philo_init(id, data, &philo);
 	ft_start_simulation(data, &philo);
 	ft_philo_exit(data, &philo);
-	// if (pthread_create(&(philo.routine), NULL, &ft_start_simulation, &philo) != 0)
-	// 	exit(EXIT_FAILURE);
-	// if (pthread_join(philo.routine, NULL))
-	// 	exit(EXIT_FAILURE);
 }
 
 
