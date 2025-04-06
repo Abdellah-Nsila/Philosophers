@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 13:47:09 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/05 17:19:46 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/06 11:08:06 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	*ft_self_monitor(void *arg)
 		}
 		sem_post(philo->meal_sem.ptr);
 
-				// Check done flag
+		// Check done flag
 		sem_wait(philo->done_sem.ptr);
 		if (philo->is_done)
 		{
