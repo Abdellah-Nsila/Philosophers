@@ -11,10 +11,10 @@ INCLUDES = -I./includes
 # 		$(SRC_DIR)/philo_threads.c $(SRC_DIR)/philo_time.c $(SRC_DIR)/philo_log.c \
 # 		$(SRC_DIR)/philo_monitors.c \
 
-SRCS =	$(SRC_DIR)/philo.c $(SRC_DIR)/philo_parsing.c $(SRC_DIR)/philo_init.c \
+SRCS =	$(SRC_DIR)/philo.c $(SRC_DIR)/philo_parsing.c $(SRC_DIR)/philo_init.c $(SRC_DIR)/philo_log.c \
 		$(SRC_DIR)/philo_processes.c $(SRC_DIR)/philo_threads.c $(SRC_DIR)/philo_simulation.c \
 		$(SRC_DIR)/philo_sem.c $(SRC_DIR)/philo_monitors.c $(SRC_DIR)/philo_utils.c \
-		$(SRC_DIR)/philo_time.c $(SRC_DIR)/philo_log.c \
+		$(SRC_DIR)/philo_time.c  \
 
 # SRCS =	$(SRC_DIR)/main.c
 
