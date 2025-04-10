@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/04 17:09:30 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/09 16:12:16 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,13 @@ there must be between 1 and %d philosophers.\n%s"
 
 # define FORKS_SEM "forks_sem"
 # define PRINT_SEM "print_sem"
+# define COND_SEM "cond_sem" 
 # define SIGNAL_SEM "signal_sem"
 # define EMMITER_SEM "emmiter_sem"
 # define DONE_SEM "done_sem"
 # define DIED_SEM "died_sem"
 # define PHILO_DONE_SEM "done_sem_"
-# define PHILO_MEAL_SEM "meal_sem_"
+# define PHILO_MEAL_SEM "meal_sem_" COND_SEM
 
 
 typedef enum e_state
@@ -78,9 +79,9 @@ typedef struct s_philo
 	time_t			last_meal_time;
 	int				id;
 	int				meals_eaten;
-	t_bool			is_done;
 	t_sem			meal_sem;
 	t_sem			done_sem;
+	t_bool			is_done;
 	int				exit_code;
 	struct s_data	*data;
 }				t_philo;
@@ -94,6 +95,7 @@ typedef struct s_data
 	time_t			time_to_sleep;		// Sleeping duration (ms)
 	time_t			global_start_time;	// Start time for all processes (ms)
 	t_sem			forks_sem;			// Protect forks
+	t_sem			cond_sem;			// Protect cond
 	t_sem			signal_sem;			// Protect Signal
 	t_sem			emmiter_sem;		// Protect Emmiter
 	t_sem			done_sem;			// Protect done
@@ -139,7 +141,8 @@ t_bool	ft_take_forks(t_data *data, t_philo *philo);
 t_bool	ft_eat(t_data *data, t_philo *philo);
 void	ft_think(t_philo *philo);
 t_bool	ft_philo_routine(t_data *data, t_philo *philo);
-void	*ft_start_simulation(t_data *data, t_philo *philo);
+// void	*ft_start_simulation(t_data *data, t_philo *philo);
+void	*ft_start_simulation(void *arg);
 
 // Time Utils
 time_t	get_current_time(void);
