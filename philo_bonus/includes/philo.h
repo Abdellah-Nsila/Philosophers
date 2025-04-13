@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/09 16:12:16 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/13 15:21:01 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ there must be between 1 and %d philosophers.\n%s"
 # define PHILO_MAX 200
 
 # define FORKS_SEM "forks_sem"
+# define HALF_SEM "half_sem"
 # define PRINT_SEM "print_sem"
 # define COND_SEM "cond_sem" 
 # define SIGNAL_SEM "signal_sem"
@@ -95,6 +96,7 @@ typedef struct s_data
 	time_t			time_to_sleep;		// Sleeping duration (ms)
 	time_t			global_start_time;	// Start time for all processes (ms)
 	t_sem			forks_sem;			// Protect forks
+	t_sem			half_sem;			// Protect half
 	t_sem			cond_sem;			// Protect cond
 	t_sem			signal_sem;			// Protect Signal
 	t_sem			emmiter_sem;		// Protect Emmiter
@@ -137,12 +139,12 @@ void	*ft_self_monitor(void *arg);
 void	*ft_global_monitor(void *arg);
 
 // Actions
-t_bool	ft_take_forks(t_data *data, t_philo *philo);
-t_bool	ft_eat(t_data *data, t_philo *philo);
+void	ft_eat(t_data *data, t_philo *philo);
 void	ft_think(t_philo *philo);
 t_bool	ft_philo_routine(t_data *data, t_philo *philo);
-// void	*ft_start_simulation(t_data *data, t_philo *philo);
-void	*ft_start_simulation(void *arg);
+// TODO GO to ypu mondaory part and try to replace the routine thread with the main process itself
+void	*ft_start_simulation(t_data *data, t_philo *philo);
+// void	*ft_start_simulation(void *arg);
 
 // Time Utils
 time_t	get_current_time(void);
@@ -151,6 +153,7 @@ void	ft_start_delay(time_t start_time);
 
 // Utils
 int	ft_wait_thread(pthread_t thr);
+void	ft_philo_exit(t_data *data, t_philo *philo);
 
 t_bool	ft_stop_simulation(t_data *data);
 void	ft_print_data(t_data *data);

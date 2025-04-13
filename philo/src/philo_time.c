@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 07:31:56 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/10 09:11:48 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/10 16:35:25 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ft_usleep(t_data *data, time_t milliseconds)
 			break ;
 		}
 		pthread_mutex_unlock(&data->stop_mutex);
-		usleep(100);
+		usleep(500);
 	}
 }
 

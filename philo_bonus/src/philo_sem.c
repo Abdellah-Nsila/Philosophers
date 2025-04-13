@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 17:26:17 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/04 15:47:13 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/13 15:06:17 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,9 @@ void	ft_create_sem(t_sem *sem, char *name, int socket)
 void	ft_init_sem(t_data *data)
 {
 	ft_create_sem(&data->forks_sem, FORKS_SEM, data->num_of_philos);
+	ft_create_sem(&data->half_sem, HALF_SEM, data->num_of_philos / 2);
 	ft_create_sem(&data->print_sem, PRINT_SEM, 1);
+	ft_create_sem(&data->cond_sem, COND_SEM, 1);
 	ft_create_sem(&data->signal_sem, SIGNAL_SEM, 1);
 	ft_create_sem(&data->emmiter_sem, EMMITER_SEM, 0);
 	ft_create_sem(&data->done_sem, DONE_SEM, 0);
@@ -86,6 +88,7 @@ void	ft_destroy_sem(t_data *data)
 {
 	ft_free_sem(&data->forks_sem, false);
 	ft_free_sem(&data->print_sem, false);
+	ft_free_sem(&data->cond_sem, false);
 	ft_free_sem(&data->signal_sem, false);
 	ft_free_sem(&data->emmiter_sem, false);
 	ft_free_sem(&data->done_sem, false);

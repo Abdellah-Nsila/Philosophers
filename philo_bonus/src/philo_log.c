@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:33:34 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/05 17:02:06 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/13 16:34:26 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,23 +48,27 @@ void	ft_format_msg(time_t timestamp, int id, int type)
 
 void	ft_print_msg(t_data *data, t_philo *philo, int type)
 {
-	time_t	current_time;
 	time_t	timestamp;
+	(void)philo;
 	
+	// Check Done flag
 	sem_wait(philo->done_sem.ptr);
-	sem_wait(data->print_sem.ptr);
-	if (philo->is_done && type != DIED)
+	if (philo->is_done)
 	{
-		sem_post(data->print_sem.ptr);
 		sem_post(philo->done_sem.ptr);
 		return ;
 	}
-	current_time = get_current_time();
-	timestamp = current_time - data->global_start_time;
+	sem_post(philo->done_sem.ptr);
+
+	// Log
+	// sem_wait(data->cond_sem.ptr);
+	sem_wait(data->print_sem.ptr);
+	timestamp = get_current_time() - data->global_start_time;
 	//* My own format
 	ft_colored_msg(timestamp, philo->id, type);
+	//? printf("%ld Status is %d\n",timestamp, type);
 	//* The mandatory format
 	// ft_format_msg(timestamp, philo->id, type);
 	sem_post(data->print_sem.ptr);
-	sem_post(philo->done_sem.ptr);
+	// sem_post(data->cond_sem.ptr);
 }
