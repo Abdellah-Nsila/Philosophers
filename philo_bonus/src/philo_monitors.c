@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 13:47:09 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/13 16:51:49 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/13 19:08:44 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_launch_died_signal(t_data *data, t_philo *philo)
 	sem_wait(data->signal_sem.ptr);
 	
 	//? Disable Log
-	sem_wait(data->cond_sem.ptr);
+	sem_wait(data->print_sem.ptr);
 	// Enable the global died semaphore
 	sem_post(data->died_sem.ptr);
 	
@@ -36,19 +36,11 @@ void	ft_launch_died_signal(t_data *data, t_philo *philo)
 	philo->is_done = true;
 	sem_post(philo->done_sem.ptr);
 
-	//? Wait until all philos stop
-	// i = 0;
-	// while (i < data->num_of_philos)
-	// {
-	// 	sem_wait(data->emmiter_sem.ptr);
-	// 	i++;
-	// }
-
 	// Print died log msg
-	sem_wait(data->print_sem.ptr);
+	// sem_wait(data->print_sem.ptr);
 	timestamp = get_current_time() - data->global_start_time;
 	ft_colored_msg(timestamp, philo->id, DIED);
-	sem_post(data->print_sem.ptr);
+	// sem_post(data->print_sem.ptr);
 	
 	// End of signal process
 	sem_post(data->signal_sem.ptr);
@@ -70,7 +62,9 @@ void	*ft_self_monitor(void *arg)
 		sem_wait(philo->done_sem.ptr);
 		if (philo->is_done)
 		{
+			// printf("Final Philo %d Meals eaten: %d\n", philo->id, philo->meals_eaten);
 			sem_post(philo->done_sem.ptr);
+			usleep(10000);
 			break ;
 		}
 		sem_post(philo->done_sem.ptr);
@@ -108,7 +102,6 @@ void	*ft_global_monitor(void *arg)
 	philo->is_done = true;
 	sem_post(philo->done_sem.ptr);
 	
-	sem_post(data->emmiter_sem.ptr);
 	sem_post(data->done_sem.ptr);
 	
 	return (NULL);
