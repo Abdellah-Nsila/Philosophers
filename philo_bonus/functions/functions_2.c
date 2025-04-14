@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   functions_4.c                                      :+:      :+:    :+:   */
+/*   functions_2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 10:18:54 by abnsila           #+#    #+#             */
-/*   Updated: 2025/02/23 10:25:40 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 15:37:24 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@ static long	ft_process_digits(const char *str, int sign)
 
 long	ft_atol(const char *str)
 {
+	int	sign;
+
 	str = ft_skip_whitespace(str);
-	return (ft_process_digits(str, ft_get_sign(&str)));
+	sign = ft_get_sign(&str);
+	return (ft_process_digits(str, sign));
 }

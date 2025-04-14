@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 13:47:09 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/14 11:29:12 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 15:35:47 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,12 @@ void	ft_launch_died_signal(t_data *data, t_philo *philo)
 	}
 	philo->is_done = true;
 	sem_post(philo->done_sem.ptr);
-
 	i = -1;
 	while (++i < data->num_of_philos)
 		sem_wait(data->emmiter_sem.ptr);
 	sem_wait(data->print_sem.ptr);
 	timestamp = ft_get_time() - data->global_start_time;
-	ft_colored_msg(timestamp, philo->id, DIED);
+	ft_format_msg(timestamp, philo->id, DIED);
 	sem_post(data->print_sem.ptr);
 	sem_post(data->signal_sem.ptr);
 	return ;
@@ -44,7 +43,7 @@ void	*ft_self_monitor(void *arg)
 {
 	t_philo	*philo;
 	t_data	*data;
-	
+
 	philo = (t_philo *)arg;
 	data = philo->data;
 	ft_start_delay(data->global_start_time);

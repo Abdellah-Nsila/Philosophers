@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 19:56:54 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/14 08:29:43 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 14:46:19 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,35 +76,17 @@ static void	copy_num_to_buffer(char *buffer, long num, int *pos)
 		buffer[(*pos)++] = num_buf[i++];
 }
 
-void	ft_colored_write(const char *color, long time, int id, const char *msg,
-		const char *reset)
+void	ft_write(long time, int id, const char *msg)
 {
 	char	buffer[1024];
 	int		pos;
 
 	pos = 0;
-	copy_str_to_buffer(buffer, color, &pos);
 	copy_num_to_buffer(buffer, time, &pos);
 	buffer[pos++] = ' ';
 	copy_num_to_buffer(buffer, id, &pos);
 	buffer[pos++] = ' ';
 	copy_str_to_buffer(buffer, msg, &pos);
 	buffer[pos++] = '\n';
-	copy_str_to_buffer(buffer, reset, &pos);
 	write(1, buffer, pos);
-}
-
-void	ft_write(long time, int id, const char *msg)
-{
-char	buffer[1024];
-int		pos;
-
-pos = 0;
-copy_num_to_buffer(buffer, time, &pos);
-buffer[pos++] = ' ';
-copy_num_to_buffer(buffer, id, &pos);
-buffer[pos++] = ' ';
-copy_str_to_buffer(buffer, msg, &pos);
-buffer[pos++] = '\n';
-write(1, buffer, pos);
 }

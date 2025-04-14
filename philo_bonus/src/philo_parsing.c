@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 17:05:16 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/28 17:08:10 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 15:32:36 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,19 @@ t_bool	ft_validate_arg(char **arr, int size)
 	long	num;
 
 	if (size < 4 || size > 5)
-		return (printf(USAGE_MSG, YEL, RESET), false);
+		return (printf(USAGE_MSG), false);
 	i = 0;
 	while (i < size)
 	{
 		if (!ft_is_valid_number(arr[i]))
-			return (printf(INPUT_ERROR, RED, arr[i], RESET), false);
+			return (printf(INPUT_ERROR, arr[i]), false);
 		num = ft_atol(arr[i]);
-		if (num <= 0 || num > INT_MAX)
-			return (printf(ARG_ERROR, RED, arr[i], RESET), false);
-		if (i == 0 && (num == 0 || num > 200))
-			return (printf(PHILO_ERROR, RED, arr[i], PHILO_MAX, RESET), false);
+		if (i == 0 && num <= 0)
+			return (printf(PHILO_ERROR, arr[i]), false);
+		else if (i == 4 && num < 0)
+			return (printf(APT_ERROR, arr[i]), false);
+		else if (i != 0 && i != 4 && (num <= 0 || num > INT_MAX))
+			return (printf(TIME_ERROR, arr[i]), false);
 		i++;
 	}
 	return (true);

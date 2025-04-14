@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/14 11:40:29 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 14:43:23 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define PHILO_H
 
 # include "functions.h"
-# include "colors.h"
 # include <unistd.h>
 # include <time.h>
 # include <sys/time.h>

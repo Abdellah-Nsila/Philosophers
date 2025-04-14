@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 17:05:14 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/09 15:08:51 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 15:31:14 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	main(int ac, char **av)
 {
-	t_data data;
-	pid_t pids[PHILO_MAX];
+	t_data	data;
+	pid_t	pids[MAX];
 
 	if (ft_check_parse(ac, av) == false)
 		return (EXIT_FAILURE);

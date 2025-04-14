@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/14 11:31:54 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 15:37:01 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,10 @@
 # define PHILO_H
 
 # include "functions.h"
-# include "colors.h"
 # include <unistd.h>
-# include <time.h>
 # include <sys/time.h>
 # include <sys/wait.h>
-#include <fcntl.h>
-#include <signal.h>
+# include <fcntl.h>
 # include <pthread.h>
 # include <semaphore.h>
 
@@ -32,17 +29,19 @@
 #  define LONG_MAX 9223372036854775807
 # endif
 
-# define USAGE_MSG "%sphilo: Usage: \
+# define USAGE_MSG "philo: Usage: \
 ./philo <number_of_philosophers> \
 <time_to_die> <time_to_eat> <time_to_sleep> \
-[number_of_times_each_philosopher_must_eat]\n%s"
-# define INPUT_ERROR "%sphilo: Invalid input: %s: \
-Value must be a positive integer.\n%s"
-# define ARG_ERROR "%sphilo: Invalid input: %s: \
-Value must be between 0 and 2147483647.\n%s"
-# define PHILO_ERROR "%sphilo: Invalid input: %s: \
-there must be between 1 and %d philosophers.\n%s"
-# define PHILO_MAX 200
+[number_of_times_each_philosopher_must_eat]\n"
+# define INPUT_ERROR "philo: Invalid input: %s: \
+Value must be a positive integer.\n"
+# define TIME_ERROR "philo: Invalid input: %s: \
+Value must be between 0 and 2147483647.\n"
+# define PHILO_ERROR "philo: Invalid input: %s: \
+there must be > 0.\n"
+# define APT_ERROR "philo: Invalid input: %s: \
+there must be >= 0.\n"
+# define MAX 1024
 
 # define FORKS_SEM "forks_sem"
 # define HALF_SEM "half_sem"
@@ -53,7 +52,7 @@ there must be between 1 and %d philosophers.\n%s"
 # define DONE_SEM "done_sem"
 # define DIED_SEM "died_sem"
 # define PHILO_DONE_SEM "done_sem_"
-# define PHILO_MEAL_SEM "meal_sem_" COND_SEM
+# define PHILO_MEAL_SEM "meal_sem_"
 
 typedef enum e_state
 {
@@ -63,7 +62,6 @@ typedef enum e_state
 	SLEEPING,
 	DIED,
 }	t_state;
-
 
 typedef struct s_sem
 {
@@ -87,23 +85,21 @@ typedef struct s_philo
 
 typedef struct s_data
 {
-	int				num_of_philos;		// Total philosophers
-	int				max_meals;			// Optional: meals per philosopher
-	time_t			time_to_die;		// Max time without eating (ms)
-	time_t			time_to_eat;		// Eating duration (ms)
-	time_t			time_to_sleep;		// Sleeping duration (ms)
-	time_t			global_start_time;	// Start time for all processes (ms)
-	t_sem			forks_sem;			// Protect forks
-	t_sem			half_sem;			// Protect half
-	t_sem			signal_sem;			// Protect Signal
-	t_sem			emmiter_sem;		// Protect Emmiter
-	t_sem			done_sem;			// Protect done
-	t_sem			died_sem;			// Protect died
-	t_sem			print_sem;			// Protect Log
-	pthread_t		done_monitor;		// All philos they have reach the max meal eaten
+	int				num_of_philos;
+	int				max_meals;
+	time_t			time_to_die;
+	time_t			time_to_eat;
+	time_t			time_to_sleep;
+	time_t			global_start_time;
+	t_sem			forks_sem;
+	t_sem			half_sem;
+	t_sem			signal_sem;
+	t_sem			emmiter_sem;
+	t_sem			done_sem;
+	t_sem			died_sem;
+	t_sem			print_sem;
+	pthread_t		done_monitor;
 }				t_data;
-
-
 
 // Parsing
 t_bool	ft_is_valid_number(char *str);
@@ -124,7 +120,7 @@ void	ft_destroy(t_data *data, int exit_code);
 
 // Processes
 void	ft_child_process(t_data *data, int id);
-t_bool	ft_launch_processes(t_data *data, pid_t pids[PHILO_MAX]);
+t_bool	ft_launch_processes(t_data *data, pid_t pids[MAX]);
 
 // Threads Utils
 void	ft_init_philo(t_data *data, t_philo *philo);
@@ -138,11 +134,12 @@ void	*ft_global_monitor(void *arg);
 void	ft_eat(t_data *data, t_philo *philo);
 void	ft_think(t_philo *philo);
 t_bool	ft_philo_routine(t_data *data, t_philo *philo);
+t_bool	ft_check_edge_case(t_data *data, t_philo *philo);
 void	*ft_start_simulation(t_data *data, t_philo *philo);
 
 // Time Utils
 time_t	ft_get_time(void);
-void	ft_usleep(t_philo *philo, time_t milliseconds);
+void	ft_usleep(time_t milliseconds);
 void	ft_start_delay(time_t start_time);
 
 // Utils

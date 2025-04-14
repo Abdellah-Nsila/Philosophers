@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:27:44 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/14 11:32:48 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 14:41:29 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,21 @@ t_bool	ft_take_forks(t_data *data, t_philo *philo)
 
 t_bool	ft_eat(t_data *data, t_philo *philo)
 {
+	ft_print_msg(data, philo, EATING);
 	pthread_mutex_lock(&data->meal_mutex);
 	philo->last_meal_time = ft_get_time();
 	philo->meals_eaten += 1;
-	ft_print_msg(data, philo, EATING);
 	pthread_mutex_unlock(&data->meal_mutex);
 	ft_usleep(data, data->time_to_eat);
 	pthread_mutex_unlock(philo->first_fork);
 	pthread_mutex_unlock(philo->second_fork);
+	pthread_mutex_lock(&data->meal_mutex);
+	if (data->max_meals != -1 && philo->meals_eaten >= data->max_meals)
+	{
+		pthread_mutex_unlock(&data->meal_mutex);
+		return (false);
+	}
+	pthread_mutex_unlock(&data->meal_mutex);
 	return (true);
 }
 

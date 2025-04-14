@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:16:45 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/14 11:35:03 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 14:40:10 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_bool	ft_did_anyone_die(t_data *data)
 			pthread_mutex_unlock(&data->meal_mutex);
 			pthread_mutex_lock(&data->print_mutex);
 			timestamp = ft_get_time() - data->start_time;
-			ft_colored_msg(timestamp, data->philos[i].id, DIED);
+			ft_format_msg(timestamp, data->philos[i].id, DIED);
 			pthread_mutex_unlock(&data->print_mutex);
 			return (true);
 		}
@@ -82,9 +82,9 @@ void	*ft_monitor(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&data->stop_mutex);
-		if (ft_did_anyone_die(data))
-			break ;
 		if (data->max_meals != -1 && ft_did_everyone_eat(data))
+			break ;
+		if (ft_did_anyone_die(data))
 			break ;
 	}
 	return (NULL);

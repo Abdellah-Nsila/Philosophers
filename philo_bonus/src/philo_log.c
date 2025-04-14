@@ -6,25 +6,11 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:33:34 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/14 11:29:03 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 14:51:27 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-
-void ft_colored_msg(time_t timestamp, int id, int type)
-{
-	if (type == TAKING_FORK)
-		ft_colored_write(BWHT, timestamp, id, "has taken a fork", RESET);
-	else if (type == THINKING)
-		ft_colored_write(BBLU, timestamp, id, "is thinking", RESET);
-	else if (type == EATING)
-		ft_colored_write(BGRN, timestamp, id, "is eating", RESET);
-	else if (type == SLEEPING)
-		ft_colored_write(BMAG, timestamp, id, "is sleeping", RESET);
-	else if (type == DIED)
-		ft_colored_write(BRED, timestamp, id, "died", RESET);
-}
 
 void	ft_format_msg(time_t timestamp, int id, int type)
 {
@@ -53,9 +39,6 @@ void	ft_print_msg(t_data *data, t_philo *philo, int type)
 	sem_post(philo->done_sem.ptr);
 	sem_wait(data->print_sem.ptr);
 	timestamp = ft_get_time() - data->global_start_time;
-	//* My own format
-	ft_colored_msg(timestamp, philo->id, type);
-	//* The mandatory format
-	// ft_format_msg(timestamp, philo->id, type);
+	ft_format_msg(timestamp, philo->id, type);
 	sem_post(data->print_sem.ptr);
 }
