@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 15:03:56 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/10 08:22:03 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 16:44:24 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,4 @@ int	ft_isnumber(char *str)
 void	ft_bzero(void *s, size_t n)
 {
 	memset(s, 0, n);
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*ptr;
-	size_t	total;
-
-	total = count * size;
-	ptr = malloc(total);
-	if (!ptr)
-		return (NULL);
-	ft_bzero(ptr, total);
-	return (ptr);
 }

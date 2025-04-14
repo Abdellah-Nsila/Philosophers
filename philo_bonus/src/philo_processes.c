@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 15:46:11 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/14 11:29:22 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 16:23:26 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	*ft_done_monitor(void *arg)
 	return (NULL);
 }
 
-t_bool	ft_launch_processes(t_data *data, pid_t pids[PHILO_MAX])
+t_bool	ft_launch_processes(t_data *data, pid_t pids[MAX])
 {
 	int	i;
 

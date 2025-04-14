@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 15:21:38 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/14 14:47:06 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 16:44:31 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef enum s_bool
 void	ft_bzero(void *s, size_t n);
 void	*ft_memset(void *b, int c, size_t len);
 char	*ft_strdup(const char *s1);
-void	*ft_calloc(size_t count, size_t size);
 int		ft_isdigit(int n);
 int		ft_isnumber(char *str);
 int		ft_handle_max_case(int sign);

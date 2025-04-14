@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/14 15:41:47 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 17:01:50 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,10 @@ typedef struct s_data
 	pthread_t		done_monitor;
 }				t_data;
 
-// Parsing
 t_bool	ft_is_valid_number(char *str);
 t_bool	ft_validate_arg(char **arr, int size);
 t_bool	ft_check_parse(int ac, char **av);
 
-// Semaphores Utils
 char	*ft_rand_semname(int id, char *base);
 void	ft_create_psem(t_sem *sem, int socket, int id, char *base);
 void	ft_create_sem(t_sem *sem, char *name, int socket);
@@ -114,44 +112,30 @@ void	ft_init_sem(t_data *data);
 void	ft_free_sem(t_sem *sem, t_bool is_allocated);
 void	ft_destroy_sem(t_data *data);
 
-// Structs Utils
 void	ft_init_data(t_data *data, int ac, char **av);
 void	ft_destroy(t_data *data, int exit_code);
 
-// Processes
 void	ft_child_process(t_data *data, int id);
 t_bool	ft_launch_processes(t_data *data, pid_t pids[MAX]);
 
-// Threads Utils
-void	ft_init_philo(t_data *data, t_philo *philo);
-
-// Monitor
 void	ft_launch_died_signal(t_data *data, t_philo *philo);
 void	*ft_self_monitor(void *arg);
 void	*ft_global_monitor(void *arg);
 
-// Actions
 void	ft_eat(t_data *data, t_philo *philo);
 void	ft_think(t_philo *philo);
 t_bool	ft_philo_routine(t_data *data, t_philo *philo);
 t_bool	ft_check_edge_case(t_data *data, t_philo *philo);
 void	*ft_start_simulation(t_data *data, t_philo *philo);
 
-// Time Utils
 time_t	ft_get_time(void);
 void	ft_usleep(time_t milliseconds);
 void	ft_start_delay(time_t start_time);
 
-// Utils
 int		ft_wait_thread(pthread_t thr);
 void	ft_philo_exit(t_data *data, t_philo *philo);
 
-// Status
-void	ft_colored_msg(time_t timestamp, int id, int type);
 void	ft_format_msg(time_t timestamp, int id, int type);
 void	ft_print_msg(t_data *data, t_philo *philo, int type);
-
-// Exit
-void	ft_exit(t_data *data, int exit_code);
 
 #endif

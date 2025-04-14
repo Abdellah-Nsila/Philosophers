@@ -1,6 +1,5 @@
 NAME = philo
 CC = cc
-# CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
 CFLAGS = -Wall -Wextra -Werror -pthread
 SRC_DIR = ./src
 FUNC_DIR = ./functions
@@ -15,7 +14,7 @@ FUNCS =	$(FUNC_DIR)/functions_1.c $(FUNC_DIR)/functions_2.c
 OBJS = $(SRCS:.c=.o)
 FUNCO = $(FUNCS:.c=.o)
 
-all: $(LIBFT) $(NAME)
+all: $(NAME)
 
 $(NAME): $(OBJS) $(FUNCO)
 	$(CC) $(CFLAGS) $(OBJS) $(FUNCO) $(INCLUDES) -o $(NAME)

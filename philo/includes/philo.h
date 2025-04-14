@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/14 15:42:27 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 17:01:13 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,41 +80,30 @@ typedef struct s_data
 	t_bool			stop;
 }				t_data;
 
-// Parsing
 t_bool	ft_is_valid_number(char *str);
 t_bool	ft_validate_arg(char **arr, int size);
 t_bool	ft_check_parse(int ac, char **av);
 
-// Threads
 void	ft_create_threads(t_data *data);
 void	ft_join_threads(t_data *data);
 
-// Monitor
 t_bool	ft_did_everyone_eat(t_data *data);
 t_bool	ft_did_anyone_die(t_data *data);
 void	*ft_monitor(void *arg);
 
-// Actions
 t_bool	ft_take_forks(t_data *data, t_philo *philo);
 t_bool	ft_eat(t_data *data, t_philo *philo);
 void	ft_think(t_philo *philo);
 t_bool	ft_philo_routine(t_data *data, t_philo *philo);
 void	*ft_start_simulation(void *arg);
 
-// Time Utils
 time_t	ft_get_time(void);
 void	ft_usleep(t_data *data, time_t milliseconds);
 void	ft_start_delay(time_t start_time);
 
-// Utils
-t_bool	ft_stop_simulation(t_data *data);
-void	ft_print_data(t_data *data);
-
-// Structs Utils
 void	ft_init_data(t_data *data, int ac, char **av);
 void	ft_destroy(t_data *data);
 
-// Status
 void	ft_colored_msg(time_t timestamp, int id, int type);
 void	ft_format_msg(time_t timestamp, int id, int type);
 void	ft_print_msg(t_data *data, t_philo *philo, int type);

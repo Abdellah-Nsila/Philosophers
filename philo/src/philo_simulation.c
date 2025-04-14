@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:27:44 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/14 14:41:29 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 16:46:03 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,9 @@ void	*ft_start_simulation(void *arg)
 	ft_start_delay(data->start_time);
 	if (philo->id % 2 == 0)
 		ft_usleep(data, 1);
+	if (data->max_meals != -1 && philo->meals_eaten >= data->max_meals)
+		return (pthread_mutex_unlock(&data->meal_mutex), NULL);
+	pthread_mutex_unlock(&data->meal_mutex);
 	while (true)
 	{
 		pthread_mutex_lock(&data->stop_mutex);
