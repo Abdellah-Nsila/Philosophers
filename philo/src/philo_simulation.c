@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:27:44 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/15 12:15:02 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 11:32:48 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_bool	ft_take_forks(t_data *data, t_philo *philo)
 t_bool	ft_eat(t_data *data, t_philo *philo)
 {
 	pthread_mutex_lock(&data->meal_mutex);
-	philo->last_meal_time = get_current_time();
+	philo->last_meal_time = ft_get_time();
 	philo->meals_eaten += 1;
 	ft_print_msg(data, philo, EATING);
 	pthread_mutex_unlock(&data->meal_mutex);
@@ -47,7 +47,7 @@ void	ft_think(t_philo *philo)
 	data = philo->data;
 	pthread_mutex_lock(&data->meal_mutex);
 	time_to_think = (data->time_to_die
-			- (get_current_time() - philo->last_meal_time)
+			- (ft_get_time() - philo->last_meal_time)
 			- data->time_to_eat) / 2;
 	pthread_mutex_unlock(&data->meal_mutex);
 	if (time_to_think < 0)

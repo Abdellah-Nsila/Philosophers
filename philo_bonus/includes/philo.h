@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/13 15:21:01 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 11:31:54 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ there must be between 1 and %d philosophers.\n%s"
 # define PHILO_DONE_SEM "done_sem_"
 # define PHILO_MEAL_SEM "meal_sem_" COND_SEM
 
-
 typedef enum e_state
 {
 	TAKING_FORK,
@@ -74,7 +73,6 @@ typedef struct s_sem
 
 typedef struct s_philo
 {
-	pthread_t		routine;
 	pthread_t		self_monitor;
 	pthread_t		global_monitor;
 	time_t			last_meal_time;
@@ -97,7 +95,6 @@ typedef struct s_data
 	time_t			global_start_time;	// Start time for all processes (ms)
 	t_sem			forks_sem;			// Protect forks
 	t_sem			half_sem;			// Protect half
-	t_sem			cond_sem;			// Protect cond
 	t_sem			signal_sem;			// Protect Signal
 	t_sem			emmiter_sem;		// Protect Emmiter
 	t_sem			done_sem;			// Protect done
@@ -128,7 +125,6 @@ void	ft_destroy(t_data *data, int exit_code);
 // Processes
 void	ft_child_process(t_data *data, int id);
 t_bool	ft_launch_processes(t_data *data, pid_t pids[PHILO_MAX]);
-int		ft_philo_init(int id, t_data *data, t_philo *philo);
 
 // Threads Utils
 void	ft_init_philo(t_data *data, t_philo *philo);
@@ -142,29 +138,23 @@ void	*ft_global_monitor(void *arg);
 void	ft_eat(t_data *data, t_philo *philo);
 void	ft_think(t_philo *philo);
 t_bool	ft_philo_routine(t_data *data, t_philo *philo);
-// TODO GO to ypu mondaory part and try to replace the routine thread with the main process itself
 void	*ft_start_simulation(t_data *data, t_philo *philo);
-// void	*ft_start_simulation(void *arg);
 
 // Time Utils
-time_t	get_current_time(void);
+time_t	ft_get_time(void);
 void	ft_usleep(t_philo *philo, time_t milliseconds);
 void	ft_start_delay(time_t start_time);
 
 // Utils
-int	ft_wait_thread(pthread_t thr);
+int		ft_wait_thread(pthread_t thr);
 void	ft_philo_exit(t_data *data, t_philo *philo);
-
-t_bool	ft_stop_simulation(t_data *data);
-void	ft_print_data(t_data *data);
 
 // Status
 void	ft_colored_msg(time_t timestamp, int id, int type);
 void	ft_format_msg(time_t timestamp, int id, int type);
 void	ft_print_msg(t_data *data, t_philo *philo, int type);
 
-// Error
-void	ft_exit_process(t_data *data, t_philo *philo, int exit_code);
+// Exit
 void	ft_exit(t_data *data, int exit_code);
 
 #endif

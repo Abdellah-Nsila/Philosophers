@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:33:34 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/10 09:44:28 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 11:32:26 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	ft_print_msg(t_data *data, t_philo *philo, int type)
 		return ;
 	}
 	pthread_mutex_unlock(&data->stop_mutex);
-	current_time = get_current_time();
+	current_time = ft_get_time();
 	timestamp = current_time - data->start_time;
 	//* My own format
 	ft_colored_msg(timestamp, philo->id, type);

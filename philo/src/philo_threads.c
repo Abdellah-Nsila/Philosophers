@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 13:57:06 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/10 09:08:15 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 11:32:54 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_create_threads(t_data *data)
 	int	i;
 
 	i = 0;
-	data->start_time = get_current_time() + (data->num_of_philos * 20);
+	data->start_time = ft_get_time() + (data->num_of_philos * 20);
 	while (i < data->num_of_philos)
 	{
 		data->philos[i].last_meal_time = data->start_time;

@@ -6,13 +6,13 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 07:31:56 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/13 18:26:45 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 11:29:52 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-time_t	get_current_time(void)
+time_t	ft_get_time(void)
 {
 	struct timeval		tv;
 
@@ -20,18 +20,18 @@ time_t	get_current_time(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-void ft_usleep(t_philo *philo, time_t milliseconds) {
-    time_t start = get_current_time();
-    (void)philo;
+void	ft_usleep(t_philo *philo, time_t milliseconds) {
+	time_t start = ft_get_time();
+	(void)philo;
 
-    while ((get_current_time() - start) < milliseconds)
-    {
-        usleep(500);
-    }
+	while ((ft_get_time() - start) < milliseconds)
+	{
+		usleep(500);
+	}
 }
 
 void	ft_start_delay(time_t start_time)
 {
-	while (get_current_time() < start_time)
+	while (ft_get_time() < start_time)
 		continue ;
 }

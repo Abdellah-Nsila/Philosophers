@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 09:54:14 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/13 19:19:20 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 11:29:29 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_think(t_philo *philo)
 	data = philo->data;
 	sem_wait(philo->meal_sem.ptr);
 	time_to_think = (data->time_to_die
-		- (get_current_time() - philo->last_meal_time)
+		- (ft_get_time() - philo->last_meal_time)
 		- data->time_to_eat) / 2;
 	sem_post(philo->meal_sem.ptr);
 	if (time_to_think < 0)
@@ -35,7 +35,7 @@ void	ft_eat(t_data *data, t_philo *philo)
 {
 	ft_print_msg(data, philo, EATING);
 	sem_wait(philo->meal_sem.ptr);
-	philo->last_meal_time = get_current_time();
+	philo->last_meal_time = ft_get_time();
 	philo->meals_eaten += 1;
 	sem_post(philo->meal_sem.ptr);
 	ft_usleep(philo, data->time_to_eat);
@@ -54,8 +54,6 @@ t_bool	ft_philo_routine(t_data *data, t_philo *philo)
 	ft_eat(data, philo);
 	if (data->max_meals != -1 && (philo->meals_eaten >= data->max_meals))
 	{
-		printf("Meals eaten: %d\n", philo->meals_eaten);
-		// sem_wait(data->cond_sem.ptr);
 		sem_wait(philo->done_sem.ptr);
 		philo->is_done = true;
 		sem_post(philo->done_sem.ptr);
@@ -70,7 +68,6 @@ t_bool	ft_philo_routine(t_data *data, t_philo *philo)
 
 void	*ft_start_simulation(t_data *data, t_philo *philo)
 {
-	// printf("Philo: %d ft_start_simulation\n", philo->id);
 	ft_start_delay(data->global_start_time);
 	if (philo->id % 2 == 0)
 		ft_usleep(philo, 1);
@@ -85,7 +82,6 @@ void	*ft_start_simulation(t_data *data, t_philo *philo)
 	}
 	while (true)
 	{
-		// Check done status ...
 		sem_wait(philo->done_sem.ptr);
 		if (philo->is_done)
 		{
@@ -93,7 +89,6 @@ void	*ft_start_simulation(t_data *data, t_philo *philo)
 			break ;
 		}
 		sem_post(philo->done_sem.ptr);
-		// Execute the routine
 		if (!ft_philo_routine(data, philo))
 			break ;
 	}

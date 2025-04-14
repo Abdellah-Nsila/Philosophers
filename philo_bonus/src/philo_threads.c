@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:46:13 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/13 18:26:57 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 11:21:47 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,17 @@
 
 void	ft_philo_exit(t_data *data, t_philo *philo)
 {
-	// sem_post(data->died_sem.ptr);
-	if (philo)
+	if (philo && data)
 	{
-		ft_wait_thread(philo->routine);
 		ft_wait_thread(philo->self_monitor);
 		ft_wait_thread(philo->global_monitor);
 	}
 	ft_destroy_sem(data);
 	ft_free_sem(&philo->done_sem, true);
 	ft_free_sem(&philo->meal_sem, true);
-
 	exit(EXIT_SUCCESS);
 }
 
-// TODO Look to statrt time , sleep delay, and system call, and sem calls 
 void	ft_child_process(t_data *data, int id)
 {
 	t_philo	philo;
@@ -48,5 +44,3 @@ void	ft_child_process(t_data *data, int id)
 	ft_start_simulation(data, &philo);
 	ft_philo_exit(data, &philo);
 }
-
-// TODO i think the issue here is some philos dont have chance to eat

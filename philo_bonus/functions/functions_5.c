@@ -6,46 +6,105 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 19:56:54 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/13 20:05:28 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 08:29:43 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	ft_putchar(char c)
+static	void	ft_reverse_str(char *buffer, int *i)
 {
-	return (write(1, &c, 1));
+	int		start;
+	int		end;
+	char	tmp;
+
+	start = 0;
+	end = *i - 1;
+	while (start < end)
+	{
+		tmp = buffer[start];
+		buffer[start] = buffer[end];
+		buffer[end] = tmp;
+		start++;
+		end--;
+	}
 }
 
-int	ft_putstr(char *s)
+static int	ft_itoa_buf(long n, char *buffer)
 {
-	size_t	i;
+	int		i;
+	int		is_neg;
 
-	if (!s)
-		return (ft_putstr("(null)"));
 	i = 0;
-	while (s[i])
+	is_neg = 0;
+	if (n < 0)
 	{
-		ft_putchar(s[i]);
-		i++;
+		is_neg = 1;
+		n = -n;
 	}
+	else if (n == 0)
+		buffer[i++] = '0';
+	while (n > 0)
+	{
+		buffer[i++] = '0' + (n % 10);
+		n /= 10;
+	}
+	if (is_neg)
+		buffer[i++] = '-';
+	ft_reverse_str(buffer, &i);
 	return (i);
 }
 
-int	ft_putnbr(int n)
+static void	copy_str_to_buffer(char *buffer, const char *str, int *pos)
 {
-	int	len;
+	int	i;
 
-	len = 0;
-	if (n == -2147483648)
-		return (ft_putstr("-2147483648"));
-	else if (n < 0)
-	{
-		n = -n;
-		len += ft_putchar('-');
-	}
-	if (n > 9)
-		len += ft_putnbr(n / 10);
-	len += ft_putchar(((n % 10) + 48));
-	return (len);
+	i = 0;
+	while (str[i])
+		buffer[(*pos)++] = str[i++];
+}
+
+static void	copy_num_to_buffer(char *buffer, long num, int *pos)
+{
+	char	num_buf[64];
+	int		len;
+	int		i;
+
+	len = ft_itoa_buf(num, num_buf);
+	i = 0;
+	while (i < len)
+		buffer[(*pos)++] = num_buf[i++];
+}
+
+void	ft_colored_write(const char *color, long time, int id, const char *msg,
+		const char *reset)
+{
+	char	buffer[1024];
+	int		pos;
+
+	pos = 0;
+	copy_str_to_buffer(buffer, color, &pos);
+	copy_num_to_buffer(buffer, time, &pos);
+	buffer[pos++] = ' ';
+	copy_num_to_buffer(buffer, id, &pos);
+	buffer[pos++] = ' ';
+	copy_str_to_buffer(buffer, msg, &pos);
+	buffer[pos++] = '\n';
+	copy_str_to_buffer(buffer, reset, &pos);
+	write(1, buffer, pos);
+}
+
+void	ft_write(long time, int id, const char *msg)
+{
+char	buffer[1024];
+int		pos;
+
+pos = 0;
+copy_num_to_buffer(buffer, time, &pos);
+buffer[pos++] = ' ';
+copy_num_to_buffer(buffer, id, &pos);
+buffer[pos++] = ' ';
+copy_str_to_buffer(buffer, msg, &pos);
+buffer[pos++] = '\n';
+write(1, buffer, pos);
 }

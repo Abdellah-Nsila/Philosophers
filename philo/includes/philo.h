@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/11 15:00:07 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 11:40:29 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ t_bool	ft_philo_routine(t_data *data, t_philo *philo);
 void	*ft_start_simulation(void *arg);
 
 // Time Utils
-time_t	get_current_time(void);
+time_t	ft_get_time(void);
 void	ft_usleep(t_data *data, time_t milliseconds);
 void	ft_start_delay(time_t start_time);
 

@@ -6,13 +6,13 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 07:31:56 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/10 16:35:25 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 11:33:02 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-time_t	get_current_time(void)
+time_t	ft_get_time(void)
 {
 	struct timeval		tv;
 
@@ -24,8 +24,8 @@ void	ft_usleep(t_data *data, time_t milliseconds)
 {
 	time_t	start;
 
-	start = get_current_time();
-	while ((get_current_time() - start) < milliseconds)
+	start = ft_get_time();
+	while ((ft_get_time() - start) < milliseconds)
 	{
 		pthread_mutex_lock(&data->stop_mutex);
 		if (data->stop)
@@ -40,6 +40,6 @@ void	ft_usleep(t_data *data, time_t milliseconds)
 
 void	ft_start_delay(time_t start_time)
 {
-	while (get_current_time() < start_time)
+	while (ft_get_time() < start_time)
 		continue ;
 }

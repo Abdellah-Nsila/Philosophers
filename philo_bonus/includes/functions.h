@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 15:21:38 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/13 20:05:16 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 08:30:14 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 t_bool	ft_strlcmp(const char *s1, const char *s2);
 char	*ft_strjoin(char const *s1, char const *s2);
 
-int	ft_putchar(char c);
-int	ft_putstr(char *s);
-int	ft_putnbr(int n);
+void	ft_colored_write(const char *color, long time, int id, const char *msg,
+	const char *reset);
+void	ft_write(long time, int id, const char *msg);
 
 #endif 

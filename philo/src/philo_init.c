@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:53:27 by abnsila           #+#    #+#             */
-/*   Updated: 2025/03/08 14:44:03 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 11:32:35 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_init_philos(t_data *data)
 		ft_bzero(&data->philos[i], sizeof(data->philos[i]));
 		data->philos[i].id = i + 1;
 		data->philos[i].data = data;
-		data->philos[i].last_meal_time = get_current_time();
+		data->philos[i].last_meal_time = ft_get_time();
 		if (i % 2)
 		{
 			data->philos[i].first_fork

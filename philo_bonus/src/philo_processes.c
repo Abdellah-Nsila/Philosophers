@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 15:46:11 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/13 19:22:40 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 11:29:22 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_bool	ft_launch_processes(t_data *data, pid_t pids[PHILO_MAX])
 	int	i;
 
 	i = 0;
-	data->global_start_time = get_current_time() + (data->num_of_philos * 20);
+	data->global_start_time = ft_get_time() + (data->num_of_philos * 20);
 	while (i < data->num_of_philos)
 	{
 		pids[i] = fork();
@@ -53,6 +53,5 @@ t_bool	ft_launch_processes(t_data *data, pid_t pids[PHILO_MAX])
 		waitpid(pids[i], NULL, 0);
 		i++;
 	}
-	ft_usleep(NULL, 100);
 	return (true);
 }
