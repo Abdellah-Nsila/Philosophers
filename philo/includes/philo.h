@@ -6,7 +6,7 @@
 /*   By: abnsila <abnsila@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:45:07 by abnsila           #+#    #+#             */
-/*   Updated: 2025/04/14 14:43:23 by abnsila          ###   ########.fr       */
+/*   Updated: 2025/04/14 15:42:27 by abnsila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,18 @@
 #  define LONG_MAX 9223372036854775807
 # endif
 
-# define USAGE_MSG "%sphilo: Usage: \
+# define USAGE_MSG "philo: Usage: \
 ./philo <number_of_philosophers> \
 <time_to_die> <time_to_eat> <time_to_sleep> \
-[number_of_times_each_philosopher_must_eat]\n%s"
-# define INPUT_ERROR "%sphilo: Invalid input: %s: \
-Value must be a positive integer.\n%s"
-# define ARG_ERROR "%sphilo: Invalid input: %s: \
-Value must be between 1 and 2147483647.\n%s"
-# define PHILO_ERROR "%sphilo: Invalid input: %s: \
-there must be between 1 and %d philosophers.\n%s"
-# define PHILO_MAX 200
+[number_of_times_each_philosopher_must_eat]\n"
+# define INPUT_ERROR "philo: Invalid input: %s: \
+Value must be a positive integer.\n"
+# define TIME_ERROR "philo: Invalid input: %s: \
+Value must be between 0 and 2147483647.\n"
+# define PHILO_ERROR "philo: Invalid input: %s: \
+there must be > 0.\n"
+# define APT_ERROR "philo: Invalid input: %s: \
+there must be >= 0.\n"
 
 typedef enum e_state
 {
@@ -65,18 +66,18 @@ typedef struct s_data
 {
 	t_philo			*philos;
 	pthread_t		monitor;
-	int				num_of_philos;	// Total philosophers
-	int				max_meals;		// Optional: meals per philosopher
-	time_t			time_to_die;	// Max time without eating (ms)
-	time_t			time_to_eat;	// Eating duration (ms)
-	time_t			time_to_sleep;	// Sleeping duration (ms)
-	time_t			start_time;		// Start time for all threads (ms)
-	pthread_mutex_t	*forks_mutex;	// Array of mutexes (forks)
-	pthread_mutex_t	print_mutex;	// Protect logging
-	pthread_mutex_t	meal_mutex;		// Protect last meal time
-	pthread_mutex_t	state_mutex;	// Protect state flag
-	pthread_mutex_t	stop_mutex;		// Protect death flag
-	t_bool			stop;			// Global stop flag
+	int				num_of_philos;
+	int				max_meals;
+	time_t			time_to_die;
+	time_t			time_to_eat;
+	time_t			time_to_sleep;
+	time_t			start_time;
+	pthread_mutex_t	*forks_mutex;
+	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	meal_mutex;
+	pthread_mutex_t	state_mutex;
+	pthread_mutex_t	stop_mutex;
+	t_bool			stop;
 }				t_data;
 
 // Parsing
