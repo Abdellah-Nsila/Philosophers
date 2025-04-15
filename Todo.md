@@ -15,3 +15,5 @@
     1. Good guide https://42-cursus.gitbook.io/guide/rank-03/philosophers
     2. Good guide https://medium.com/@ruinadd/philosophers-42-guide-the-dining-philosophers-problem-893a24bc0fe2
     3. Eval forme  https://github.com/Dsite42/philosophers/blob/master/philosophers%20eval%20sheet.pdf
+
+## Compare with other version
