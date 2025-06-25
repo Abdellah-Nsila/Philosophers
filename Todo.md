@@ -17,4 +17,4 @@
     3. Eval forme  https://github.com/Dsite42/philosophers/blob/master/philosophers%20eval%20sheet.pdf
 
 ## Compare with other version
-`Done`
+- `Done`
